@@ -287,7 +287,7 @@ const DBUtils = {
   async saveVideo(id, blob, metadata = {}) {
     try {
       if (!(blob instanceof Blob)) {
-        throw new Error('Invalid blob provided');');
+        throw new Error('Invalid blob provided');
       }
 
       const mimeType = metadata.mimeType || blob.type;
