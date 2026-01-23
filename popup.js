@@ -249,7 +249,7 @@ function createContentItemElement(content) {
   div.innerHTML = `
     <div class="content-header">
       <span class="content-date">${dateStr}</span>
-      <button class="btn-delete" onclick="deleteContent('${content.key}')">Delete</button>
+      <button class="btn-delete" data-content-id="${content.key}">Delete</button>
     </div>
     <div class="content-text">${textPreview || '<em>No text</em>'}</div>
     ${content.links.length > 0 ? `<div class="content-links">🔗 ${content.links.length} link(s)</div>` : ''}
@@ -264,6 +264,12 @@ function createContentItemElement(content) {
       <img src="${DBUtils.createObjectURL(m.blob)}" class="content-thumbnail" alt="${m.name}">
     `).join('')}
   `;
+
+  // Add delete button event listener
+  const deleteBtn = div.querySelector('.btn-delete');
+  deleteBtn.addEventListener('click', () => {
+    deleteContent(content.key);
+  });
 
   return div;
 }
