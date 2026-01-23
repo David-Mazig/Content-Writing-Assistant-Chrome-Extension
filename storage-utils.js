@@ -1,4 +1,14 @@
 /**
+ * ⚠️ DEPRECATED - This file is no longer used ⚠️
+ *
+ * The extension has migrated to a unified IndexedDB storage system.
+ * All functionality previously split between chrome.storage.local and IndexedDB
+ * is now consolidated in db-utils.js
+ *
+ * This file is kept for reference only and will be removed in a future version.
+ *
+ * ---
+ *
  * Storage Utilities for Content Writing Assistant
  * Wrapper for chrome.storage.local API
  *

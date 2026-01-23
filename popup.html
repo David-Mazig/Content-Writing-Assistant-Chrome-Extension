@@ -8,11 +8,44 @@
 </head>
 <body>
   <div class="container">
-    <h1>Content Writing Assistant</h1>
-    <p>This is a placeholder extension. Functionality will be added in future updates.</p>
+    <div class="header">
+      <h1>Content Assistant</h1>
+      <button id="btn-new-content" class="btn-primary">+ New</button>
+    </div>
+
+    <!-- Content List -->
+    <div id="content-list" class="content-list">
+      <div class="empty-state">Loading...</div>
+    </div>
+
+    <!-- New Content Form (hidden by default) -->
+    <div id="new-content-form" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>New Content</h2>
+          <button id="btn-close-modal" class="btn-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <textarea id="input-text" placeholder="Enter your content text..." rows="4"></textarea>
+
+          <input type="text" id="input-link" placeholder="Add link (optional)" />
+
+          <div class="file-input-wrapper">
+            <label for="input-media" class="btn-secondary">📎 Add Media</label>
+            <input type="file" id="input-media" accept="image/*,audio/*,video/*" multiple />
+            <div id="media-preview" class="media-preview"></div>
+          </div>
+
+          <div class="modal-actions">
+            <button id="btn-save-content" class="btn-primary">Save</button>
+            <button id="btn-cancel" class="btn-secondary">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <!-- Storage utilities must be loaded before popup.js -->
-  <script src="storage-utils.js"></script>
+
+  <!-- Database utilities -->
   <script src="db-utils.js"></script>
   <script src="popup.js"></script>
 </body>

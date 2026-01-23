@@ -1,27 +1,37 @@
 /**
  * Database Utilities for Content Writing Assistant
- * Wrapper for IndexedDB API for media storage
+ * Unified IndexedDB storage for all content and media
  *
  * Database Structure:
  * - Database Name: ContentWritingAssistant
- * - Object Store: media
- * - Key: string (e.g., "img:456")
+ * - Object Store: items
+ * - Key: string (e.g., "content:123" or "media:456")
  *
- * Media Object:
+ * Content Object:
  * {
- *   "key": "img:456",
- *   "type": "image",
- *   "mimeType": "image/png",
- *   "blob": Blob,
- *   "size": 245678,
- *   "created": timestamp
+ *   "key": "content:123",
+ *   "type": "content",
+ *   "text": "User content text...",
+ *   "links": ["https://example.com"],
+ *   "media": [
+ *     {
+ *       "id": "media:456",
+ *       "type": "image",
+ *       "mimeType": "image/png",
+ *       "blob": Blob,
+ *       "size": 245678,
+ *       "name": "photo.png"
+ *     }
+ *   ],
+ *   "created": timestamp,
+ *   "modified": timestamp
  * }
  */
 
 const DBUtils = {
   DB_NAME: 'ContentWritingAssistant',
-  DB_VERSION: 1,
-  STORE_NAME: 'media',
+  DB_VERSION: 2,
+  STORE_NAME: 'items',
 
   /**
    * Initialize and open the database
@@ -41,18 +51,35 @@ const DBUtils = {
 
       request.onupgradeneeded = (event) => {
         const db = event.target.result;
+        const oldVersion = event.oldVersion;
 
-        // Create object store if it doesn't exist
+        // Migration from version 1 (media store) to version 2 (items store)
+        if (oldVersion < 2) {
+          // Delete old media store if it exists
+          if (db.objectStoreNames.contains('media')) {
+            db.deleteObjectStore('media');
+          }
+        }
+
+        // Create new unified object store if it doesn't exist
         if (!db.objectStoreNames.contains(this.STORE_NAME)) {
           const objectStore = db.createObjectStore(this.STORE_NAME, { keyPath: 'key' });
 
           // Create indexes for efficient querying
           objectStore.createIndex('type', 'type', { unique: false });
           objectStore.createIndex('created', 'created', { unique: false });
-          objectStore.createIndex('mimeType', 'mimeType', { unique: false });
+          objectStore.createIndex('modified', 'modified', { unique: false });
         }
       };
     });
+  },
+
+  /**
+   * Generate a unique ID for content
+   * @returns {string} Unique content ID
+   */
+  generateContentId() {
+    return `content:${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   },
 
   /**
@@ -61,7 +88,7 @@ const DBUtils = {
    * @returns {string} Unique ID
    */
   generateMediaId(type = 'img') {
-    return `${type}:${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    return `media:${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   },
 
   /**
@@ -81,64 +108,93 @@ const DBUtils = {
   },
 
   /**
-   * Save image to IndexedDB
-   * @param {string} id - Image ID (optional, will generate if not provided)
-   * @param {Blob} blob - Image blob
-   * @param {Object} metadata - Additional metadata
-   * @param {string} metadata.mimeType - MIME type
-   * @returns {Promise<string>} Image ID
+   * Validate and sanitize URL
+   * @param {string} url - URL to validate
+   * @returns {string|null} Valid URL or null
    */
-  async saveImage(id, blob, metadata = {}) {
+  validateUrl(url) {
     try {
-      if (!(blob instanceof Blob)) {
-        throw new Error('Invalid blob provided');
+      const urlObj = new URL(url);
+      if (urlObj.protocol === 'http:' || urlObj.protocol === 'https:') {
+        return urlObj.href;
       }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  },
 
-      const mimeType = metadata.mimeType || blob.type;
-      if (!this.validateMimeType(mimeType, 'image')) {
-        throw new Error('Invalid image MIME type');
-      }
-
-      const imageId = id || this.generateMediaId('img');
+  /**
+   * Save content with embedded media
+   * @param {string} id - Content ID (optional, will generate if not provided)
+   * @param {Object} data - Content data
+   * @param {string} data.text - Text content
+   * @param {string[]} [data.links] - Array of URLs
+   * @param {Array} [data.media] - Array of media objects with blobs
+   * @returns {Promise<string>} Content ID
+   */
+  async saveContent(id, data) {
+    try {
+      const contentId = id || this.generateContentId();
       const db = await this.openDatabase();
 
-      const mediaObject = {
-        key: imageId,
-        type: 'image',
-        mimeType,
-        blob,
-        size: blob.size,
-        created: Date.now(),
-        ...metadata
+      // Validate and sanitize links
+      const validLinks = (data.links || [])
+        .map(link => this.validateUrl(link))
+        .filter(link => link !== null);
+
+      // Process media array
+      const processedMedia = (data.media || []).map(mediaItem => {
+        if (mediaItem.blob && !(mediaItem.blob instanceof Blob)) {
+          throw new Error('Invalid media blob provided');
+        }
+        return {
+          id: mediaItem.id || this.generateMediaId(mediaItem.type || 'media'),
+          type: mediaItem.type || 'image',
+          mimeType: mediaItem.mimeType || mediaItem.blob?.type || 'application/octet-stream',
+          blob: mediaItem.blob,
+          size: mediaItem.blob?.size || 0,
+          name: mediaItem.name || 'untitled'
+        };
+      });
+
+      const contentObject = {
+        key: contentId,
+        type: 'content',
+        text: data.text || '',
+        links: validLinks,
+        media: processedMedia,
+        created: data.created || Date.now(),
+        modified: Date.now()
       };
 
       return new Promise((resolve, reject) => {
         const transaction = db.transaction([this.STORE_NAME], 'readwrite');
         const objectStore = transaction.objectStore(this.STORE_NAME);
-        const request = objectStore.put(mediaObject);
+        const request = objectStore.put(contentObject);
 
         request.onsuccess = () => {
           db.close();
-          resolve(imageId);
+          resolve(contentId);
         };
 
         request.onerror = () => {
           db.close();
-          reject(new Error('Failed to save image'));
+          reject(new Error('Failed to save content'));
         };
       });
     } catch (error) {
-      console.error('Error saving image:', error);
+      console.error('Error saving content:', error);
       throw error;
     }
   },
 
   /**
-   * Get image from IndexedDB
-   * @param {string} id - Image ID
-   * @returns {Promise<Object|null>} Image object or null
+   * Get content by ID
+   * @param {string} id - Content ID
+   * @returns {Promise<Object|null>} Content object or null
    */
-  async getImage(id) {
+  async getContent(id) {
     try {
       const db = await this.openDatabase();
 
@@ -154,50 +210,20 @@ const DBUtils = {
 
         request.onerror = () => {
           db.close();
-          reject(new Error('Failed to get image'));
+          reject(new Error('Failed to get content'));
         };
       });
     } catch (error) {
-      console.error('Error getting image:', error);
+      console.error('Error getting content:', error);
       throw error;
     }
   },
 
   /**
-   * Delete image from IndexedDB
-   * @param {string} id - Image ID
-   * @returns {Promise<void>}
+   * Get all content entries
+   * @returns {Promise<Object[]>} Array of content objects
    */
-  async deleteImage(id) {
-    try {
-      const db = await this.openDatabase();
-
-      return new Promise((resolve, reject) => {
-        const transaction = db.transaction([this.STORE_NAME], 'readwrite');
-        const objectStore = transaction.objectStore(this.STORE_NAME);
-        const request = objectStore.delete(id);
-
-        request.onsuccess = () => {
-          db.close();
-          resolve();
-        };
-
-        request.onerror = () => {
-          db.close();
-          reject(new Error('Failed to delete image'));
-        };
-      });
-    } catch (error) {
-      console.error('Error deleting image:', error);
-      throw error;
-    }
-  },
-
-  /**
-   * Get all images from IndexedDB
-   * @returns {Promise<Object[]>} Array of image objects
-   */
-  async getAllImages() {
+  async getAllContent() {
     try {
       const db = await this.openDatabase();
 
@@ -205,167 +231,32 @@ const DBUtils = {
         const transaction = db.transaction([this.STORE_NAME], 'readonly');
         const objectStore = transaction.objectStore(this.STORE_NAME);
         const index = objectStore.index('type');
-        const request = index.getAll('image');
+        const request = index.getAll('content');
 
         request.onsuccess = () => {
           db.close();
-          const images = request.result || [];
-          // Sort by created date, most recent first
-          resolve(images.sort((a, b) => b.created - a.created));
+          const content = request.result || [];
+          // Sort by modified date, most recent first
+          resolve(content.sort((a, b) => b.modified - a.modified));
         };
 
         request.onerror = () => {
           db.close();
-          reject(new Error('Failed to get all images'));
+          reject(new Error('Failed to get all content'));
         };
       });
     } catch (error) {
-      console.error('Error getting all images:', error);
+      console.error('Error getting all content:', error);
       throw error;
     }
   },
 
   /**
-   * Save audio to IndexedDB
-   * @param {string} id - Audio ID (optional, will generate if not provided)
-   * @param {Blob} blob - Audio blob
-   * @param {Object} metadata - Additional metadata
-   * @returns {Promise<string>} Audio ID
-   */
-  async saveAudio(id, blob, metadata = {}) {
-    try {
-      if (!(blob instanceof Blob)) {
-        throw new Error('Invalid blob provided');
-      }
-
-      const mimeType = metadata.mimeType || blob.type;
-      if (!this.validateMimeType(mimeType, 'audio')) {
-        throw new Error('Invalid audio MIME type');
-      }
-
-      const audioId = id || this.generateMediaId('audio');
-      const db = await this.openDatabase();
-
-      const mediaObject = {
-        key: audioId,
-        type: 'audio',
-        mimeType,
-        blob,
-        size: blob.size,
-        created: Date.now(),
-        ...metadata
-      };
-
-      return new Promise((resolve, reject) => {
-        const transaction = db.transaction([this.STORE_NAME], 'readwrite');
-        const objectStore = transaction.objectStore(this.STORE_NAME);
-        const request = objectStore.put(mediaObject);
-
-        request.onsuccess = () => {
-          db.close();
-          resolve(audioId);
-        };
-
-        request.onerror = () => {
-          db.close();
-          reject(new Error('Failed to save audio'));
-        };
-      });
-    } catch (error) {
-      console.error('Error saving audio:', error);
-      throw error;
-    }
-  },
-
-  /**
-   * Save video to IndexedDB
-   * @param {string} id - Video ID (optional, will generate if not provided)
-   * @param {Blob} blob - Video blob
-   * @param {Object} metadata - Additional metadata
-   * @returns {Promise<string>} Video ID
-   */
-  async saveVideo(id, blob, metadata = {}) {
-    try {
-      if (!(blob instanceof Blob)) {
-        throw new Error('Invalid blob provided');
-      }
-
-      const mimeType = metadata.mimeType || blob.type;
-      if (!this.validateMimeType(mimeType, 'video')) {
-        throw new Error('Invalid video MIME type');
-      }
-
-      const videoId = id || this.generateMediaId('video');
-      const db = await this.openDatabase();
-
-      const mediaObject = {
-        key: videoId,
-        type: 'video',
-        mimeType,
-        blob,
-        size: blob.size,
-        created: Date.now(),
-        ...metadata
-      };
-
-      return new Promise((resolve, reject) => {
-        const transaction = db.transaction([this.STORE_NAME], 'readwrite');
-        const objectStore = transaction.objectStore(this.STORE_NAME);
-        const request = objectStore.put(mediaObject);
-
-        request.onsuccess = () => {
-          db.close();
-          resolve(videoId);
-        };
-
-        request.onerror = () => {
-          db.close();
-          reject(new Error('Failed to save video'));
-        };
-      });
-    } catch (error) {
-      console.error('Error saving video:', error);
-      throw error;
-    }
-  },
-
-  /**
-   * Get all media items
-   * @returns {Promise<Object[]>} Array of all media objects
-   */
-  async getAllMedia() {
-    try {
-      const db = await this.openDatabase();
-
-      return new Promise((resolve, reject) => {
-        const transaction = db.transaction([this.STORE_NAME], 'readonly');
-        const objectStore = transaction.objectStore(this.STORE_NAME);
-        const request = objectStore.getAll();
-
-        request.onsuccess = () => {
-          db.close();
-          const media = request.result || [];
-          // Sort by created date, most recent first
-          resolve(media.sort((a, b) => b.created - a.created));
-        };
-
-        request.onerror = () => {
-          db.close();
-          reject(new Error('Failed to get all media'));
-        };
-      });
-    } catch (error) {
-      console.error('Error getting all media:', error);
-      throw error;
-    }
-  },
-
-  /**
-   * Delete media by ID
-   * @param {string} id - Media ID
+   * Delete content by ID
+   * @param {string} id - Content ID
    * @returns {Promise<void>}
    */
-  async deleteMedia(id) {
+  async deleteContent(id) {
     try {
       const db = await this.openDatabase();
 
@@ -381,14 +272,102 @@ const DBUtils = {
 
         request.onerror = () => {
           db.close();
-          reject(new Error('Failed to delete media'));
+          reject(new Error('Failed to delete content'));
         };
       });
     } catch (error) {
-      console.error('Error deleting media:', error);
+      console.error('Error deleting content:', error);
       throw error;
     }
   },
+
+  /**
+   * Update content text
+   * @param {string} id - Content ID
+   * @param {string} text - New text content
+   * @returns {Promise<void>}
+   */
+  async updateContentText(id, text) {
+    try {
+      const content = await this.getContent(id);
+      if (!content) {
+        throw new Error(`Content with ID ${id} not found`);
+      }
+
+      content.text = text;
+      content.modified = Date.now();
+
+      await this.saveContent(id, content);
+    } catch (error) {
+      console.error('Error updating content text:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Add link to content
+   * @param {string} id - Content ID
+   * @param {string} url - URL to add
+   * @returns {Promise<void>}
+   */
+  async addLink(id, url) {
+    try {
+      const content = await this.getContent(id);
+      if (!content) {
+        throw new Error(`Content with ID ${id} not found`);
+      }
+
+      const validUrl = this.validateUrl(url);
+      if (!validUrl) {
+        throw new Error('Invalid URL');
+      }
+
+      if (!content.links.includes(validUrl)) {
+        content.links.push(validUrl);
+        content.modified = Date.now();
+        await this.saveContent(id, content);
+      }
+    } catch (error) {
+      console.error('Error adding link:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Add media to content
+   * @param {string} contentId - Content ID
+   * @param {Blob} blob - Media blob
+   * @param {Object} metadata - Media metadata
+   * @returns {Promise<string>} Media ID
+   */
+  async addMediaToContent(contentId, blob, metadata = {}) {
+    try {
+      const content = await this.getContent(contentId);
+      if (!content) {
+        throw new Error(`Content with ID ${contentId} not found`);
+      }
+
+      const mediaId = this.generateMediaId(metadata.type || 'media');
+      const mediaItem = {
+        id: mediaId,
+        type: metadata.type || 'image',
+        mimeType: metadata.mimeType || blob.type,
+        blob: blob,
+        size: blob.size,
+        name: metadata.name || 'untitled'
+      };
+
+      content.media.push(mediaItem);
+      content.modified = Date.now();
+      await this.saveContent(contentId, content);
+
+      return mediaId;
+    } catch (error) {
+      console.error('Error adding media to content:', error);
+      throw error;
+    }
+  },
+
 
   /**
    * Get storage quota estimate
@@ -417,10 +396,10 @@ const DBUtils = {
   },
 
   /**
-   * Clear all media (use with caution)
+   * Clear all content (use with caution)
    * @returns {Promise<void>}
    */
-  async clearAllMedia() {
+  async clearAllContent() {
     try {
       const db = await this.openDatabase();
 
@@ -436,11 +415,11 @@ const DBUtils = {
 
         request.onerror = () => {
           db.close();
-          reject(new Error('Failed to clear all media'));
+          reject(new Error('Failed to clear all content'));
         };
       });
     } catch (error) {
-      console.error('Error clearing all media:', error);
+      console.error('Error clearing all content:', error);
       throw error;
     }
   },
