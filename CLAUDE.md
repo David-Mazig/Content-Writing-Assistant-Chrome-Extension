@@ -15,8 +15,12 @@ This is a Chrome extension (Manifest V3) for content writing assistance. The ext
 4. After code changes, click the refresh icon on the extension card to reload
 
 ### Key Files
-- `manifest.json` - Extension configuration (Manifest V3 format). Edit this to add permissions, background service workers, or content scripts
+- `manifest.json` - Extension configuration (Manifest V3 format) with permissions and script declarations
 - `popup.html/css/js` - The popup UI displayed when clicking the toolbar icon
+- `background.js` - Service worker handling IndexedDB operations and message passing
+- `content-script.js` - Injected script for text selection detection and popover UI
+- `content-script.css` - Styles for the text selection popover
+- `db-utils.js` - Unified IndexedDB wrapper (used by both popup and background)
 - `icons/` - Extension icons (16x16, 48x48, 128x128)
 
 ## Architecture Notes
@@ -31,10 +35,12 @@ This extension uses Chrome's Manifest V3 specification. Key differences from V2:
 ### Current State
 - **Storage**: Unified IndexedDB implementation storing content with embedded media
 - **UI**: Functional popup with content list view and creation modal
-- **Features**: Create, view, and delete content items with text, links, and media attachments
-- **Permissions**: `storage` and `unlimitedStorage` configured
-- No background service worker (not needed for current functionality)
-- No content scripts injected into pages (extension operates independently)
+- **Features**:
+  - Create, view, and delete content items with text, links, and media attachments
+  - Text selection capture from any webpage with save popover
+  - Background service worker for IndexedDB operations
+- **Permissions**: `storage`, `unlimitedStorage`, and `activeTab` configured
+- **Content Script**: Injected into all pages to enable text selection saving
 
 ### Adding Functionality
 To expand this extension:
@@ -82,6 +88,65 @@ Each content item card shows:
 - `createContentItemElement()` - Generates DOM for a content card
 - `saveNewContent()` - Handles form submission and storage
 - `deleteContent()` - Removes content and refreshes list
+
+## Text Selection Feature
+
+### Overview
+Users can save highlighted text from any webpage directly to the extension's IndexedDB storage without opening the popup.
+
+### How It Works
+1. User highlights text on any webpage
+2. A small popover appears near the cursor with a "Save" button
+3. Clicking "Save" sends the selected text to the background service worker
+4. The text is stored in IndexedDB along with the page URL and title
+5. The popover shows "Saved!" confirmation and disappears
+
+### Implementation Files
+- `content-script.js` - Detects text selection and displays the save popover
+- `content-script.css` - Styles for the popover UI
+- `background.js` - Service worker that handles IndexedDB save operations
+
+### Content Script Behavior
+- Listens for `mouseup` and `touchend` events
+- Shows popover only when text is actually selected
+- Popover positioned 10px below cursor position
+- Auto-hides when clicking outside or after successful save
+- Handles loading, success, and error states visually
+
+### Message Passing
+The content script communicates with the background worker via `chrome.runtime.sendMessage`:
+
+```javascript
+// Content script sends
+{
+  action: 'saveSelection',
+  data: {
+    text: 'Selected text...',
+    url: 'https://example.com/page',
+    title: 'Page Title'
+  }
+}
+
+// Background responds
+{
+  success: true,
+  contentId: 'content:123...'
+}
+```
+
+### Data Format
+Saved selections are stored as regular content entries with:
+- **text**: Selected text + source information (page title appended)
+- **links**: Array containing the source URL
+- **media**: Empty array (no media from text selection)
+
+### Popover UI
+- Green "Save" button with bookmark icon
+- Smooth fade-in animation
+- Loading state: "Saving..." text
+- Success state: Checkmark icon + "Saved!" (blue background)
+- Error state: "Error!" text (red background)
+- Maximum z-index to appear above all page content
 
 ## Data Storage Architecture
 
@@ -287,6 +352,15 @@ const stats = await ContentAssistant.DBUtils.getStorageEstimate();
 1. Create content items
 2. Close and reopen the popup
 3. Verify all items are still present
+
+**Test text selection saving:**
+1. Navigate to any webpage (e.g., wikipedia.org)
+2. Highlight some text on the page
+3. Verify the green "Save" popover appears near your cursor
+4. Click the "Save" button
+5. Verify it shows "Saved!" confirmation
+6. Open the extension popup
+7. Verify the saved text appears in the content list with the source URL
 
 ### IndexedDB Inspection
 To view the database directly:

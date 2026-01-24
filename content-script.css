@@ -1,0 +1,90 @@
+/**
+ * Content Script Styles
+ * Popover for saving selected text
+ */
+
+.cwa-save-popover {
+  position: fixed;
+  z-index: 2147483647; /* Maximum z-index to always be on top */
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.1);
+  padding: 4px;
+  pointer-events: all;
+  animation: cwa-popover-appear 0.2s ease-out;
+}
+
+@keyframes cwa-popover-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-5px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.cwa-save-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.cwa-save-btn:hover {
+  background: #45a049;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
+}
+
+.cwa-save-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(76, 175, 80, 0.3);
+}
+
+.cwa-save-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.cwa-save-btn.success {
+  background: #2196F3;
+}
+
+.cwa-save-btn.success:hover {
+  background: #2196F3;
+  transform: none;
+}
+
+.cwa-save-btn.error {
+  background: #f44336;
+}
+
+.cwa-save-btn svg {
+  flex-shrink: 0;
+}
+
+.cwa-save-btn span {
+  line-height: 1;
+}
+
+/* Prevent text selection on the popover itself */
+.cwa-save-popover,
+.cwa-save-btn {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
