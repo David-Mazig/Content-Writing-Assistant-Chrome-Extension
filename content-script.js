@@ -110,6 +110,9 @@ async function handleSave(event) {
     return;
   }
 
+  // Clear selection immediately to prevent popover from reappearing
+  window.getSelection().removeAllRanges();
+
   // Show loading state
   const saveBtn = popover.querySelector('.cwa-save-btn');
   const originalContent = saveBtn.innerHTML;
@@ -140,7 +143,6 @@ async function handleSave(event) {
       // Hide popover after delay
       setTimeout(() => {
         hidePopover();
-        window.getSelection().removeAllRanges();
       }, 1500);
     } else {
       throw new Error(response.error || 'Failed to save');
