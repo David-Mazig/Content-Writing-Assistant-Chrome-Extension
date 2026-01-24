@@ -33,11 +33,47 @@ const DBUtils = {
   DB_VERSION: 2,
   STORE_NAME: 'items',
 
+  // Connection pool properties
+  _dbConnection: null,              // Cached database connection
+  _idleTimeout: 60000,              // Close after 60 seconds of inactivity
+  _idleTimer: null,                 // Timer ID for idle timeout
+  _connectionPromise: null,         // In-flight connection promise
+  _isClosing: false,                // Prevent operations during close
+  _keepAliveInterval: null,         // Keep service worker alive
+
   /**
-   * Initialize and open the database
+   * Get cached connection or open a new one
    * @returns {Promise<IDBDatabase>} Database instance
    */
-  async openDatabase() {
+  async getConnection() {
+    // Return cached connection if available
+    if (this._dbConnection && !this._isClosing) {
+      this.resetIdleTimer();
+      return this._dbConnection;
+    }
+
+    // Return existing connection promise if already connecting
+    if (this._connectionPromise) {
+      return this._connectionPromise;
+    }
+
+    // Open new connection
+    this._connectionPromise = this._openDatabaseInternal();
+
+    try {
+      this._dbConnection = await this._connectionPromise;
+      this.resetIdleTimer();
+      return this._dbConnection;
+    } finally {
+      this._connectionPromise = null;
+    }
+  },
+
+  /**
+   * Open database connection (internal)
+   * @returns {Promise<IDBDatabase>} Database instance
+   */
+  async _openDatabaseInternal() {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open(this.DB_NAME, this.DB_VERSION);
 
@@ -46,7 +82,16 @@ const DBUtils = {
       };
 
       request.onsuccess = () => {
-        resolve(request.result);
+        const db = request.result;
+
+        // Listen for unexpected connection closes
+        db.onclose = () => {
+          console.warn('Database connection closed unexpectedly');
+          this._dbConnection = null;
+          this.clearIdleTimer();
+        };
+
+        resolve(db);
       };
 
       request.onupgradeneeded = (event) => {
@@ -72,6 +117,73 @@ const DBUtils = {
         }
       };
     });
+  },
+
+  /**
+   * Initialize and open the database (backwards compatible alias)
+   * @returns {Promise<IDBDatabase>} Database instance
+   */
+  async openDatabase() {
+    return this.getConnection();
+  },
+
+  /**
+   * Reset the idle timer to keep connection alive
+   */
+  resetIdleTimer() {
+    this.clearIdleTimer();
+
+    // Start keep-alive interval to prevent service worker termination
+    if (!this._keepAliveInterval) {
+      this._keepAliveInterval = setInterval(() => {
+        if (typeof chrome !== 'undefined' && chrome.runtime) {
+          chrome.runtime.getPlatformInfo(() => {
+            // This keeps service worker alive
+          });
+        }
+      }, 25000); // Every 25 seconds
+    }
+
+    // Set timer to close connection after idle period
+    this._idleTimer = setTimeout(() => {
+      this.closeConnection();
+    }, this._idleTimeout);
+  },
+
+  /**
+   * Clear the idle timer
+   */
+  clearIdleTimer() {
+    if (this._idleTimer) {
+      clearTimeout(this._idleTimer);
+      this._idleTimer = null;
+    }
+  },
+
+  /**
+   * Close the database connection
+   */
+  closeConnection() {
+    this.clearIdleTimer();
+
+    // Stop keep-alive
+    if (this._keepAliveInterval) {
+      clearInterval(this._keepAliveInterval);
+      this._keepAliveInterval = null;
+    }
+
+    if (this._dbConnection) {
+      this._isClosing = true;
+      try {
+        this._dbConnection.close();
+        console.log('Database connection closed after idle timeout');
+      } catch (error) {
+        console.warn('Error closing database:', error);
+      } finally {
+        this._dbConnection = null;
+        this._isClosing = false;
+      }
+    }
   },
 
   /**
@@ -136,7 +248,7 @@ const DBUtils = {
   async saveContent(id, data) {
     try {
       const contentId = id || this.generateContentId();
-      const db = await this.openDatabase();
+      const db = await this.getConnection();
 
       // Validate and sanitize links
       const validLinks = (data.links || [])
@@ -174,12 +286,10 @@ const DBUtils = {
         const request = objectStore.put(contentObject);
 
         request.onsuccess = () => {
-          db.close();
           resolve(contentId);
         };
 
         request.onerror = () => {
-          db.close();
           reject(new Error('Failed to save content'));
         };
       });
@@ -196,7 +306,7 @@ const DBUtils = {
    */
   async getContent(id) {
     try {
-      const db = await this.openDatabase();
+      const db = await this.getConnection();
 
       return new Promise((resolve, reject) => {
         const transaction = db.transaction([this.STORE_NAME], 'readonly');
@@ -204,12 +314,10 @@ const DBUtils = {
         const request = objectStore.get(id);
 
         request.onsuccess = () => {
-          db.close();
           resolve(request.result || null);
         };
 
         request.onerror = () => {
-          db.close();
           reject(new Error('Failed to get content'));
         };
       });
@@ -225,7 +333,7 @@ const DBUtils = {
    */
   async getAllContent() {
     try {
-      const db = await this.openDatabase();
+      const db = await this.getConnection();
 
       return new Promise((resolve, reject) => {
         const transaction = db.transaction([this.STORE_NAME], 'readonly');
@@ -234,14 +342,12 @@ const DBUtils = {
         const request = index.getAll('content');
 
         request.onsuccess = () => {
-          db.close();
           const content = request.result || [];
           // Sort by modified date, most recent first
           resolve(content.sort((a, b) => b.modified - a.modified));
         };
 
         request.onerror = () => {
-          db.close();
           reject(new Error('Failed to get all content'));
         };
       });
@@ -258,7 +364,7 @@ const DBUtils = {
    */
   async deleteContent(id) {
     try {
-      const db = await this.openDatabase();
+      const db = await this.getConnection();
 
       return new Promise((resolve, reject) => {
         const transaction = db.transaction([this.STORE_NAME], 'readwrite');
@@ -266,12 +372,10 @@ const DBUtils = {
         const request = objectStore.delete(id);
 
         request.onsuccess = () => {
-          db.close();
           resolve();
         };
 
         request.onerror = () => {
-          db.close();
           reject(new Error('Failed to delete content'));
         };
       });
@@ -401,7 +505,7 @@ const DBUtils = {
    */
   async clearAllContent() {
     try {
-      const db = await this.openDatabase();
+      const db = await this.getConnection();
 
       return new Promise((resolve, reject) => {
         const transaction = db.transaction([this.STORE_NAME], 'readwrite');
@@ -409,12 +513,10 @@ const DBUtils = {
         const request = objectStore.clear();
 
         request.onsuccess = () => {
-          db.close();
           resolve();
         };
 
         request.onerror = () => {
-          db.close();
           reject(new Error('Failed to clear all content'));
         };
       });

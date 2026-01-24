@@ -5,6 +5,7 @@
 
 let popover = null;
 let selectedText = '';
+let prewarmSent = false;
 
 // Listen for text selection
 document.addEventListener('mouseup', handleTextSelection);
@@ -22,7 +23,16 @@ function handleTextSelection(event) {
     // Hide popover if no text is selected
     if (!text) {
       hidePopover();
+      prewarmSent = false;
       return;
+    }
+
+    // Pre-warm database connection when text is selected
+    if (!prewarmSent && text.length > 10) {
+      chrome.runtime.sendMessage({ action: 'prewarmConnection' }).catch(() => {
+        // Ignore errors (service worker might be starting)
+      });
+      prewarmSent = true;
     }
 
     // Store selected text
@@ -76,6 +86,7 @@ function hidePopover() {
   if (popover && popover.parentNode) {
     popover.parentNode.removeChild(popover);
     popover = null;
+    prewarmSent = false;
     document.removeEventListener('click', handleOutsideClick);
   }
 }

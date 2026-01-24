@@ -16,6 +16,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     // Return true to indicate async response
     return true;
   }
+
+  if (request.action === 'prewarmConnection') {
+    // Pre-warm database connection
+    DBUtils.getConnection()
+      .then(() => {
+        console.log('Database connection pre-warmed');
+        sendResponse({ success: true });
+      })
+      .catch(error => {
+        console.warn('Error pre-warming connection:', error);
+        sendResponse({ success: false, error: error.message });
+      });
+
+    // Return true to indicate async response
+    return true;
+  }
 });
 
 /**
@@ -57,13 +73,19 @@ function showSaveNotification() {
   console.log('Content saved successfully!');
 }
 
-// Initialize database on installation
+// Initialize database on installation (pre-warm connection)
 chrome.runtime.onInstalled.addListener(async () => {
   console.log('Extension installed, initializing database...');
   try {
-    await DBUtils.openDatabase();
+    await DBUtils.getConnection();
     console.log('Database initialized successfully');
   } catch (error) {
     console.error('Error initializing database:', error);
   }
+});
+
+// Clean up when service worker is about to terminate
+self.addEventListener('beforeunload', () => {
+  console.log('Service worker terminating, closing database connection');
+  DBUtils.closeConnection();
 });
