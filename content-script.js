@@ -6,6 +6,20 @@
 let popover = null;
 let selectedText = '';
 let prewarmSent = false;
+let extensionContextValid = true;
+
+/**
+ * Check if extension context is still valid
+ */
+function isExtensionContextValid() {
+  try {
+    // Try to access chrome.runtime.id
+    // This will throw if the extension context is invalidated
+    return !!chrome.runtime?.id;
+  } catch (error) {
+    return false;
+  }
+}
 
 // Listen for text selection
 document.addEventListener('mouseup', handleTextSelection);
@@ -29,10 +43,14 @@ function handleTextSelection(event) {
 
     // Pre-warm database connection when text is selected
     if (!prewarmSent && text.length > 10) {
-      chrome.runtime.sendMessage({ action: 'prewarmConnection' }).catch(() => {
-        // Ignore errors (service worker might be starting)
-      });
-      prewarmSent = true;
+      if (isExtensionContextValid()) {
+        chrome.runtime.sendMessage({ action: 'prewarmConnection' }).catch(() => {
+          // Ignore errors (service worker might be starting)
+        });
+        prewarmSent = true;
+      } else {
+        extensionContextValid = false;
+      }
     }
 
     // Store selected text
@@ -120,6 +138,11 @@ async function handleSave(event) {
   saveBtn.disabled = true;
 
   try {
+    // Check if extension context is still valid
+    if (!isExtensionContextValid()) {
+      throw new Error('Extension was reloaded. Please refresh this page.');
+    }
+
     // Send message to background to save content
     const response = await chrome.runtime.sendMessage({
       action: 'saveSelection',
@@ -150,8 +173,13 @@ async function handleSave(event) {
   } catch (error) {
     console.error('Error saving selection:', error);
 
-    // Show error state
-    saveBtn.innerHTML = '<span>Error!</span>';
+    // Show error state with appropriate message
+    const errorMessage = error.message.includes('Extension was reloaded') ||
+                        error.message.includes('Extension context invalidated')
+      ? 'Refresh page'
+      : 'Error!';
+
+    saveBtn.innerHTML = `<span>${errorMessage}</span>`;
     saveBtn.classList.add('error');
 
     setTimeout(() => {
