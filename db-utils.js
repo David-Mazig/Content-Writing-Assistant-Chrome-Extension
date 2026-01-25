@@ -246,6 +246,7 @@ const DBUtils = {
    * @returns {Promise<string>} Content ID
    */
   async saveContent(id, data) {
+    console.log('[DB] saveContent called, media count:', data.media?.length || 0);
     try {
       const contentId = id || this.generateContentId();
       const db = await this.getConnection();
@@ -258,8 +259,15 @@ const DBUtils = {
       // Process media array
       const processedMedia = (data.media || []).map(mediaItem => {
         if (mediaItem.blob && !(mediaItem.blob instanceof Blob)) {
+          console.error('[DB] Invalid media blob provided:', mediaItem);
           throw new Error('Invalid media blob provided');
         }
+        console.log('[DB] Processing media item:', {
+          type: mediaItem.type,
+          mimeType: mediaItem.mimeType,
+          size: mediaItem.blob?.size,
+          name: mediaItem.name
+        });
         return {
           id: mediaItem.id || this.generateMediaId(mediaItem.type || 'media'),
           type: mediaItem.type || 'image',
@@ -269,6 +277,13 @@ const DBUtils = {
           name: mediaItem.name || 'untitled'
         };
       });
+
+      console.log('[DB] Media processed:', processedMedia.map(m => ({
+        id: m.id,
+        type: m.type,
+        size: m.size,
+        name: m.name
+      })));
 
       const contentObject = {
         key: contentId,
@@ -280,16 +295,20 @@ const DBUtils = {
         modified: Date.now()
       };
 
+      console.log('[DB] Starting IndexedDB transaction...');
+
       return new Promise((resolve, reject) => {
         const transaction = db.transaction([this.STORE_NAME], 'readwrite');
         const objectStore = transaction.objectStore(this.STORE_NAME);
         const request = objectStore.put(contentObject);
 
         request.onsuccess = () => {
+          console.log('[DB] Content saved successfully:', contentId);
           resolve(contentId);
         };
 
         request.onerror = () => {
+          console.error('[DB] Failed to save content:', request.error);
           reject(new Error('Failed to save content'));
         };
       });

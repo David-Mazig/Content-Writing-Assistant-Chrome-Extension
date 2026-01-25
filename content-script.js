@@ -5,6 +5,9 @@
 
 let popover = null;
 let selectedText = '';
+let selectedImage = null;
+let hoverTimer = null;
+let hoveredImage = null;
 let prewarmSent = false;
 let extensionContextValid = true;
 
@@ -24,6 +27,10 @@ function isExtensionContextValid() {
 // Listen for text selection
 document.addEventListener('mouseup', handleTextSelection);
 document.addEventListener('touchend', handleTextSelection);
+
+// Listen for image hover
+document.addEventListener('mouseover', handleImageHover);
+document.addEventListener('mouseout', handleImageHoverEnd);
 
 /**
  * Handle text selection event
@@ -59,6 +66,45 @@ function handleTextSelection(event) {
     // Show popover near cursor
     showPopover(event.clientX, event.clientY);
   }, 10);
+}
+
+/**
+ * Handle image hover event
+ */
+function handleImageHover(event) {
+  if (event.target.tagName !== 'IMG') return;
+
+  const img = event.target;
+  const width = img.naturalWidth || img.width;
+  const height = img.naturalHeight || img.height;
+
+  // Filter out tiny images (icons, UI elements, etc.)
+  if (width < 50 || height < 50) return;
+
+  // Don't show if popover already visible
+  if (popover) return;
+
+  hoveredImage = img;
+  if (hoverTimer) clearTimeout(hoverTimer);
+
+  // Wait 1 second before showing popover
+  hoverTimer = setTimeout(() => {
+    const rect = img.getBoundingClientRect();
+    showPopover(rect.right - 10, rect.top + 10);
+    // Set state AFTER showPopover (which calls hidePopover that clears state)
+    selectedImage = img;
+    selectedText = '';
+  }, 1000);
+}
+
+/**
+ * Handle image hover end event
+ */
+function handleImageHoverEnd(event) {
+  if (event.target === hoveredImage) {
+    if (hoverTimer) clearTimeout(hoverTimer);
+    hoveredImage = null;
+  }
 }
 
 /**
@@ -107,6 +153,14 @@ function hidePopover() {
     prewarmSent = false;
     document.removeEventListener('click', handleOutsideClick);
   }
+
+  // Clear image state
+  selectedImage = null;
+  hoveredImage = null;
+  if (hoverTimer) {
+    clearTimeout(hoverTimer);
+    hoverTimer = null;
+  }
 }
 
 /**
@@ -119,12 +173,103 @@ function handleOutsideClick(event) {
 }
 
 /**
+ * Fetch image data as ArrayBuffer for message passing
+ * Uses Canvas API to bypass CORS restrictions for rendered images
+ */
+async function fetchImageData(img) {
+  console.log('[CWA] Starting image fetch for:', img.src);
+  try {
+    // STRATEGY 1: Canvas extraction (works for CORS-protected images)
+    const canvas = document.createElement('canvas');
+    canvas.width = img.naturalWidth || img.width;
+    canvas.height = img.naturalHeight || img.height;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+
+    // Convert canvas to blob
+    const blob = await new Promise((resolve, reject) => {
+      canvas.toBlob(
+        (blob) => {
+          if (blob) resolve(blob);
+          else reject(new Error('Failed to convert canvas to blob'));
+        },
+        'image/png',  // Always use PNG for reliability
+        0.95  // Quality
+      );
+    });
+
+    console.log('[CWA] Canvas extraction successful, blob size:', blob.size, 'bytes');
+
+    // Determine file name from URL or use default
+    const urlPath = new URL(img.src).pathname;
+    const name = urlPath.split('/').pop() || 'image.png';
+
+    const arrayBuffer = await blob.arrayBuffer();
+
+    // Convert ArrayBuffer to Base64 string for message passing
+    const bytes = new Uint8Array(arrayBuffer);
+    let binary = '';
+    for (let i = 0; i < bytes.length; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    const base64String = btoa(binary);
+
+    console.log('[CWA] Base64 encoding complete, length:', base64String.length, 'chars');
+
+    return {
+      arrayBuffer: base64String,  // Now it's a Base64 string, not an ArrayBuffer
+      mimeType: blob.type,
+      name: name.endsWith('.png') ? name : name + '.png'
+    };
+
+  } catch (error) {
+    console.warn('[CWA] Canvas extraction failed, trying fetch fallback:', error);
+
+    // STRATEGY 2: Fetch fallback (for data URLs or when canvas fails)
+    try {
+      const response = await fetch(img.src);
+      const blob = await response.blob();
+      const arrayBuffer = await blob.arrayBuffer();
+
+      // Convert ArrayBuffer to Base64 string for message passing
+      const bytes = new Uint8Array(arrayBuffer);
+      let binary = '';
+      for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      const base64String = btoa(binary);
+
+      console.log('[CWA] Fetch fallback successful, Base64 length:', base64String.length, 'chars');
+
+      const urlPath = new URL(img.src).pathname;
+      const extension = urlPath.split('.').pop().toLowerCase();
+      const name = urlPath.split('/').pop() || `image.${extension || 'png'}`;
+
+      return {
+        arrayBuffer: base64String,  // Now it's a Base64 string, not an ArrayBuffer
+        mimeType: blob.type || 'image/png',
+        name: name
+      };
+    } catch (fetchError) {
+      console.error('[CWA] Both canvas and fetch failed:', fetchError);
+      throw new Error('Unable to save image. It may be protected by CORS restrictions.');
+    }
+  }
+}
+
+/**
  * Handle save button click
  */
 async function handleSave(event) {
+  console.log('[CWA] ========== SAVE BUTTON CLICKED ==========');
   event.stopPropagation();
 
-  if (!selectedText) {
+  console.log('[CWA] selectedText:', selectedText);
+  console.log('[CWA] selectedImage:', selectedImage);
+
+  if (!selectedText && !selectedImage) {
+    console.log('[CWA] ERROR: Both selectedText and selectedImage are empty! Returning early.');
     return;
   }
 
@@ -143,15 +288,42 @@ async function handleSave(event) {
       throw new Error('Extension was reloaded. Please refresh this page.');
     }
 
-    // Send message to background to save content
-    const response = await chrome.runtime.sendMessage({
-      action: 'saveSelection',
-      data: {
-        text: selectedText,
-        url: window.location.href,
-        title: document.title
-      }
-    });
+    let response;
+
+    // Handle image saving
+    if (selectedImage) {
+      console.log('[CWA] Fetching image data...');
+      const imageData = await fetchImageData(selectedImage);
+      console.log('[CWA] Image data ready, mimeType:', imageData.mimeType, 'name:', imageData.name);
+
+      console.log('[CWA] Sending message to background worker...');
+      response = await chrome.runtime.sendMessage({
+        action: 'saveSelection',
+        data: {
+          type: 'image',
+          imageData: {
+            arrayBuffer: imageData.arrayBuffer,
+            mimeType: imageData.mimeType,
+            name: imageData.name
+          },
+          url: window.location.href,
+          title: document.title
+        }
+      });
+    } else {
+      // Handle text saving
+      response = await chrome.runtime.sendMessage({
+        action: 'saveSelection',
+        data: {
+          type: 'text',
+          text: selectedText,
+          url: window.location.href,
+          title: document.title
+        }
+      });
+    }
+
+    console.log('[CWA] Response received:', response);
 
     if (response.success) {
       // Show success state
@@ -174,10 +346,16 @@ async function handleSave(event) {
     console.error('Error saving selection:', error);
 
     // Show error state with appropriate message
-    const errorMessage = error.message.includes('Extension was reloaded') ||
-                        error.message.includes('Extension context invalidated')
-      ? 'Refresh page'
-      : 'Error!';
+    let errorMessage = 'Error!';
+
+    if (error.message.includes('Extension was reloaded') ||
+        error.message.includes('Extension context invalidated')) {
+      errorMessage = 'Refresh page';
+    } else if (error.message.includes('CORS')) {
+      errorMessage = 'Image protected';
+    } else if (error.message.includes('Unable to save image')) {
+      errorMessage = 'Cannot save';
+    }
 
     saveBtn.innerHTML = `<span>${errorMessage}</span>`;
     saveBtn.classList.add('error');
@@ -193,4 +371,7 @@ async function handleSave(event) {
 // Clean up on page unload
 window.addEventListener('beforeunload', () => {
   hidePopover();
+  if (hoverTimer) {
+    clearTimeout(hoverTimer);
+  }
 });

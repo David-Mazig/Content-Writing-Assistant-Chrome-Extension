@@ -9,9 +9,16 @@ importScripts('db-utils.js');
 // Listen for messages from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'saveSelection') {
+    console.log('[BG] Received saveSelection message, type:', request.data?.type);
     handleSaveSelection(request.data, sender)
-      .then(result => sendResponse({ success: true, contentId: result }))
-      .catch(error => sendResponse({ success: false, error: error.message }));
+      .then(result => {
+        console.log('[BG] Save successful, contentId:', result);
+        sendResponse({ success: true, contentId: result });
+      })
+      .catch(error => {
+        console.error('[BG] Save failed:', error);
+        sendResponse({ success: false, error: error.message });
+      });
 
     // Return true to indicate async response
     return true;
@@ -35,25 +42,68 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 /**
- * Save selected text and metadata to IndexedDB
+ * Save selected text or image and metadata to IndexedDB
  */
 async function handleSaveSelection(data, sender) {
   try {
-    const { text, url, title } = data;
+    const { type, url, title } = data;
 
-    // Format the text to include source information
-    const formattedText = title
-      ? `${text}\n\n---\nSource: ${title}`
-      : text;
+    let contentId;
 
-    // Create content entry with the selected text
-    const contentId = await DBUtils.saveContent(null, {
-      text: formattedText,
-      links: url ? [url] : [],
-      media: []
-    });
+    if (type === 'image') {
+      // Handle image saving
+      console.log('[BG] Handling image save...');
+      const { imageData } = data;
 
-    console.log('Content saved from selection:', contentId);
+      // Decode base64 string back to ArrayBuffer
+      console.log('[BG] Decoding Base64 string, length:', imageData.arrayBuffer?.length);
+      const binaryString = atob(imageData.arrayBuffer);
+      console.log('[BG] Base64 decoded, binary length:', binaryString.length);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      console.log('[BG] Uint8Array created, length:', bytes.length);
+      const arrayBuffer = bytes.buffer;
+
+      // Convert ArrayBuffer back to Blob
+      const blob = new Blob([bytes], { type: imageData.mimeType });
+      console.log('[BG] Blob created, size:', blob.size, 'type:', blob.type);
+
+      // Create content entry with the image
+      console.log('[BG] Calling DBUtils.saveContent...');
+      contentId = await DBUtils.saveContent(null, {
+        text: title ? `Image from: ${title}` : 'Saved image',
+        links: url ? [url] : [],
+        media: [
+          {
+            type: imageData.mimeType.startsWith('image/') ? 'image' : 'media',
+            mimeType: imageData.mimeType,
+            blob: blob,
+            name: imageData.name
+          }
+        ]
+      });
+
+      console.log('Image saved from selection:', contentId);
+    } else {
+      // Handle text saving
+      const { text } = data;
+
+      // Format the text to include source information
+      const formattedText = title
+        ? `${text}\n\n---\nSource: ${title}`
+        : text;
+
+      // Create content entry with the selected text
+      contentId = await DBUtils.saveContent(null, {
+        text: formattedText,
+        links: url ? [url] : [],
+        media: []
+      });
+
+      console.log('Content saved from selection:', contentId);
+    }
 
     // Show notification
     showSaveNotification();
