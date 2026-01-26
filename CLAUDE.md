@@ -4,7 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Chrome extension (Manifest V3) for content writing assistance. The extension allows users to create, store, and manage content items with embedded media (images, audio, video) and links. All data is stored locally in IndexedDB with no external dependencies or cloud services.
+This is a Chrome extension (Manifest V3) for content writing             
+assistance. The extension allows users to collect, create, store, and manage content (text, tables, links) items and embedded media (images, audio, video). All data is stored locally in IndexedDB with no external dependencies or cloud services.The extension makes it easier for writer to collect their ideas and think how to arrange the plot/nerrative/outline of the content that they are about to write.
 
 ## Extension Development Workflow
 

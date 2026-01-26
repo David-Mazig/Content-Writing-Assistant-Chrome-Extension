@@ -42,6 +42,11 @@ document.addEventListener('mouseout', handleTableHoverEnd);
  * Handle text selection event
  */
 function handleTextSelection(event) {
+  // Don't process if interacting with the popover
+  if (popover && popover.contains(event.target)) {
+    return;
+  }
+
   // Small delay to ensure selection is complete
   setTimeout(() => {
     const selection = window.getSelection();
@@ -154,7 +159,7 @@ function handleTableHoverEnd(event) {
 }
 
 /**
- * Create and show the popover
+ * Create and show the popover with preview
  */
 function showPopover(x, y) {
   // Remove existing popover if present
@@ -163,30 +168,127 @@ function showPopover(x, y) {
   // Create popover element
   popover = document.createElement('div');
   popover.className = 'cwa-save-popover';
+
+  // Determine what we're saving
+  let previewContent = '';
+  let charCount = 0;
+  let contentType = '';
+
+  if (selectedText) {
+    charCount = selectedText.length;
+    previewContent = selectedText.substring(0, 80) + (selectedText.length > 80 ? '...' : '');
+    contentType = 'text';
+  } else if (selectedImage) {
+    previewContent = 'Image';
+    contentType = 'image';
+  } else if (selectedTable) {
+    const data = extractTableData(selectedTable);
+    previewContent = `Table: ${data.rows.length} rows`;
+    contentType = 'table';
+  }
+
   popover.innerHTML = `
-    <button class="cwa-save-btn" title="Save to Content Assistant">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2H4C3.46957 2 2.96086 2.21071 2.58579 2.58579C2.21071 2.96086 2 3.46957 2 4V14L5 12L8 14L11 12L14 14V4C14 3.46957 13.7893 2.96086 13.4142 2.58579C13.0391 2.21071 12.5304 2 12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span>Save</span>
-    </button>
+    <div class="cwa-popover-preview">
+      ${contentType === 'text' ? `
+        <div class="cwa-preview-text">"${previewContent}"</div>
+        <div class="cwa-preview-meta">${charCount} chars from ${document.title.substring(0, 30)}${document.title.length > 30 ? '...' : ''}</div>
+      ` : `
+        <div class="cwa-preview-label">${previewContent}</div>
+        <div class="cwa-preview-meta">from ${document.title.substring(0, 30)}${document.title.length > 30 ? '...' : ''}</div>
+      `}
+    </div>
+    <div class="cwa-popover-actions">
+      <button class="cwa-save-btn" title="Save to Content Assistant">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <path d="M12 2H4C3.46957 2 2.96086 2.21071 2.58579 2.58579C2.21071 2.96086 2 3.46957 2 4V14L5 12L8 14L11 12L14 14V4C14 3.46957 13.7893 2.96086 13.4142 2.58579C13.0391 2.21071 12.5304 2 12 2Z" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>Save</span>
+      </button>
+      ${contentType === 'text' ? `
+        <button class="cwa-note-btn" title="Add note">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>Note</span>
+        </button>
+      ` : ''}
+    </div>
   `;
 
-  // Position popover
-  popover.style.left = `${x}px`;
-  popover.style.top = `${y + 10}px`;
-
-  // Add to page
+  // Add to page temporarily to measure size
   document.body.appendChild(popover);
+  const rect = popover.getBoundingClientRect();
 
-  // Add click handler
-  const saveBtn = popover.querySelector('.cwa-save-btn');
-  saveBtn.addEventListener('click', handleSave);
+  // Viewport-aware positioning
+  let left = x;
+  let top = y + 10;
+
+  // Prevent right overflow
+  if (left + rect.width > window.innerWidth - 10) {
+    left = window.innerWidth - rect.width - 10;
+  }
+
+  // Prevent left overflow
+  if (left < 10) {
+    left = 10;
+  }
+
+  // Prevent bottom overflow
+  if (top + rect.height > window.innerHeight - 10) {
+    top = y - rect.height - 10; // Position above cursor
+  }
+
+  // Prevent top overflow
+  if (top < 10) {
+    top = 10;
+  }
+
+  popover.style.left = `${left}px`;
+  popover.style.top = `${top}px`;
+
+  // Add event listeners
+  popover.querySelector('.cwa-save-btn').addEventListener('click', handleSave);
+
+  const noteBtn = popover.querySelector('.cwa-note-btn');
+  if (noteBtn) {
+    noteBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      showNoteInput();
+    });
+  }
 
   // Hide popover when clicking outside
   setTimeout(() => {
     document.addEventListener('click', handleOutsideClick);
   }, 100);
+}
+
+/**
+ * Show note input in popover
+ */
+function showNoteInput() {
+  const actionsDiv = popover.querySelector('.cwa-popover-actions');
+  const noteInput = document.createElement('input');
+  noteInput.type = 'text';
+  noteInput.className = 'cwa-note-input';
+  noteInput.placeholder = 'Add a note...';
+
+  actionsDiv.innerHTML = '';
+  actionsDiv.appendChild(noteInput);
+
+  const saveBtn = document.createElement('button');
+  saveBtn.className = 'cwa-save-btn';
+  saveBtn.innerHTML = '<span>Save</span>';
+  saveBtn.addEventListener('click', () => {
+    // Append note to selected text
+    if (selectedText && noteInput.value.trim()) {
+      selectedText = selectedText + '\n\nNote: ' + noteInput.value.trim();
+    }
+    handleSave({ stopPropagation: () => {} });
+  });
+  actionsDiv.appendChild(saveBtn);
+
+  noteInput.focus();
 }
 
 /**

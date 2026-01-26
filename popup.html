@@ -10,7 +10,15 @@
   <div class="container">
     <div class="header">
       <h1>Content Assistant</h1>
-      <button id="btn-new-content" class="btn-primary">+ New</button>
+      <button id="btn-new-content" class="btn-primary" aria-label="Create new content">+ New</button>
+    </div>
+
+    <!-- Search -->
+    <div class="search-container">
+      <input type="search" id="search-input" placeholder="Search content..." aria-label="Search content items" />
+      <svg class="search-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.333 12.667A5.333 5.333 0 1 0 7.333 2a5.333 5.333 0 0 0 0 10.667zM14 14l-2.9-2.9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </div>
 
     <!-- Content List -->
@@ -19,21 +27,33 @@
     </div>
 
     <!-- New Content Form (hidden by default) -->
-    <div id="new-content-form" class="modal hidden">
+    <div id="new-content-form" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div class="modal-content">
         <div class="modal-header">
-          <h2>New Content</h2>
-          <button id="btn-close-modal" class="btn-close">&times;</button>
+          <h2 id="modal-title">New Content</h2>
+          <button id="btn-close-modal" class="btn-close" aria-label="Close modal">&times;</button>
         </div>
         <div class="modal-body">
-          <textarea id="input-text" placeholder="Enter your content text..." rows="4"></textarea>
+          <textarea id="input-text" placeholder="Enter your content text..." rows="8" aria-label="Content text"></textarea>
 
-          <input type="text" id="input-link" placeholder="Add link (optional)" />
+          <!-- Links Container -->
+          <div id="links-container" class="links-container">
+            <div class="link-row">
+              <input type="url" class="link-input" placeholder="https://..." aria-label="Link URL" />
+              <button class="btn-remove-link" aria-label="Remove link">&times;</button>
+            </div>
+          </div>
+          <button id="btn-add-link" class="btn-add-link">+ Add another link</button>
 
           <div class="file-input-wrapper">
-            <label for="input-media" class="btn-secondary">📎 Add Media</label>
-            <input type="file" id="input-media" accept="image/*,audio/*,video/*" multiple />
-            <div id="media-preview" class="media-preview"></div>
+            <label for="input-media" class="btn-secondary" aria-label="Add media files">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Add Media
+            </label>
+            <input type="file" id="input-media" accept="image/*,audio/*,video/*" multiple aria-label="Media files" />
+            <div id="media-preview" class="media-preview-grid"></div>
           </div>
 
           <div class="modal-actions">

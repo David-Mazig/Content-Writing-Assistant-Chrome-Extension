@@ -25,12 +25,13 @@
   }
 }
 
-.cwa-save-btn {
+.cwa-save-btn,
+.cwa-note-btn {
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 8px 12px;
-  background: #4CAF50;
+  background: #D97706;
   color: white;
   border: none;
   border-radius: 6px;
@@ -43,14 +44,14 @@
 }
 
 .cwa-save-btn:hover {
-  background: #45a049;
+  background: #B45309;
   transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
+  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
 }
 
 .cwa-save-btn:active {
   transform: translateY(0);
-  box-shadow: 0 1px 3px rgba(76, 175, 80, 0.3);
+  box-shadow: 0 1px 3px rgba(217, 119, 6, 0.3);
 }
 
 .cwa-save-btn:disabled {
@@ -69,7 +70,18 @@
 }
 
 .cwa-save-btn.error {
-  background: #f44336;
+  background: #DC2626;
+}
+
+.cwa-note-btn {
+  background: #f0f0f0;
+  color: #666;
+  border: 1px solid #ddd;
+}
+
+.cwa-note-btn:hover {
+  background: #e0e0e0;
+  color: #333;
 }
 
 .cwa-save-btn svg {
@@ -80,9 +92,56 @@
   line-height: 1;
 }
 
+/* Popover Preview */
+.cwa-popover-preview {
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #fafafa;
+}
+
+.cwa-preview-text {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #333;
+  font-style: italic;
+  margin-bottom: 6px;
+}
+
+.cwa-preview-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+}
+
+.cwa-preview-meta {
+  font-size: 11px;
+  color: #999;
+}
+
+.cwa-popover-actions {
+  padding: 8px;
+  display: flex;
+  gap: 6px;
+}
+
+.cwa-note-input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.cwa-note-input:focus {
+  outline: none;
+  border-color: #D97706;
+}
+
 /* Prevent text selection on the popover itself */
 .cwa-save-popover,
-.cwa-save-btn {
+.cwa-save-btn,
+.cwa-note-btn {
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
