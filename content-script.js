@@ -272,13 +272,85 @@ function extractTableData(table) {
 }
 
 /**
+ * Check if canvas extraction will work for this image
+ * Returns true for same-origin, data URLs, blob URLs, or CORS-enabled images
+ */
+function canUseCanvasExtraction(img) {
+  const src = img.src;
+
+  // Data URLs always work
+  if (src.startsWith('data:')) return true;
+
+  // Blob URLs always work
+  if (src.startsWith('blob:')) return true;
+
+  // Same-origin images always work
+  try {
+    const imgUrl = new URL(src);
+    if (imgUrl.origin === window.location.origin) return true;
+  } catch {
+    // Invalid URL, try canvas anyway
+    return true;
+  }
+
+  // Cross-origin with crossOrigin attribute set MIGHT work (if server sends CORS headers)
+  if (img.crossOrigin) return true;
+
+  // Cross-origin without crossOrigin attribute will DEFINITELY fail
+  return false;
+}
+
+/**
+ * Fetch image via background worker (bypasses CORS restrictions)
+ */
+async function fetchViaBackgroundWorker(img) {
+  // Determine file name from URL
+  const urlPath = new URL(img.src).pathname;
+  const extension = urlPath.split('.').pop().toLowerCase();
+  const name = urlPath.split('/').pop() || `image.${extension || 'png'}`;
+
+  // Get the expected MIME type from image or extension
+  const mimeType = img.src.startsWith('data:')
+    ? img.src.split(';')[0].split(':')[1]
+    : `image/${extension || 'png'}`;
+
+  console.log('[CWA] Requesting background worker to fetch:', img.src);
+
+  // Request background worker to fetch the image (has broader permissions)
+  const response = await chrome.runtime.sendMessage({
+    action: 'fetchImageFromUrl',
+    data: {
+      url: img.src,
+      mimeType: mimeType,
+      name: name
+    }
+  });
+
+  if (!response.success) {
+    throw new Error(response.error || 'Background fetch failed');
+  }
+
+  console.log('[CWA] Background worker fetch successful');
+
+  return response.imageData;
+}
+
+/**
  * Fetch image data as ArrayBuffer for message passing
- * Uses Canvas API to bypass CORS restrictions for rendered images
+ * Uses Canvas API for same-origin images, background worker for cross-origin
  */
 async function fetchImageData(img) {
   console.log('[CWA] Starting image fetch for:', img.src);
+
+  // Quick check: if definitely cross-origin, skip canvas and use background fetch directly
+  if (!canUseCanvasExtraction(img)) {
+    console.log('[CWA] Cross-origin image detected, using background fetch directly');
+    return await fetchViaBackgroundWorker(img);
+  }
+
+  // Try canvas for same-origin/data-url/blob-url/CORS images
   try {
-    // STRATEGY 1: Canvas extraction (works for CORS-protected images)
+    // STRATEGY 1: Canvas extraction (works for same-origin or CORS-enabled images)
     const canvas = document.createElement('canvas');
     canvas.width = img.naturalWidth || img.width;
     canvas.height = img.naturalHeight || img.height;
@@ -323,35 +395,13 @@ async function fetchImageData(img) {
     };
 
   } catch (error) {
-    console.warn('[CWA] Canvas extraction failed, trying fetch fallback:', error);
+    console.log('[CWA] Canvas extraction failed, trying background worker fetch:', error);
 
-    // STRATEGY 2: Fetch fallback (for data URLs or when canvas fails)
+    // STRATEGY 2: Background worker fetch (bypasses CORS restrictions)
     try {
-      const response = await fetch(img.src);
-      const blob = await response.blob();
-      const arrayBuffer = await blob.arrayBuffer();
-
-      // Convert ArrayBuffer to Base64 string for message passing
-      const bytes = new Uint8Array(arrayBuffer);
-      let binary = '';
-      for (let i = 0; i < bytes.length; i++) {
-        binary += String.fromCharCode(bytes[i]);
-      }
-      const base64String = btoa(binary);
-
-      console.log('[CWA] Fetch fallback successful, Base64 length:', base64String.length, 'chars');
-
-      const urlPath = new URL(img.src).pathname;
-      const extension = urlPath.split('.').pop().toLowerCase();
-      const name = urlPath.split('/').pop() || `image.${extension || 'png'}`;
-
-      return {
-        arrayBuffer: base64String,  // Now it's a Base64 string, not an ArrayBuffer
-        mimeType: blob.type || 'image/png',
-        name: name
-      };
+      return await fetchViaBackgroundWorker(img);
     } catch (fetchError) {
-      console.error('[CWA] Both canvas and fetch failed:', fetchError);
+      console.error('[CWA] Both canvas and background fetch failed:', fetchError);
       throw new Error('Unable to save image. It may be protected by CORS restrictions.');
     }
   }
@@ -467,9 +517,13 @@ async function handleSave(event) {
     if (error.message.includes('Extension was reloaded') ||
         error.message.includes('Extension context invalidated')) {
       errorMessage = 'Refresh page';
-    } else if (error.message.includes('CORS')) {
+    } else if (error.message.includes('CORS') ||
+               error.message.includes('tainted') ||
+               error.message.includes('insecure') ||
+               error.name === 'SecurityError') {
       errorMessage = 'Image protected';
-    } else if (error.message.includes('Unable to save image')) {
+    } else if (error.message.includes('Unable to save image') ||
+               error.message.includes('Unable to fetch image')) {
       errorMessage = 'Cannot save';
     }
 

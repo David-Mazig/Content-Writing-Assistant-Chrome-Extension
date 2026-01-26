@@ -36,6 +36,21 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     // Return true to indicate async response
     return true;
   }
+
+  if (request.action === 'fetchImageFromUrl') {
+    // Fetch image using background worker (bypasses CORS for content scripts)
+    handleFetchImageFromUrl(request.data)
+      .then(result => {
+        sendResponse({ success: true, imageData: result });
+      })
+      .catch(error => {
+        console.error('Image fetch failed:', error);
+        sendResponse({ success: false, error: error.message });
+      });
+
+    // Return true to indicate async response
+    return true;
+  }
 });
 
 /**
@@ -134,6 +149,68 @@ async function handleSaveSelection(data, sender) {
   } catch (error) {
     console.error('Error saving selection:', error);
     throw error;
+  }
+}
+
+/**
+ * Fetch image from URL using background worker context
+ * This bypasses CORS restrictions that content scripts face
+ */
+async function handleFetchImageFromUrl(data) {
+  try {
+    const { url, mimeType, name } = data;
+
+    console.log('[BG] Fetching image from URL:', url);
+
+    // Fetch the image using background worker (has broader permissions)
+    // Add timeout to prevent indefinite hanging
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+    let response;
+    try {
+      response = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+    } catch (fetchError) {
+      clearTimeout(timeoutId);
+      if (fetchError.name === 'AbortError') {
+        throw new Error('Image fetch timeout (30 seconds) - server not responding');
+      }
+      throw fetchError;
+    }
+
+    // Get the blob
+    const blob = await response.blob();
+    console.log('[BG] Image fetched, size:', blob.size, 'type:', blob.type);
+
+    // Use provided mimeType or fall back to response type
+    const finalMimeType = mimeType || blob.type;
+
+    // Convert blob to ArrayBuffer
+    const arrayBuffer = await blob.arrayBuffer();
+
+    // Convert ArrayBuffer to Base64 string for message passing
+    const bytes = new Uint8Array(arrayBuffer);
+    let binary = '';
+    for (let i = 0; i < bytes.length; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    const base64String = btoa(binary);
+
+    console.log('[BG] Image converted to Base64, length:', base64String.length);
+
+    return {
+      arrayBuffer: base64String,
+      mimeType: finalMimeType,
+      name: name || 'image'
+    };
+  } catch (error) {
+    console.error('[BG] Error fetching image:', error);
+    throw new Error(`Unable to fetch image: ${error.message}`);
   }
 }
 
