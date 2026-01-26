@@ -462,25 +462,85 @@ h2 {
 
 .content-body {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-3);
   width: 100%;
   overflow: hidden;
 }
 
+.content-item.expanded .content-body {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-2);
+}
+
+/* Type icon - visible in collapsed state */
+.content-type-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.content-type-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Icon colors matching badge colors */
+.content-type-icon.badge-text {
+  background: #F3F4F6;
+  color: #6B7280;
+}
+
+.content-type-icon.badge-image {
+  background: #D1FAE5;
+  color: #059669;
+}
+
+.content-type-icon.badge-video {
+  background: #EDE9FE;
+  color: #7C3AED;
+}
+
+.content-type-icon.badge-audio {
+  background: #DBEAFE;
+  color: #2563EB;
+}
+
+.content-type-icon.badge-table {
+  background: #FEF3C7;
+  color: #D97706;
+}
+
+.content-type-icon.badge-link {
+  background: #FCE7F3;
+  color: #DB2777;
+}
+
+/* Hide icon when expanded (badge in header shows type) */
+.content-item.expanded .content-type-icon {
+  display: none;
+}
+
 /* Text: single line truncated by default */
 .content-text {
+  flex: 1;
+  min-width: 0;
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-normal);
   color: var(--color-text-primary);
-  line-height: 48px;
-  height: 48px;
+  line-height: 1.4;
   word-wrap: break-word;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   padding-right: 80px;
-  margin: calc(-1 * var(--space-3)) 0;
 }
 
 .content-item.expanded .content-text {

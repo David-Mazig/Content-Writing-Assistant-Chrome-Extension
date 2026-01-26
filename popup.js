@@ -641,21 +641,47 @@ function createContentItemElement(content) {
 
   let contentTypeBadge = 'TEXT';
   let badgeClass = 'badge-text';
+  let typeIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+    <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+  </svg>`;
+
   if (hasTable) {
     contentTypeBadge = 'TABLE';
     badgeClass = 'badge-table';
+    typeIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="3" width="18" height="18" rx="2"/>
+      <path d="M3 9h18M3 15h18M9 3v18M15 3v18"/>
+    </svg>`;
   } else if (hasImage) {
     contentTypeBadge = 'IMAGE';
     badgeClass = 'badge-image';
+    typeIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+      <circle cx="12" cy="13" r="4"/>
+    </svg>`;
   } else if (hasVideo) {
     contentTypeBadge = 'VIDEO';
     badgeClass = 'badge-video';
+    typeIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="2" y="4" width="16" height="16" rx="2"/>
+      <path d="M22 7l-4 3.5L22 14V7z"/>
+    </svg>`;
   } else if (hasAudio) {
     contentTypeBadge = 'AUDIO';
     badgeClass = 'badge-audio';
+    typeIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M9 18V5l12-2v13"/>
+      <circle cx="6" cy="18" r="3"/>
+      <circle cx="18" cy="16" r="3"/>
+    </svg>`;
   } else if (isLinkType) {
     contentTypeBadge = 'LINK';
     badgeClass = 'badge-link';
+    typeIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+    </svg>`;
   }
 
   // Extract source domain
@@ -711,6 +737,7 @@ function createContentItemElement(content) {
     </div>
 
     <div class="content-body">
+      <span class="content-type-icon ${badgeClass}">${typeIcon}</span>
       <div class="content-text">${textPreview || '<em>No text</em>'}</div>
 
       ${sourceDomain ? `<div class="content-source">Source: ${sourceDomain}</div>` : ''}
@@ -788,7 +815,7 @@ function showDeleteConfirmation(button, contentId) {
 
   // Cancel handler
   const cancelHandler = (e) => {
-    e.stopPropagation();
+    if (e) e.stopPropagation();
     button.innerHTML = originalHTML;
     button.classList.remove('confirm-state');
     cancelBtn.remove();
