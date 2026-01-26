@@ -192,3 +192,59 @@
 .cwa-save-both:hover {
   background: #1D4ED8 !important;
 }
+
+/* Multi-element save UI (when image is inside link, etc.) */
+.cwa-multi-save-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.cwa-multi-save-buttons .cwa-save-btn {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 10px;
+  font-size: 12px;
+  justify-content: center;
+}
+
+.cwa-multi-save-buttons .cwa-save-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.cwa-multi-save-buttons .cwa-save-btn span {
+  font-size: 12px;
+}
+
+/* Image button - green */
+.cwa-save-image-btn {
+  background: #059669 !important;
+}
+
+.cwa-save-image-btn:hover {
+  background: #047857 !important;
+}
+
+/* Link button - pink */
+.cwa-save-link-btn {
+  background: #DB2777 !important;
+}
+
+.cwa-save-link-btn:hover {
+  background: #BE185D !important;
+}
+
+/* Both button - blue */
+.cwa-save-both-btn {
+  background: #2563EB !important;
+}
+
+.cwa-save-both-btn:hover {
+  background: #1D4ED8 !important;
+}
+
+/* Popover actions layout for multi-element */
+.cwa-popover-actions:has(.cwa-multi-save-buttons) {
+  flex-direction: column;
+}
