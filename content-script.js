@@ -6,8 +6,10 @@
 let popover = null;
 let selectedText = '';
 let selectedImage = null;
+let selectedTable = null;
 let hoverTimer = null;
 let hoveredImage = null;
+let hoveredTable = null;
 let prewarmSent = false;
 let extensionContextValid = true;
 
@@ -31,6 +33,10 @@ document.addEventListener('touchend', handleTextSelection);
 // Listen for image hover
 document.addEventListener('mouseover', handleImageHover);
 document.addEventListener('mouseout', handleImageHoverEnd);
+
+// Listen for table hover
+document.addEventListener('mouseover', handleTableHover);
+document.addEventListener('mouseout', handleTableHoverEnd);
 
 /**
  * Handle text selection event
@@ -108,6 +114,46 @@ function handleImageHoverEnd(event) {
 }
 
 /**
+ * Handle table hover event
+ */
+function handleTableHover(event) {
+  // Check if element is a table or inside a table
+  const table = event.target.tagName === 'TABLE' ? event.target : event.target.closest('table');
+  if (!table) return;
+
+  // Don't show if popover already visible
+  if (popover) return;
+
+  // Filter out very small tables (likely UI elements)
+  const rowCount = table.querySelectorAll('tr').length;
+  if (rowCount < 2) return;
+
+  hoveredTable = table;
+  if (hoverTimer) clearTimeout(hoverTimer);
+
+  // Wait 1 second before showing popover
+  hoverTimer = setTimeout(() => {
+    const rect = table.getBoundingClientRect();
+    showPopover(rect.right - 10, rect.top + 10);
+    // Set state AFTER showPopover (which calls hidePopover that clears state)
+    selectedTable = table;
+    selectedText = '';
+    selectedImage = null;
+  }, 1000);
+}
+
+/**
+ * Handle table hover end event
+ */
+function handleTableHoverEnd(event) {
+  const table = event.target.tagName === 'TABLE' ? event.target : event.target.closest('table');
+  if (table === hoveredTable) {
+    if (hoverTimer) clearTimeout(hoverTimer);
+    hoveredTable = null;
+  }
+}
+
+/**
  * Create and show the popover
  */
 function showPopover(x, y) {
@@ -154,9 +200,11 @@ function hidePopover() {
     document.removeEventListener('click', handleOutsideClick);
   }
 
-  // Clear image state
+  // Clear state
   selectedImage = null;
   hoveredImage = null;
+  selectedTable = null;
+  hoveredTable = null;
   if (hoverTimer) {
     clearTimeout(hoverTimer);
     hoverTimer = null;
@@ -170,6 +218,57 @@ function handleOutsideClick(event) {
   if (popover && !popover.contains(event.target)) {
     hidePopover();
   }
+}
+
+/**
+ * Extract table data into JSON structure
+ */
+function extractTableData(table) {
+  const headers = [];
+  const rows = [];
+
+  // Extract headers from thead or first row
+  const headerCells = table.querySelectorAll('thead th');
+  if (headerCells.length > 0) {
+    headerCells.forEach(th => headers.push(th.textContent.trim()));
+  } else {
+    // If no thead, use first row as headers
+    const firstRow = table.querySelector('tr');
+    if (firstRow) {
+      const cells = firstRow.querySelectorAll('th, td');
+      cells.forEach(cell => headers.push(cell.textContent.trim()));
+    }
+  }
+
+  // Extract data rows from tbody or all rows (skip header row if we used it)
+  const bodyRows = table.querySelectorAll('tbody tr');
+  const rowsToExtract = bodyRows.length > 0 ? bodyRows : table.querySelectorAll('tr');
+
+  let startIndex = 0;
+  // If we used first row as headers and tbody doesn't exist, skip first row
+  if (bodyRows.length === 0 && headerCells.length === 0 && table.querySelector('tr')) {
+    startIndex = 1;
+  }
+
+  Array.from(rowsToExtract).slice(startIndex).forEach(tr => {
+    const rowData = [];
+    tr.querySelectorAll('td, th').forEach(cell => {
+      rowData.push(cell.textContent.trim());
+    });
+    if (rowData.length > 0) {
+      rows.push(rowData);
+    }
+  });
+
+  console.log('[CWA] Table extracted:', {
+    headerCount: headers.length,
+    rowCount: rows.length
+  });
+
+  return {
+    headers,
+    rows
+  };
 }
 
 /**
@@ -267,9 +366,10 @@ async function handleSave(event) {
 
   console.log('[CWA] selectedText:', selectedText);
   console.log('[CWA] selectedImage:', selectedImage);
+  console.log('[CWA] selectedTable:', selectedTable);
 
-  if (!selectedText && !selectedImage) {
-    console.log('[CWA] ERROR: Both selectedText and selectedImage are empty! Returning early.');
+  if (!selectedText && !selectedImage && !selectedTable) {
+    console.log('[CWA] ERROR: Nothing selected to save! Returning early.');
     return;
   }
 
@@ -290,8 +390,24 @@ async function handleSave(event) {
 
     let response;
 
-    // Handle image saving
-    if (selectedImage) {
+    // Handle table saving
+    if (selectedTable) {
+      console.log('[CWA] Extracting table data...');
+      const tableData = extractTableData(selectedTable);
+      console.log('[CWA] Table data ready, rows:', tableData.rows.length);
+
+      console.log('[CWA] Sending message to background worker...');
+      response = await chrome.runtime.sendMessage({
+        action: 'saveSelection',
+        data: {
+          type: 'table',
+          tableData: tableData,
+          url: window.location.href,
+          title: document.title
+        }
+      });
+    } else if (selectedImage) {
+      // Handle image saving
       console.log('[CWA] Fetching image data...');
       const imageData = await fetchImageData(selectedImage);
       console.log('[CWA] Image data ready, mimeType:', imageData.mimeType, 'name:', imageData.name);

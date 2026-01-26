@@ -9,14 +9,12 @@ importScripts('db-utils.js');
 // Listen for messages from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'saveSelection') {
-    console.log('[BG] Received saveSelection message, type:', request.data?.type);
     handleSaveSelection(request.data, sender)
       .then(result => {
-        console.log('[BG] Save successful, contentId:', result);
         sendResponse({ success: true, contentId: result });
       })
       .catch(error => {
-        console.error('[BG] Save failed:', error);
+        console.error('Save failed:', error);
         sendResponse({ success: false, error: error.message });
       });
 
@@ -28,7 +26,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     // Pre-warm database connection
     DBUtils.getConnection()
       .then(() => {
-        console.log('Database connection pre-warmed');
         sendResponse({ success: true });
       })
       .catch(error => {
@@ -42,7 +39,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 /**
- * Save selected text or image and metadata to IndexedDB
+ * Save selected text, image, or table and metadata to IndexedDB
  */
 async function handleSaveSelection(data, sender) {
   try {
@@ -50,7 +47,32 @@ async function handleSaveSelection(data, sender) {
 
     let contentId;
 
-    if (type === 'image') {
+    if (type === 'table') {
+      // Handle table saving
+      console.log('[BG] Handling table save...');
+      const { tableData } = data;
+
+      console.log('[BG] Table data:', {
+        headerCount: tableData.headers.length,
+        rowCount: tableData.rows.length
+      });
+
+      // Create content entry with the table as a media item
+      console.log('[BG] Calling DBUtils.saveContent...');
+      contentId = await DBUtils.saveContent(null, {
+        text: title ? `Table from: ${title}` : 'Saved table',
+        links: url ? [url] : [],
+        media: [
+          {
+            type: 'table',
+            data: tableData,
+            name: title ? `${title} - table` : 'table'
+          }
+        ]
+      });
+
+      console.log('Table saved from selection:', contentId);
+    } else if (type === 'image') {
       // Handle image saving
       console.log('[BG] Handling image save...');
       const { imageData } = data;

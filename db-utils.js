@@ -258,6 +258,23 @@ const DBUtils = {
 
       // Process media array
       const processedMedia = (data.media || []).map(mediaItem => {
+        // Handle table type (has data instead of blob)
+        if (mediaItem.type === 'table') {
+          console.log('[DB] Processing table item:', {
+            type: mediaItem.type,
+            headerCount: mediaItem.data?.headers?.length,
+            rowCount: mediaItem.data?.rows?.length,
+            name: mediaItem.name
+          });
+          return {
+            id: mediaItem.id || this.generateMediaId('table'),
+            type: 'table',
+            data: mediaItem.data,
+            name: mediaItem.name || 'untitled table'
+          };
+        }
+
+        // Handle blob-based media (image, audio, video)
         if (mediaItem.blob && !(mediaItem.blob instanceof Blob)) {
           console.error('[DB] Invalid media blob provided:', mediaItem);
           throw new Error('Invalid media blob provided');

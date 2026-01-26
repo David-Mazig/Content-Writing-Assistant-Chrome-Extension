@@ -5,7 +5,6 @@
 
 // Initialize popup
 document.addEventListener('DOMContentLoaded', async () => {
-  console.log('Content Writing Assistant popup loaded');
   await initializeStorage();
   await displayStorageStats();
   await renderContentList();
@@ -227,6 +226,62 @@ async function renderContentList() {
 }
 
 /**
+ * Create table preview HTML from table data
+ */
+function createTablePreview(tableData) {
+  if (!tableData || !tableData.headers || !tableData.rows) {
+    return '<div class="table-preview-error">Invalid table data</div>';
+  }
+
+  const { headers, rows } = tableData;
+  const maxPreviewRows = 3;
+  const previewRows = rows.slice(0, maxPreviewRows);
+  const hasMoreRows = rows.length > maxPreviewRows;
+
+  let html = '<div class="table-preview-container">';
+  html += '<table class="table-preview">';
+
+  // Headers
+  if (headers.length > 0) {
+    html += '<thead><tr>';
+    headers.forEach(header => {
+      html += `<th>${escapeHtml(header)}</th>`;
+    });
+    html += '</tr></thead>';
+  }
+
+  // Data rows (limited to preview)
+  html += '<tbody>';
+  previewRows.forEach(row => {
+    html += '<tr>';
+    row.forEach(cell => {
+      html += `<td>${escapeHtml(cell)}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody>';
+
+  html += '</table>';
+
+  if (hasMoreRows) {
+    html += `<div class="table-preview-more">... ${rows.length - maxPreviewRows} more row(s)</div>`;
+  }
+
+  html += '</div>';
+
+  return html;
+}
+
+/**
+ * Escape HTML to prevent XSS
+ */
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+/**
  * Create DOM element for a content item
  */
 function createContentItemElement(content) {
@@ -245,6 +300,14 @@ function createContentItemElement(content) {
   const imageCount = content.media.filter(m => m.type === 'image').length;
   const audioCount = content.media.filter(m => m.type === 'audio').length;
   const videoCount = content.media.filter(m => m.type === 'video').length;
+  const tableCount = content.media.filter(m => m.type === 'table').length;
+
+  // Generate table preview HTML
+  const tablePreviewsHtml = content.media
+    .filter(m => m.type === 'table')
+    .slice(0, 1)
+    .map(m => createTablePreview(m.data))
+    .join('');
 
   div.innerHTML = `
     <div class="content-header">
@@ -258,8 +321,10 @@ function createContentItemElement(content) {
         ${imageCount > 0 ? `📷 ${imageCount} image(s)` : ''}
         ${audioCount > 0 ? `🎵 ${audioCount} audio` : ''}
         ${videoCount > 0 ? `🎬 ${videoCount} video` : ''}
+        ${tableCount > 0 ? `📊 ${tableCount} table(s)` : ''}
       </div>
     ` : ''}
+    ${tablePreviewsHtml}
     ${content.media.filter(m => m.type === 'image').slice(0, 3).map(m => `
       <img src="${DBUtils.createObjectURL(m.blob)}" class="content-thumbnail" alt="${m.name}">
     `).join('')}
