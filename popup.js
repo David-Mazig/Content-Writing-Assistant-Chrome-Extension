@@ -632,17 +632,31 @@ function createContentItemElement(content) {
   const dateStr = date.toLocaleDateString() + ', ' +
                   date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-  // Determine content type
+  // Determine content type and badge class
   const hasImage = content.media.some(m => m.type === 'image');
   const hasTable = content.media.some(m => m.type === 'table');
   const hasAudio = content.media.some(m => m.type === 'audio');
   const hasVideo = content.media.some(m => m.type === 'video');
+  const isLinkType = content.contentType === 'link';
 
   let contentTypeBadge = 'TEXT';
-  if (hasTable) contentTypeBadge = 'TABLE';
-  else if (hasImage) contentTypeBadge = 'IMAGE';
-  else if (hasVideo) contentTypeBadge = 'VIDEO';
-  else if (hasAudio) contentTypeBadge = 'AUDIO';
+  let badgeClass = 'badge-text';
+  if (hasTable) {
+    contentTypeBadge = 'TABLE';
+    badgeClass = 'badge-table';
+  } else if (hasImage) {
+    contentTypeBadge = 'IMAGE';
+    badgeClass = 'badge-image';
+  } else if (hasVideo) {
+    contentTypeBadge = 'VIDEO';
+    badgeClass = 'badge-video';
+  } else if (hasAudio) {
+    contentTypeBadge = 'AUDIO';
+    badgeClass = 'badge-audio';
+  } else if (isLinkType) {
+    contentTypeBadge = 'LINK';
+    badgeClass = 'badge-link';
+  }
 
   // Extract source domain
   let sourceDomain = '';
@@ -653,9 +667,9 @@ function createContentItemElement(content) {
     } catch {}
   }
 
-  // Text preview - increased to 200 chars
-  const textPreview = content.text.substring(0, 200) +
-                     (content.text.length > 200 ? '...' : '');
+  // Text preview - 80 chars for compact mode
+  const textPreview = content.text.substring(0, 80) +
+                     (content.text.length > 80 ? '...' : '');
 
   // Generate table preview HTML
   const tablePreviewsHtml = content.media
@@ -664,24 +678,35 @@ function createContentItemElement(content) {
     .map(m => createTablePreview(m.data))
     .join('');
 
+  // Action buttons HTML (reused)
+  const actionButtonsHtml = `
+    <button class="btn-edit" data-content-id="${content.key}" title="Edit">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="2"/>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2"/>
+      </svg>
+    </button>
+    <button class="btn-delete" data-content-id="${content.key}" title="Delete">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14z" stroke="currentColor" stroke-width="2"/>
+      </svg>
+    </button>
+  `;
+
   div.innerHTML = `
+    <!-- Hover actions (shown when not expanded) -->
+    <div class="content-actions-hover">
+      ${actionButtonsHtml}
+    </div>
+
+    <!-- Header with meta (shown when expanded) -->
     <div class="content-header">
       <div class="content-meta">
-        <span class="content-type-badge">${contentTypeBadge}</span>
+        <span class="content-type-badge ${badgeClass}">${contentTypeBadge}</span>
         <span class="content-date">${dateStr}</span>
       </div>
-      <div class="content-actions">
-        <button class="btn-edit" data-content-id="${content.key}" title="Edit">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="2"/>
-            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </button>
-        <button class="btn-delete" data-content-id="${content.key}" title="Delete">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-            <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14z" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </button>
+      <div class="content-actions-expanded">
+        ${actionButtonsHtml}
       </div>
     </div>
 
@@ -703,28 +728,34 @@ function createContentItemElement(content) {
             `<div class="thumbnail-more">+${content.media.filter(m => m.type === 'image').length - 4}</div>` : ''}
         </div>
       ` : ''}
-
-      <button class="btn-expand">Show more</button>
     </div>
   `;
 
-  // Add event listeners
-  div.querySelector('.btn-edit').addEventListener('click', (e) => {
-    e.stopPropagation();
-    editContent(content.key);
-  });
-
-  div.querySelector('.btn-delete').addEventListener('click', (e) => {
-    e.stopPropagation();
-    const btn = e.currentTarget;
-    if (!btn.classList.contains('confirm-state')) {
-      showDeleteConfirmation(btn, content.key);
+  // Click card to toggle expansion
+  div.addEventListener('click', (e) => {
+    // Don't toggle if clicking on buttons or links
+    if (e.target.closest('.btn-edit') || e.target.closest('.btn-delete') ||
+        e.target.closest('button') || e.target.closest('a')) {
+      return;
     }
+    toggleCardExpansion(div, content);
   });
 
-  div.querySelector('.btn-expand').addEventListener('click', (e) => {
-    e.stopPropagation();
-    toggleCardExpansion(div, content);
+  // Add event listeners for all edit/delete buttons
+  div.querySelectorAll('.btn-edit').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      editContent(content.key);
+    });
+  });
+
+  div.querySelectorAll('.btn-delete').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!btn.classList.contains('confirm-state')) {
+        showDeleteConfirmation(btn, content.key);
+      }
+    });
   });
 
   return div;
@@ -789,7 +820,6 @@ function toggleCardExpansion(cardElement, content) {
   if (isExpanded) {
     // Collapse
     cardElement.classList.remove('expanded');
-    cardElement.querySelector('.btn-expand').textContent = 'Show more';
 
     // Remove expanded content
     const expandedSection = cardElement.querySelector('.content-expanded');
@@ -799,7 +829,11 @@ function toggleCardExpansion(cardElement, content) {
   } else {
     // Expand
     cardElement.classList.add('expanded');
-    cardElement.querySelector('.btn-expand').textContent = 'Show less';
+
+    // Scroll card into view
+    setTimeout(() => {
+      cardElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
 
     // Create expanded content section
     const expandedSection = document.createElement('div');

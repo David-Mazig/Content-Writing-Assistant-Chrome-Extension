@@ -120,6 +120,24 @@ async function handleSaveSelection(data, sender) {
         ]
       });
 
+    } else if (type === 'link') {
+      // Handle link saving
+      const { text, linkUrl } = data;
+
+      // Format the text to include source information
+      const formattedText = title
+        ? `${text}\n\n---\nSource: ${title}`
+        : text;
+
+      // Create content entry with the link
+      // The linkUrl is the actual link being saved, url is the page where it was found
+      contentId = await DBUtils.saveContent(null, {
+        text: formattedText,
+        links: linkUrl ? [linkUrl, url].filter(Boolean) : (url ? [url] : []),
+        media: [],
+        contentType: 'link'  // Mark as link item
+      });
+
     } else {
       // Handle text saving
       const { text } = data;

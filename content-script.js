@@ -7,9 +7,11 @@ let popover = null;
 let selectedText = '';
 let selectedImage = null;
 let selectedTable = null;
+let selectedLink = null;
 let hoverTimer = null;
 let hoveredImage = null;
 let hoveredTable = null;
+let hoveredLink = null;
 let prewarmSent = false;
 let extensionContextValid = true;
 
@@ -37,6 +39,10 @@ document.addEventListener('mouseout', handleImageHoverEnd);
 // Listen for table hover
 document.addEventListener('mouseover', handleTableHover);
 document.addEventListener('mouseout', handleTableHoverEnd);
+
+// Listen for link hover
+document.addEventListener('mouseover', handleLinkHover);
+document.addEventListener('mouseout', handleLinkHoverEnd);
 
 /**
  * Handle text selection event
@@ -159,6 +165,47 @@ function handleTableHoverEnd(event) {
 }
 
 /**
+ * Handle link hover event
+ */
+function handleLinkHover(event) {
+  // Check if element is a link or inside a link
+  const link = event.target.tagName === 'A' ? event.target : event.target.closest('a');
+  if (!link) return;
+
+  // Must have an href
+  const href = link.href;
+  if (!href || href.startsWith('javascript:') || href === '#') return;
+
+  // Don't show if popover already visible
+  if (popover) return;
+
+  hoveredLink = link;
+  if (hoverTimer) clearTimeout(hoverTimer);
+
+  // Wait 1 second before showing popover
+  hoverTimer = setTimeout(() => {
+    const rect = link.getBoundingClientRect();
+    showPopover(rect.left + rect.width / 2, rect.bottom);
+    // Set state AFTER showPopover (which calls hidePopover that clears state)
+    selectedLink = link;
+    selectedText = '';
+    selectedImage = null;
+    selectedTable = null;
+  }, 1000);
+}
+
+/**
+ * Handle link hover end event
+ */
+function handleLinkHoverEnd(event) {
+  const link = event.target.tagName === 'A' ? event.target : event.target.closest('a');
+  if (link === hoveredLink) {
+    if (hoverTimer) clearTimeout(hoverTimer);
+    hoveredLink = null;
+  }
+}
+
+/**
  * Create and show the popover with preview
  */
 function showPopover(x, y) {
@@ -185,6 +232,27 @@ function showPopover(x, y) {
     const data = extractTableData(selectedTable);
     previewContent = `Table: ${data.rows.length} rows`;
     contentType = 'table';
+  } else if (selectedLink) {
+    try {
+      const url = new URL(selectedLink.href);
+      const linkText = selectedLink.textContent.trim();
+      previewContent = linkText.substring(0, 40) + (linkText.length > 40 ? '...' : '') || url.hostname;
+      contentType = 'link';
+    } catch {
+      previewContent = 'Link';
+      contentType = 'link';
+    }
+  }
+
+  // Build preview meta text
+  let previewMeta = `from ${document.title.substring(0, 30)}${document.title.length > 30 ? '...' : ''}`;
+  if (contentType === 'link' && selectedLink) {
+    try {
+      const url = new URL(selectedLink.href);
+      previewMeta = url.hostname.replace('www.', '');
+    } catch {
+      previewMeta = selectedLink.href.substring(0, 40);
+    }
   }
 
   popover.innerHTML = `
@@ -192,6 +260,9 @@ function showPopover(x, y) {
       ${contentType === 'text' ? `
         <div class="cwa-preview-text">"${previewContent}"</div>
         <div class="cwa-preview-meta">${charCount} chars from ${document.title.substring(0, 30)}${document.title.length > 30 ? '...' : ''}</div>
+      ` : contentType === 'link' ? `
+        <div class="cwa-preview-label">Link: ${previewContent}</div>
+        <div class="cwa-preview-meta">${previewMeta}</div>
       ` : `
         <div class="cwa-preview-label">${previewContent}</div>
         <div class="cwa-preview-meta">from ${document.title.substring(0, 30)}${document.title.length > 30 ? '...' : ''}</div>
@@ -290,6 +361,8 @@ function hidePopover() {
   hoveredImage = null;
   selectedTable = null;
   hoveredTable = null;
+  selectedLink = null;
+  hoveredLink = null;
   if (hoverTimer) {
     clearTimeout(hoverTimer);
     hoverTimer = null;
@@ -496,7 +569,7 @@ async function fetchImageData(img) {
 async function handleSave(event) {
   event.stopPropagation();
 
-  if (!selectedText && !selectedImage && !selectedTable) {
+  if (!selectedText && !selectedImage && !selectedTable && !selectedLink) {
     return;
   }
 
@@ -549,6 +622,26 @@ async function handleSave(event) {
             name: imageData.name
           },
           note: noteText,
+          url: window.location.href,
+          title: document.title
+        }
+      });
+    } else if (selectedLink) {
+      // Handle link saving
+      const linkText = selectedLink.textContent.trim();
+      const linkHref = selectedLink.href;
+
+      let textToSave = linkText || linkHref;
+      if (noteText) {
+        textToSave = textToSave + '\n\nNote: ' + noteText;
+      }
+
+      response = await chrome.runtime.sendMessage({
+        action: 'saveSelection',
+        data: {
+          type: 'link',
+          text: textToSave,
+          linkUrl: linkHref,
           url: window.location.href,
           title: document.title
         }

@@ -288,7 +288,9 @@ const DBUtils = {
         links: validLinks,
         media: processedMedia,
         created: data.created || Date.now(),
-        modified: Date.now()
+        modified: Date.now(),
+        // Preserve contentType if specified (e.g., 'link' for saved links)
+        ...(data.contentType && { contentType: data.contentType })
       };
 
       return new Promise((resolve, reject) => {
