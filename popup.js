@@ -84,7 +84,6 @@ async function saveNewContent() {
 async function initializeStorage() {
   try {
     await DBUtils.openDatabase();
-    console.log('IndexedDB initialized');
   } catch (error) {
     console.error('Storage initialization error:', error);
   }
@@ -97,13 +96,6 @@ async function displayStorageStats() {
   try {
     const allContent = await DBUtils.getAllContent();
     const quotaInfo = await DBUtils.getStorageEstimate();
-
-    console.log('Storage Stats:', {
-      contentCount: allContent.length,
-      usage: `${(quotaInfo.usage / 1024 / 1024).toFixed(2)} MB`,
-      quota: `${(quotaInfo.quota / 1024 / 1024).toFixed(2)} MB`,
-      percentUsed: `${quotaInfo.percentUsed}%`
-    });
   } catch (error) {
     console.error('Error displaying storage stats:', error);
   }
@@ -143,7 +135,6 @@ async function createContent(text, links = [], mediaFiles = []) {
       media
     });
 
-    console.log('Content created:', contentId);
     await renderContentList();
     return contentId;
   } catch (error) {
@@ -159,11 +150,9 @@ async function loadContent(contentId) {
   try {
     const content = await DBUtils.getContent(contentId);
     if (!content) {
-      console.log('Content not found:', contentId);
       return null;
     }
 
-    console.log('Content loaded:', content);
     return content;
   } catch (error) {
     console.error('Error loading content:', error);
@@ -177,7 +166,6 @@ async function loadContent(contentId) {
 async function listAllContent() {
   try {
     const allContent = await DBUtils.getAllContent();
-    console.log('All content:', allContent);
     return allContent;
   } catch (error) {
     console.error('Error listing content:', error);
@@ -191,7 +179,6 @@ async function listAllContent() {
 async function deleteContent(contentId) {
   try {
     await DBUtils.deleteContent(contentId);
-    console.log('Content deleted:', contentId);
     await renderContentList();
   } catch (error) {
     console.error('Error deleting content:', error);

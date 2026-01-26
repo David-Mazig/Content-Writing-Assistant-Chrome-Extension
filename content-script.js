@@ -260,11 +260,6 @@ function extractTableData(table) {
     }
   });
 
-  console.log('[CWA] Table extracted:', {
-    headerCount: headers.length,
-    rowCount: rows.length
-  });
-
   return {
     headers,
     rows
@@ -314,8 +309,6 @@ async function fetchViaBackgroundWorker(img) {
     ? img.src.split(';')[0].split(':')[1]
     : `image/${extension || 'png'}`;
 
-  console.log('[CWA] Requesting background worker to fetch:', img.src);
-
   // Request background worker to fetch the image (has broader permissions)
   const response = await chrome.runtime.sendMessage({
     action: 'fetchImageFromUrl',
@@ -330,8 +323,6 @@ async function fetchViaBackgroundWorker(img) {
     throw new Error(response.error || 'Background fetch failed');
   }
 
-  console.log('[CWA] Background worker fetch successful');
-
   return response.imageData;
 }
 
@@ -340,11 +331,8 @@ async function fetchViaBackgroundWorker(img) {
  * Uses Canvas API for same-origin images, background worker for cross-origin
  */
 async function fetchImageData(img) {
-  console.log('[CWA] Starting image fetch for:', img.src);
-
   // Quick check: if definitely cross-origin, skip canvas and use background fetch directly
   if (!canUseCanvasExtraction(img)) {
-    console.log('[CWA] Cross-origin image detected, using background fetch directly');
     return await fetchViaBackgroundWorker(img);
   }
 
@@ -370,8 +358,6 @@ async function fetchImageData(img) {
       );
     });
 
-    console.log('[CWA] Canvas extraction successful, blob size:', blob.size, 'bytes');
-
     // Determine file name from URL or use default
     const urlPath = new URL(img.src).pathname;
     const name = urlPath.split('/').pop() || 'image.png';
@@ -386,8 +372,6 @@ async function fetchImageData(img) {
     }
     const base64String = btoa(binary);
 
-    console.log('[CWA] Base64 encoding complete, length:', base64String.length, 'chars');
-
     return {
       arrayBuffer: base64String,  // Now it's a Base64 string, not an ArrayBuffer
       mimeType: blob.type,
@@ -395,8 +379,6 @@ async function fetchImageData(img) {
     };
 
   } catch (error) {
-    console.log('[CWA] Canvas extraction failed, trying background worker fetch:', error);
-
     // STRATEGY 2: Background worker fetch (bypasses CORS restrictions)
     try {
       return await fetchViaBackgroundWorker(img);
@@ -411,15 +393,9 @@ async function fetchImageData(img) {
  * Handle save button click
  */
 async function handleSave(event) {
-  console.log('[CWA] ========== SAVE BUTTON CLICKED ==========');
   event.stopPropagation();
 
-  console.log('[CWA] selectedText:', selectedText);
-  console.log('[CWA] selectedImage:', selectedImage);
-  console.log('[CWA] selectedTable:', selectedTable);
-
   if (!selectedText && !selectedImage && !selectedTable) {
-    console.log('[CWA] ERROR: Nothing selected to save! Returning early.');
     return;
   }
 
@@ -442,11 +418,8 @@ async function handleSave(event) {
 
     // Handle table saving
     if (selectedTable) {
-      console.log('[CWA] Extracting table data...');
       const tableData = extractTableData(selectedTable);
-      console.log('[CWA] Table data ready, rows:', tableData.rows.length);
 
-      console.log('[CWA] Sending message to background worker...');
       response = await chrome.runtime.sendMessage({
         action: 'saveSelection',
         data: {
@@ -458,11 +431,8 @@ async function handleSave(event) {
       });
     } else if (selectedImage) {
       // Handle image saving
-      console.log('[CWA] Fetching image data...');
       const imageData = await fetchImageData(selectedImage);
-      console.log('[CWA] Image data ready, mimeType:', imageData.mimeType, 'name:', imageData.name);
 
-      console.log('[CWA] Sending message to background worker...');
       response = await chrome.runtime.sendMessage({
         action: 'saveSelection',
         data: {
@@ -488,8 +458,6 @@ async function handleSave(event) {
         }
       });
     }
-
-    console.log('[CWA] Response received:', response);
 
     if (response.success) {
       // Show success state
