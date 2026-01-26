@@ -8,6 +8,7 @@ let selectedText = '';
 let selectedImage = null;
 let selectedTable = null;
 let selectedLink = null;
+let selectedImageLink = null;  // Stores parent link when image is inside a link
 let hoverTimer = null;
 let hoveredImage = null;
 let hoveredTable = null;

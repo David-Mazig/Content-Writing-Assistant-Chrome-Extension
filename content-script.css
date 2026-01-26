@@ -155,3 +155,40 @@
   -moz-user-select: none;
   -ms-user-select: none;
 }
+
+/* Multi-option save UI (image-link combo) */
+.cwa-actions-column {
+  flex-direction: column !important;
+}
+
+.cwa-save-options {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.cwa-save-option {
+  flex: 1;
+  padding: 6px 8px !important;
+  font-size: 12px !important;
+  justify-content: center;
+  min-width: 0;
+}
+
+.cwa-save-option svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.cwa-save-option span {
+  font-size: 11px !important;
+}
+
+.cwa-save-both {
+  background: #2563EB !important;
+}
+
+.cwa-save-both:hover {
+  background: #1D4ED8 !important;
+}

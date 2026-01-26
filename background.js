@@ -120,6 +120,41 @@ async function handleSaveSelection(data, sender) {
         ]
       });
 
+    } else if (type === 'imagelink') {
+      // Handle combined image + link saving
+      const { imageData, linkUrl, note } = data;
+
+      // Decode base64 string back to ArrayBuffer
+      const binaryString = atob(imageData.arrayBuffer);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+
+      // Convert ArrayBuffer back to Blob
+      const blob = new Blob([bytes], { type: imageData.mimeType });
+
+      // Build text with optional note
+      let contentText = title ? `Image from: ${title}` : 'Saved image';
+      if (note) {
+        contentText += '\n\nNote: ' + note;
+      }
+
+      // Create content entry with both image AND link
+      contentId = await DBUtils.saveContent(null, {
+        text: contentText,
+        links: [linkUrl, url].filter(Boolean),
+        media: [
+          {
+            type: 'image',
+            mimeType: imageData.mimeType,
+            blob: blob,
+            name: imageData.name
+          }
+        ],
+        contentType: 'imagelink'
+      });
+
     } else if (type === 'link') {
       // Handle link saving
       const { text, linkUrl } = data;
