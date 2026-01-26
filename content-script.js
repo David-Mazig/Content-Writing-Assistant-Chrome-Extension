@@ -709,17 +709,8 @@ async function handleSaveElement(event, saveType) {
       await saveLinkElement(detectedElements.link, noteText);
     }
 
-    // Show success
-    btn.innerHTML = `
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-        <path d="M13.5 4L6 11.5L2.5 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span>Saved!</span>
-    `;
-    btn.classList.add('success');
-
-    // Hide popover after brief delay
-    setTimeout(() => hidePopover(), 300);
+    // Hide popover instantly
+    hidePopover();
 
   } catch (error) {
     console.error('Error saving element:', error);
