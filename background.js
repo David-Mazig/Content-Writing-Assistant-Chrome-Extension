@@ -64,11 +64,17 @@ async function handleSaveSelection(data, sender) {
 
     if (type === 'table') {
       // Handle table saving
-      const { tableData } = data;
+      const { tableData, note } = data;
+
+      // Build text with optional note
+      let tableText = title ? `Table from: ${title}` : 'Saved table';
+      if (note) {
+        tableText += '\n\nNote: ' + note;
+      }
 
       // Create content entry with the table as a media item
       contentId = await DBUtils.saveContent(null, {
-        text: title ? `Table from: ${title}` : 'Saved table',
+        text: tableText,
         links: url ? [url] : [],
         media: [
           {
@@ -81,7 +87,7 @@ async function handleSaveSelection(data, sender) {
 
     } else if (type === 'image') {
       // Handle image saving
-      const { imageData } = data;
+      const { imageData, note } = data;
 
       // Decode base64 string back to ArrayBuffer
       const binaryString = atob(imageData.arrayBuffer);
@@ -94,9 +100,15 @@ async function handleSaveSelection(data, sender) {
       // Convert ArrayBuffer back to Blob
       const blob = new Blob([bytes], { type: imageData.mimeType });
 
+      // Build text with optional note
+      let imageText = title ? `Image from: ${title}` : 'Saved image';
+      if (note) {
+        imageText += '\n\nNote: ' + note;
+      }
+
       // Create content entry with the image
       contentId = await DBUtils.saveContent(null, {
-        text: title ? `Image from: ${title}` : 'Saved image',
+        text: imageText,
         links: url ? [url] : [],
         media: [
           {

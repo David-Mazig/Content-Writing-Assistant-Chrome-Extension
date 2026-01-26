@@ -198,20 +198,13 @@ function showPopover(x, y) {
       `}
     </div>
     <div class="cwa-popover-actions">
+      <input type="text" class="cwa-note-input" placeholder="Add a note (optional)..." />
       <button class="cwa-save-btn" title="Save to Content Assistant">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <path d="M12 2H4C3.46957 2 2.96086 2.21071 2.58579 2.58579C2.21071 2.96086 2 3.46957 2 4V14L5 12L8 14L11 12L14 14V4C14 3.46957 13.7893 2.96086 13.4142 2.58579C13.0391 2.21071 12.5304 2 12 2Z" stroke="currentColor" stroke-width="1.5"/>
         </svg>
         <span>Save</span>
       </button>
-      ${contentType === 'text' ? `
-        <button class="cwa-note-btn" title="Add note">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2"/>
-          </svg>
-          <span>Note</span>
-        </button>
-      ` : ''}
     </div>
   `;
 
@@ -249,46 +242,16 @@ function showPopover(x, y) {
   // Add event listeners
   popover.querySelector('.cwa-save-btn').addEventListener('click', handleSave);
 
-  const noteBtn = popover.querySelector('.cwa-note-btn');
-  if (noteBtn) {
-    noteBtn.addEventListener('click', (event) => {
-      event.stopPropagation();
-      showNoteInput();
-    });
+  // Auto-focus the note input field
+  const noteInput = popover.querySelector('.cwa-note-input');
+  if (noteInput) {
+    noteInput.focus();
   }
 
   // Hide popover when clicking outside
   setTimeout(() => {
     document.addEventListener('click', handleOutsideClick);
   }, 100);
-}
-
-/**
- * Show note input in popover
- */
-function showNoteInput() {
-  const actionsDiv = popover.querySelector('.cwa-popover-actions');
-  const noteInput = document.createElement('input');
-  noteInput.type = 'text';
-  noteInput.className = 'cwa-note-input';
-  noteInput.placeholder = 'Add a note...';
-
-  actionsDiv.innerHTML = '';
-  actionsDiv.appendChild(noteInput);
-
-  const saveBtn = document.createElement('button');
-  saveBtn.className = 'cwa-save-btn';
-  saveBtn.innerHTML = '<span>Save</span>';
-  saveBtn.addEventListener('click', () => {
-    // Append note to selected text
-    if (selectedText && noteInput.value.trim()) {
-      selectedText = selectedText + '\n\nNote: ' + noteInput.value.trim();
-    }
-    handleSave({ stopPropagation: () => {} });
-  });
-  actionsDiv.appendChild(saveBtn);
-
-  noteInput.focus();
 }
 
 /**
@@ -516,6 +479,10 @@ async function handleSave(event) {
       throw new Error('Extension was reloaded. Please refresh this page.');
     }
 
+    // Read note from the input field
+    const noteInput = popover.querySelector('.cwa-note-input');
+    const noteText = noteInput ? noteInput.value.trim() : '';
+
     let response;
 
     // Handle table saving
@@ -527,6 +494,7 @@ async function handleSave(event) {
         data: {
           type: 'table',
           tableData: tableData,
+          note: noteText,
           url: window.location.href,
           title: document.title
         }
@@ -544,17 +512,23 @@ async function handleSave(event) {
             mimeType: imageData.mimeType,
             name: imageData.name
           },
+          note: noteText,
           url: window.location.href,
           title: document.title
         }
       });
     } else {
       // Handle text saving
+      let textToSave = selectedText;
+      if (noteText) {
+        textToSave = selectedText + '\n\nNote: ' + noteText;
+      }
+
       response = await chrome.runtime.sendMessage({
         action: 'saveSelection',
         data: {
           type: 'text',
-          text: selectedText,
+          text: textToSave,
           url: window.location.href,
           title: document.title
         }
