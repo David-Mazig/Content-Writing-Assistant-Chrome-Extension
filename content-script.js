@@ -242,11 +242,30 @@ function showPopover(x, y) {
   // Add event listeners
   popover.querySelector('.cwa-save-btn').addEventListener('click', handleSave);
 
-  // Auto-focus the note input field
+  // Save selection before focusing input (focusing clears browser selection)
+  const selection = window.getSelection();
+  const savedRange = selection.rangeCount > 0 ? selection.getRangeAt(0).cloneRange() : null;
+
+  // Auto-focus the note input field after a brief delay
+  // (browser blocks focus during active selection events)
   const noteInput = popover.querySelector('.cwa-note-input');
   if (noteInput) {
-    noteInput.focus();
+    // Restore selection first, then focus input
+    if (savedRange) {
+      selection.removeAllRanges();
+      selection.addRange(savedRange);
+    }
+
+    // Use requestAnimationFrame + setTimeout to ensure focus happens after browser settles
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        noteInput.focus();
+      }, 10);
+    });
   }
+
+  // Add keyboard shortcuts (Enter to save, Escape to cancel)
+  document.addEventListener('keydown', handlePopoverKeydown);
 
   // Hide popover when clicking outside
   setTimeout(() => {
@@ -263,6 +282,7 @@ function hidePopover() {
     popover = null;
     prewarmSent = false;
     document.removeEventListener('click', handleOutsideClick);
+    document.removeEventListener('keydown', handlePopoverKeydown);
   }
 
   // Clear state
@@ -281,6 +301,22 @@ function hidePopover() {
  */
 function handleOutsideClick(event) {
   if (popover && !popover.contains(event.target)) {
+    hidePopover();
+  }
+}
+
+/**
+ * Handle keyboard events when popover is visible
+ */
+function handlePopoverKeydown(event) {
+  if (!popover) return;
+
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    handleSave(event);
+  } else if (event.key === 'Escape') {
+    event.preventDefault();
+    window.getSelection().removeAllRanges(); // Deselect text
     hidePopover();
   }
 }
@@ -545,10 +581,8 @@ async function handleSave(event) {
       `;
       saveBtn.classList.add('success');
 
-      // Hide popover after delay
-      setTimeout(() => {
-        hidePopover();
-      }, 1500);
+      // Hide popover instantly
+      hidePopover();
     } else {
       throw new Error(response.error || 'Failed to save');
     }

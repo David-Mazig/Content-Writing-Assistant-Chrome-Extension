@@ -138,6 +138,14 @@
   border-color: #D97706;
 }
 
+/* Allow text cursor in input field (override popover's user-select: none) */
+.cwa-note-input {
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+}
+
 /* Prevent text selection on the popover itself */
 .cwa-save-popover,
 .cwa-save-btn,
