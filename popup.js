@@ -8,9 +8,15 @@ let editingContentId = null;
 let allContentCache = [];
 let activeObjectURLs = [];
 
+// In-memory undo/redo stacks (synced with chrome.storage.session)
+// Constants and utilities are in undo-redo-utils.js (shared with background.js)
+let undoStack = [];
+let redoStack = [];
+
 // Initialize popup
 document.addEventListener('DOMContentLoaded', async () => {
   await initializeStorage();
+  await initUndoRedo();
   await displayStorageStats();
   await renderContentList();
   initializeEventListeners();
@@ -20,6 +26,10 @@ document.addEventListener('DOMContentLoaded', async () => {
  * Initialize UI event listeners
  */
 function initializeEventListeners() {
+  // Undo/Redo buttons
+  document.getElementById('btn-undo').addEventListener('click', undo);
+  document.getElementById('btn-redo').addEventListener('click', redo);
+
   // New content button
   document.getElementById('btn-new-content').addEventListener('click', showNewContentModal);
 
@@ -74,8 +84,213 @@ function initializeEventListeners() {
       e.preventDefault();
       document.getElementById('search-input').focus();
     }
+
+    // Ctrl/Cmd + Z for undo (only when not in input/textarea)
+    if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+      const activeEl = document.activeElement;
+      const isInput = activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA';
+      if (!isInput) {
+        e.preventDefault();
+        undo();
+      }
+    }
+
+    // Ctrl/Cmd + Y or Ctrl/Cmd + Shift + Z for redo (only when not in input/textarea)
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+      const activeEl = document.activeElement;
+      const isInput = activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA';
+      if (!isInput) {
+        e.preventDefault();
+        redo();
+      }
+    }
+  });
+
+  // Listen for undo/redo state changes from background.js (popover saves)
+  chrome.storage.session.onChanged.addListener((changes) => {
+    if (changes[UndoRedoUtils.UNDO_REDO_KEY]) {
+      // Reload stacks when changed externally (e.g., by background.js after popover save)
+      initUndoRedo();
+      // Also refresh content list to show new items
+      renderContentList();
+    }
   });
 }
+
+// ============================================
+// Undo/Redo System
+// ============================================
+
+/**
+ * Initialize undo/redo from chrome.storage.session
+ */
+async function initUndoRedo() {
+  try {
+    const state = await UndoRedoUtils.loadState();
+    undoStack = state.undoStack;
+    redoStack = state.redoStack;
+    updateUndoRedoButtons();
+  } catch (error) {
+    console.error('Error initializing undo/redo:', error);
+    undoStack = [];
+    redoStack = [];
+  }
+}
+
+/**
+ * Save undo/redo state to chrome.storage.session
+ */
+async function saveUndoRedoState() {
+  await UndoRedoUtils.saveState(undoStack, redoStack);
+}
+
+/**
+ * Update undo/redo button states
+ */
+function updateUndoRedoButtons() {
+  const undoBtn = document.getElementById('btn-undo');
+  const redoBtn = document.getElementById('btn-redo');
+
+  if (undoBtn) undoBtn.disabled = undoStack.length === 0;
+  if (redoBtn) redoBtn.disabled = redoStack.length === 0;
+}
+
+/**
+ * Record an action to the undo stack
+ */
+async function recordUndoAction(type, contentId, beforeSnapshot, afterSnapshot) {
+  const action = {
+    id: UndoRedoUtils.generateActionId(),
+    type,
+    contentId,
+    timestamp: Date.now(),
+    beforeSnapshot: await UndoRedoUtils.serializeContent(beforeSnapshot),
+    afterSnapshot: await UndoRedoUtils.serializeContent(afterSnapshot)
+  };
+
+  undoStack.push(action);
+
+  // Limit history size
+  if (undoStack.length > UndoRedoUtils.MAX_UNDO_HISTORY) {
+    undoStack.shift();
+  }
+
+  // Clear redo stack on new action
+  redoStack = [];
+
+  await saveUndoRedoState();
+  updateUndoRedoButtons();
+}
+
+/**
+ * Undo the last action
+ */
+async function undo() {
+  if (undoStack.length === 0) return;
+
+  const action = undoStack.pop();
+
+  try {
+    switch (action.type) {
+      case 'create':
+        // Undo create = delete the created content
+        await DBUtils.deleteContent(action.contentId);
+        break;
+
+      case 'update':
+        // Undo update = restore beforeSnapshot
+        const beforeContent = UndoRedoUtils.deserializeContent(action.beforeSnapshot);
+        await DBUtils.saveContent(action.contentId, {
+          text: beforeContent.text,
+          links: beforeContent.links,
+          media: beforeContent.media,
+          created: beforeContent.created,
+          contentType: beforeContent.contentType
+        });
+        break;
+
+      case 'delete':
+        // Undo delete = recreate content with same ID
+        const deletedContent = UndoRedoUtils.deserializeContent(action.beforeSnapshot);
+        await DBUtils.saveContent(action.contentId, {
+          text: deletedContent.text,
+          links: deletedContent.links,
+          media: deletedContent.media,
+          created: deletedContent.created,
+          contentType: deletedContent.contentType
+        });
+        break;
+    }
+
+    // Move to redo stack
+    redoStack.push(action);
+
+    await saveUndoRedoState();
+    updateUndoRedoButtons();
+    await renderContentList();
+  } catch (error) {
+    console.error('Error during undo:', error);
+    // Push back to undo stack on error
+    undoStack.push(action);
+  }
+}
+
+/**
+ * Redo the last undone action
+ */
+async function redo() {
+  if (redoStack.length === 0) return;
+
+  const action = redoStack.pop();
+
+  try {
+    switch (action.type) {
+      case 'create':
+        // Redo create = recreate the content
+        const createdContent = UndoRedoUtils.deserializeContent(action.afterSnapshot);
+        await DBUtils.saveContent(action.contentId, {
+          text: createdContent.text,
+          links: createdContent.links,
+          media: createdContent.media,
+          created: createdContent.created,
+          contentType: createdContent.contentType
+        });
+        break;
+
+      case 'update':
+        // Redo update = restore afterSnapshot
+        const afterContent = UndoRedoUtils.deserializeContent(action.afterSnapshot);
+        await DBUtils.saveContent(action.contentId, {
+          text: afterContent.text,
+          links: afterContent.links,
+          media: afterContent.media,
+          created: afterContent.created,
+          contentType: afterContent.contentType
+        });
+        break;
+
+      case 'delete':
+        // Redo delete = delete the content again
+        await DBUtils.deleteContent(action.contentId);
+        break;
+    }
+
+    // Move back to undo stack
+    undoStack.push(action);
+
+    await saveUndoRedoState();
+    updateUndoRedoButtons();
+    await renderContentList();
+  } catch (error) {
+    console.error('Error during redo:', error);
+    // Push back to redo stack on error
+    redoStack.push(action);
+  }
+}
+
+// ============================================
+// End Undo/Redo System
+// ============================================
 
 /**
  * Show new content modal
@@ -303,11 +518,17 @@ async function saveNewContent() {
  */
 async function updateContent(contentId, text, links = [], mediaFiles = []) {
   try {
-    // Load existing content
+    // Load existing content (beforeSnapshot for undo)
     const existingContent = await DBUtils.getContent(contentId);
     if (!existingContent) {
       throw new Error('Content not found');
     }
+
+    // Deep copy for beforeSnapshot
+    const beforeSnapshot = {
+      ...existingContent,
+      media: existingContent.media.map(m => ({ ...m }))
+    };
 
     // Process new media files if any
     const newMedia = [];
@@ -339,6 +560,10 @@ async function updateContent(contentId, text, links = [], mediaFiles = []) {
       links,
       media: allMedia
     });
+
+    // Record undo action
+    const afterSnapshot = await DBUtils.getContent(contentId);
+    await recordUndoAction('update', contentId, beforeSnapshot, afterSnapshot);
 
     await renderContentList();
   } catch (error) {
@@ -457,6 +682,10 @@ async function createContent(text, links = [], mediaFiles = []) {
       media
     });
 
+    // Record undo action (create: beforeSnapshot is null, afterSnapshot is created content)
+    const createdContent = await DBUtils.getContent(contentId);
+    await recordUndoAction('create', contentId, null, createdContent);
+
     await renderContentList();
     return contentId;
   } catch (error) {
@@ -500,7 +729,16 @@ async function listAllContent() {
  */
 async function deleteContent(contentId) {
   try {
+    // Capture content before deletion for undo
+    const beforeSnapshot = await DBUtils.getContent(contentId);
+
     await DBUtils.deleteContent(contentId);
+
+    // Record undo action (delete: afterSnapshot is null)
+    if (beforeSnapshot) {
+      await recordUndoAction('delete', contentId, beforeSnapshot, null);
+    }
+
     await renderContentList();
   } catch (error) {
     console.error('Error deleting content:', error);
@@ -777,65 +1015,13 @@ function createContentItemElement(content) {
   });
 
   div.querySelectorAll('.btn-delete').forEach(btn => {
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener('click', async (e) => {
       e.stopPropagation();
-      if (!btn.classList.contains('confirm-state')) {
-        showDeleteConfirmation(btn, content.key);
-      }
+      await deleteContent(content.key);
     });
   });
 
   return div;
-}
-
-/**
- * Show delete confirmation
- */
-function showDeleteConfirmation(button, contentId) {
-  const originalHTML = button.innerHTML;
-  button.innerHTML = '<span>Confirm?</span>';
-  button.classList.add('confirm-state');
-
-  // Create Cancel button
-  const cancelBtn = document.createElement('button');
-  cancelBtn.textContent = 'Cancel';
-  cancelBtn.className = 'btn-cancel-delete';
-  button.parentNode.insertBefore(cancelBtn, button.nextSibling);
-
-  let isConfirmed = false;
-
-  // Confirm handler
-  const confirmHandler = async (e) => {
-    e.stopPropagation();
-    if (isConfirmed) return;
-    isConfirmed = true;
-    await deleteContent(contentId);
-    cleanup();
-  };
-
-  // Cancel handler
-  const cancelHandler = (e) => {
-    if (e) e.stopPropagation();
-    button.innerHTML = originalHTML;
-    button.classList.remove('confirm-state');
-    cancelBtn.remove();
-    button.removeEventListener('click', confirmHandler);
-    if (autoRevertTimeout) clearTimeout(autoRevertTimeout);
-  };
-
-  const cleanup = () => {
-    button.removeEventListener('click', confirmHandler);
-    if (cancelBtn.parentNode) {
-      cancelBtn.remove();
-    }
-    if (autoRevertTimeout) clearTimeout(autoRevertTimeout);
-  };
-
-  button.addEventListener('click', confirmHandler);
-  cancelBtn.addEventListener('click', cancelHandler);
-
-  // Auto-revert after 3 seconds
-  const autoRevertTimeout = setTimeout(cancelHandler, 3000);
 }
 
 /**
@@ -921,5 +1107,7 @@ window.ContentAssistant = {
   listAllContent,
   deleteContent,
   renderContentList,
+  undo,
+  redo,
   DBUtils
 };

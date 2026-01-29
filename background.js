@@ -5,6 +5,7 @@
 
 // Import database utilities
 importScripts('db-utils.js');
+importScripts('undo-redo-utils.js');
 
 // Listen for messages from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -189,6 +190,15 @@ async function handleSaveSelection(data, sender) {
         media: []
       });
 
+    }
+
+    // Record undo action for popover saves
+    try {
+      const createdContent = await DBUtils.getContent(contentId);
+      await UndoRedoUtils.recordAction('create', contentId, null, createdContent);
+    } catch (undoError) {
+      // Log but don't fail the save if undo recording fails
+      console.warn('Failed to record undo action:', undoError);
     }
 
     // Show notification
