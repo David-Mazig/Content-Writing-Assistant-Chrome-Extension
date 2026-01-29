@@ -300,6 +300,35 @@ const quota = await DBUtils.getStorageEstimate();
 console.log(`Using ${quota.usage} of ${quota.quota} bytes`);
 ```
 
+## Agent Routing Rules
+
+**IMPORTANT: Always delegate work to the appropriate specialized agent. Do NOT implement, test, or design directly.**
+
+### chrome-extension-implementer
+**Use for:** Implementing features, fixing bugs, debugging, refactoring, any code changes.
+
+Trigger keywords: implement, add, fix, bug, feature, refactor, debug, error, build, create, update, change, modify
+
+### chrome-extension-qa-tester
+**Use for:** Testing features, validating workflows, verifying bug fixes, checking for regressions.
+
+Trigger keywords: test, verify, check, validate, QA, regression, works, broken, reproduce
+
+**Use proactively** after any implementation is complete.
+
+### chrome-extension-ux-optimizer
+**Use for:** UI/UX design decisions, layout choices, interaction patterns, user flow optimization.
+
+Trigger keywords: UI, UX, design, layout, button, modal, popover, interface, user experience, interaction
+
+### Workflow
+1. **Planning** - Use Plan agent to design approach
+2. **Implementation** - Delegate to `chrome-extension-implementer`
+3. **Testing** - Delegate to `chrome-extension-qa-tester`
+4. **UX decisions** - Delegate to `chrome-extension-ux-optimizer`
+
+Never skip the agent delegation step. The agents have specialized knowledge and produce higher quality results.
+
 ## Testing and Debugging
 
 ### Browser Console Access
