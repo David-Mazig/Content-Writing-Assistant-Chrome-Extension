@@ -8,6 +8,11 @@ let editingContentId = null;
 let allContentCache = [];
 let activeObjectURLs = [];
 
+// Drag-and-drop state
+let sortableInstance = null;
+let dropIndicator = null;
+let orderBeforeDrag = [];
+
 // In-memory undo/redo stacks (synced with chrome.storage.session)
 // Constants and utilities are in undo-redo-utils.js (shared with background.js)
 let undoStack = [];
@@ -118,6 +123,9 @@ function initializeEventListeners() {
       renderContentList();
     }
   });
+
+  // Initialize drag-and-drop sorting
+  initializeSortable();
 }
 
 // ============================================
@@ -227,6 +235,11 @@ async function undo() {
           contentType: deletedContent.contentType
         });
         break;
+
+      case 'reorder':
+        // Undo reorder = restore beforeOrder
+        await DBUtils.updateContentOrder(action.beforeOrder);
+        break;
     }
 
     // Move to redo stack
@@ -280,6 +293,11 @@ async function redo() {
         // Redo delete = delete the content again
         await DBUtils.deleteContent(action.contentId);
         break;
+
+      case 'reorder':
+        // Redo reorder = restore afterOrder
+        await DBUtils.updateContentOrder(action.afterOrder);
+        break;
     }
 
     // Move back to undo stack
@@ -297,6 +315,173 @@ async function redo() {
 
 // ============================================
 // End Undo/Redo System
+// ============================================
+
+// ============================================
+// Drag and Drop / Reordering System
+// ============================================
+
+/**
+ * Create drop indicator element
+ */
+function createDropIndicator() {
+  const indicator = document.createElement('div');
+  indicator.className = 'drop-indicator';
+  indicator.style.display = 'none';
+  return indicator;
+}
+
+/**
+ * Position drop indicator
+ */
+function positionDropIndicator(indicator, targetEl, insertAfter) {
+  if (!targetEl) {
+    indicator.style.display = 'none';
+    return;
+  }
+
+  const rect = targetEl.getBoundingClientRect();
+  const containerRect = targetEl.parentElement.getBoundingClientRect();
+
+  indicator.style.display = 'block';
+  if (insertAfter) {
+    indicator.style.top = (rect.bottom - containerRect.top) + 'px';
+  } else {
+    indicator.style.top = (rect.top - containerRect.top) + 'px';
+  }
+}
+
+/**
+ * Update cache with new order
+ */
+function updateCacheOrder(newOrder) {
+  const orderMap = new Map(newOrder.map((item, index) => [item.key, index]));
+  allContentCache.forEach(item => {
+    if (orderMap.has(item.key)) {
+      item.order = orderMap.get(item.key);
+    }
+  });
+  allContentCache.sort((a, b) => (a.order || 0) - (b.order || 0));
+}
+
+/**
+ * Initialize SortableJS for drag-and-drop reordering
+ */
+function initializeSortable() {
+  const contentList = document.getElementById('content-list');
+  if (!contentList) return;
+
+  // Destroy existing sortable instance
+  if (sortableInstance) {
+    sortableInstance.destroy();
+    sortableInstance = null;
+  }
+
+  // Create drop indicator if not exists
+  if (!dropIndicator) {
+    dropIndicator = createDropIndicator();
+    contentList.appendChild(dropIndicator);
+  }
+
+  // Initialize SortableJS
+  sortableInstance = Sortable.create(contentList, {
+    animation: 150,
+    easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    delay: 150,
+    fallbackTolerance: 5,
+    filter: '.expanded, .btn-edit, .btn-delete, .content-actions-hover',
+    draggable: '.content-item:not(.expanded)',
+    ghostClass: 'sortable-ghost',
+    chosenClass: 'sortable-chosen',
+    dragClass: 'sortable-drag',
+
+    onStart: (evt) => handleDragStart(evt),
+    onMove: (evt) => handleDragMove(evt),
+    onEnd: (evt) => handleDragEnd(evt)
+  });
+}
+
+/**
+ * Handle drag start
+ */
+function handleDragStart(evt) {
+  const contentList = document.getElementById('content-list');
+  contentList.classList.add('drag-active');
+
+  // Capture order before drag
+  orderBeforeDrag = allContentCache.map((item, index) => ({
+    key: item.key,
+    order: index
+  }));
+}
+
+/**
+ * Handle drag move
+ */
+function handleDragMove(evt) {
+  const { related, willInsertAfter } = evt;
+
+  if (related && related.classList.contains('content-item')) {
+    positionDropIndicator(dropIndicator, related, willInsertAfter);
+  }
+
+  return true;
+}
+
+/**
+ * Handle drag end
+ */
+async function handleDragEnd(evt) {
+  const contentList = document.getElementById('content-list');
+  contentList.classList.remove('drag-active');
+
+  if (dropIndicator) {
+    dropIndicator.style.display = 'none';
+  }
+
+  // Get the dragged item
+  const draggedElement = evt.item;
+  const contentId = draggedElement.dataset.contentId;
+
+  if (!contentId || evt.oldIndex === evt.newIndex) {
+    return; // No change
+  }
+
+  try {
+    // Get all content items in new order
+    const contentItems = Array.from(contentList.querySelectorAll('.content-item'));
+    const newOrder = contentItems.map((item, index) => ({
+      key: item.dataset.contentId,
+      order: index
+    }));
+
+    // Update database with new order
+    await DBUtils.updateContentOrder(newOrder);
+
+    // Update cache
+    updateCacheOrder(newOrder);
+
+    // Record undo action
+    await UndoRedoUtils.recordReorderAction(orderBeforeDrag, newOrder);
+    await initUndoRedo(); // Reload undo/redo state
+
+    // Show success animation
+    draggedElement.classList.add('reorder-success');
+    setTimeout(() => {
+      draggedElement.classList.remove('reorder-success');
+    }, 400);
+
+    // Maintain focus on dragged item
+    draggedElement.focus();
+  } catch (error) {
+    console.error('Error saving reorder:', error);
+    // Revert to original order on error
+    await renderContentList();
+  }
+}
+
+// ============================================
+// End Drag and Drop System
 // ============================================
 
 /**
@@ -841,6 +1026,9 @@ async function renderContentList(searchQuery = '') {
       const itemEl = createContentItemElement(content);
       container.appendChild(itemEl);
     }
+
+    // Reinitialize sortable after DOM updates
+    initializeSortable();
 
     // Update button states after rendering
     updateUndoRedoButtons();

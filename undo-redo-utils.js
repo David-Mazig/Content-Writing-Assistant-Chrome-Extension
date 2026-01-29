@@ -159,5 +159,29 @@ const UndoRedoUtils = {
     await this.saveState(state.undoStack, state.redoStack);
 
     return action.id;
+  },
+
+  /**
+   * Record a reorder action for undo/redo
+   * @param {Array<{key: string, order: number}>} beforeOrder - Order before drag
+   * @param {Array<{key: string, order: number}>} afterOrder - Order after drag
+   * @returns {Promise<string>} Action ID
+   */
+  async recordReorderAction(beforeOrder, afterOrder) {
+    const state = await this.loadState();
+    const action = {
+      id: this.generateActionId(),
+      type: 'reorder',
+      timestamp: Date.now(),
+      beforeOrder,
+      afterOrder
+    };
+    state.undoStack.push(action);
+    if (state.undoStack.length > this.MAX_UNDO_HISTORY) {
+      state.undoStack.shift();
+    }
+    state.redoStack = [];
+    await this.saveState(state.undoStack, state.redoStack);
+    return action.id;
   }
 };

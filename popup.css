@@ -388,64 +388,63 @@ h2 {
   padding: var(--space-4);
 }
 
-/* Drag handle - visible on hover */
-.drag-handle {
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 0;
-  transition: opacity var(--transition-fast);
-  color: var(--color-text-tertiary);
-  cursor: grab;
-  pointer-events: none;
-  z-index: 5;
-}
-
-.content-item:hover .drag-handle {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.content-item.expanded .drag-handle {
-  display: none;
-}
-
-/* Drag and drop states */
-.content-item {
-  will-change: transform;
-}
-
-.content-item.dragging {
-  opacity: 0.5;
-  transform: scale(1.02);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+/* SortableJS drag states */
+.content-item.sortable-chosen {
+  transform: scale(1.02) rotate(1.5deg);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  cursor: grabbing;
-  pointer-events: none;
+  transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.content-item.dragging .drag-handle {
-  cursor: grabbing;
+.content-item.sortable-ghost {
+  opacity: 0;
+  border-style: dashed;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Items that need to shift down to make space */
-.content-item.shifted {
-  transform: translateY(var(--drag-item-height, 60px));
-}
-
-/* Drag indicator - shows where item will be dropped */
-.drag-indicator {
+/* Drop indicator - horizontal line with circle accent */
+.drop-indicator {
   position: absolute;
-  left: 8px;
-  right: 8px;
-  height: 4px;
+  left: 12px;
+  right: 12px;
+  height: 3px;
   background: var(--color-accent-primary);
   border-radius: 2px;
   z-index: 1000;
   pointer-events: none;
-  transition: top 0.15s ease;
+  transition: top 150ms cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 0 8px var(--color-accent-primary);
+}
+
+.drop-indicator::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background: var(--color-accent-primary);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--color-accent-primary);
+}
+
+/* Reorder success animation */
+@keyframes reorder-success {
+  0% {
+    background-color: var(--color-bg-card);
+  }
+  50% {
+    background-color: var(--color-accent-light);
+  }
+  100% {
+    background-color: var(--color-bg-card);
+  }
+}
+
+.content-item.reorder-success {
+  animation: reorder-success 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Container active state during drag */
