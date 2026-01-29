@@ -149,6 +149,54 @@ h2 {
   background-color: var(--color-border);
 }
 
+/* Header Actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.btn-icon:hover:not(:disabled) {
+  background-color: var(--color-bg-hover);
+  border-color: var(--color-border-hover);
+  color: var(--color-text-primary);
+}
+
+.btn-icon:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.btn-delete-all {
+  color: var(--color-text-secondary);
+}
+
+.btn-delete-all:hover:not(:disabled) {
+  background-color: #ffebee;
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
 .btn-secondary:focus-visible {
   outline: 2px solid var(--color-accent-primary);
   outline-offset: 2px;
@@ -176,33 +224,6 @@ h2 {
 .btn-delete:focus-visible {
   outline: 2px solid var(--color-danger);
   outline-offset: 2px;
-}
-
-.btn-delete.confirm-state {
-  background-color: var(--color-danger);
-  color: white;
-  animation: pulse 0.5s ease-in-out;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-.btn-cancel-delete {
-  background-color: var(--color-text-tertiary);
-  color: white;
-  border: none;
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-size: var(--font-size-xs);
-  margin-left: var(--space-1);
-  transition: all var(--transition-fast);
-}
-
-.btn-cancel-delete:hover {
-  background-color: var(--color-text-secondary);
 }
 
 .btn-edit {
@@ -293,6 +314,7 @@ h2 {
   flex: 1;
   overflow-y: auto;
   margin-bottom: var(--space-4);
+  position: relative;
 }
 
 .empty-state {
@@ -329,13 +351,19 @@ h2 {
   border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-4);
   margin-bottom: var(--space-2);
-  transition: all var(--transition-base);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              margin 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.2s ease,
+              box-shadow 0.2s ease,
+              background var(--transition-base),
+              border var(--transition-base);
   animation: fade-in 0.3s ease-out;
-  cursor: pointer;
+  cursor: grab;
   position: relative;
   min-height: 48px;
   display: block;
   overflow: hidden;
+  will-change: transform;
 }
 
 @keyframes fade-in {
@@ -358,6 +386,71 @@ h2 {
   border-left-width: 4px;
   cursor: default;
   padding: var(--space-4);
+}
+
+/* Drag handle - visible on hover */
+.drag-handle {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  color: var(--color-text-tertiary);
+  cursor: grab;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.content-item:hover .drag-handle {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.content-item.expanded .drag-handle {
+  display: none;
+}
+
+/* Drag and drop states */
+.content-item {
+  will-change: transform;
+}
+
+.content-item.dragging {
+  opacity: 0.5;
+  transform: scale(1.02);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  z-index: 1000;
+  cursor: grabbing;
+  pointer-events: none;
+}
+
+.content-item.dragging .drag-handle {
+  cursor: grabbing;
+}
+
+/* Items that need to shift down to make space */
+.content-item.shifted {
+  transform: translateY(var(--drag-item-height, 60px));
+}
+
+/* Drag indicator - shows where item will be dropped */
+.drag-indicator {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  height: 4px;
+  background: var(--color-accent-primary);
+  border-radius: 2px;
+  z-index: 1000;
+  pointer-events: none;
+  transition: top 0.15s ease;
+  box-shadow: 0 0 8px var(--color-accent-primary);
+}
+
+/* Container active state during drag */
+.content-list.drag-active {
+  background: rgba(217, 119, 6, 0.02);
 }
 
 /* Header hidden by default, shown on expand */

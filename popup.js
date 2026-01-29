@@ -30,6 +30,9 @@ function initializeEventListeners() {
   document.getElementById('btn-undo').addEventListener('click', undo);
   document.getElementById('btn-redo').addEventListener('click', redo);
 
+  // Delete all button
+  document.getElementById('btn-delete-all').addEventListener('click', deleteAllContent);
+
   // New content button
   document.getElementById('btn-new-content').addEventListener('click', showNewContentModal);
 
@@ -150,9 +153,13 @@ async function saveUndoRedoState() {
 function updateUndoRedoButtons() {
   const undoBtn = document.getElementById('btn-undo');
   const redoBtn = document.getElementById('btn-redo');
+  const deleteAllBtn = document.getElementById('btn-delete-all');
 
   if (undoBtn) undoBtn.disabled = undoStack.length === 0;
   if (redoBtn) redoBtn.disabled = redoStack.length === 0;
+
+  // Enable delete-all button only if there are items to delete
+  if (deleteAllBtn) deleteAllBtn.disabled = allContentCache.length === 0;
 }
 
 /**
@@ -747,6 +754,49 @@ async function deleteContent(contentId) {
 }
 
 /**
+ * Delete all content with confirmation
+ */
+async function deleteAllContent() {
+  try {
+    // Get all content items
+    const allContent = await DBUtils.getAllContent();
+
+    if (allContent.length === 0) {
+      return; // Nothing to delete
+    }
+
+    // Show confirmation dialog
+    const confirmMessage = `Are you sure you want to delete all ${allContent.length} content item${allContent.length > 1 ? 's' : ''}?\n\nThis action can be undone.`;
+    if (!confirm(confirmMessage)) {
+      return; // User cancelled
+    }
+
+    // Record each deletion for undo (in reverse order for proper restoration)
+    // We'll record all items as individual undo actions
+    for (const content of allContent) {
+      // Capture content before deletion
+      const beforeSnapshot = await DBUtils.getContent(content.key);
+
+      // Delete the content
+      await DBUtils.deleteContent(content.key);
+
+      // Record undo action
+      if (beforeSnapshot) {
+        await recordUndoAction('delete', content.key, beforeSnapshot, null);
+      }
+    }
+
+    // Refresh the content list
+    await renderContentList();
+
+    console.log(`Successfully deleted ${allContent.length} content item(s)`);
+  } catch (error) {
+    console.error('Error deleting all content:', error);
+    alert('Failed to delete all content: ' + error.message);
+  }
+}
+
+/**
  * Render content list in the UI with optional search filter
  */
 async function renderContentList(searchQuery = '') {
@@ -791,6 +841,9 @@ async function renderContentList(searchQuery = '') {
       const itemEl = createContentItemElement(content);
       container.appendChild(itemEl);
     }
+
+    // Update button states after rendering
+    updateUndoRedoButtons();
   } catch (error) {
     console.error('Error rendering content list:', error);
   }

@@ -289,6 +289,8 @@ const DBUtils = {
         media: processedMedia,
         created: data.created || Date.now(),
         modified: Date.now(),
+        // Preserve order if specified (for drag-drop reordering)
+        ...(data.order !== undefined && { order: data.order }),
         // Preserve contentType if specified (e.g., 'link' for saved links)
         ...(data.contentType && { contentType: data.contentType })
       };
@@ -357,8 +359,17 @@ const DBUtils = {
 
         request.onsuccess = () => {
           const content = request.result || [];
-          // Sort by modified date, most recent first
-          resolve(content.sort((a, b) => b.modified - a.modified));
+          // Sort by order field (ascending), then by modified date (descending)
+          resolve(content.sort((a, b) => {
+            // Items with order field come first, sorted by order
+            if (a.order !== undefined && b.order !== undefined) {
+              return a.order - b.order;
+            }
+            // Items without order come after, sorted by modified date
+            if (a.order !== undefined) return -1;
+            if (b.order !== undefined) return 1;
+            return b.modified - a.modified;
+          }));
         };
 
         request.onerror = () => {
@@ -367,6 +378,67 @@ const DBUtils = {
       });
     } catch (error) {
       console.error('Error getting all content:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Update order field for content items (for drag and drop reordering)
+   * @param {Array<{key: string, order: number}>} updates - Array of content keys with new order values
+   * @returns {Promise<void>}
+   */
+  async updateContentOrder(updates) {
+    try {
+      const db = await this.getConnection();
+
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction([this.STORE_NAME], 'readwrite');
+        const objectStore = transaction.objectStore(this.STORE_NAME);
+
+        let completed = 0;
+        const total = updates.length;
+
+        if (total === 0) {
+          resolve();
+          return;
+        }
+
+        updates.forEach(({ key, order }) => {
+          const getRequest = objectStore.get(key);
+
+          getRequest.onsuccess = () => {
+            const content = getRequest.result;
+            if (content) {
+              content.order = order;
+              content.modified = Date.now();
+
+              const putRequest = objectStore.put(content);
+
+              putRequest.onsuccess = () => {
+                completed++;
+                if (completed === total) {
+                  resolve();
+                }
+              };
+
+              putRequest.onerror = () => {
+                reject(new Error(`Failed to update order for ${key}`));
+              };
+            } else {
+              completed++;
+              if (completed === total) {
+                resolve();
+              }
+            }
+          };
+
+          getRequest.onerror = () => {
+            reject(new Error(`Failed to get content ${key}`));
+          };
+        });
+      });
+    } catch (error) {
+      console.error('Error updating content order:', error);
       throw error;
     }
   },
