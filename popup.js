@@ -38,6 +38,22 @@ function initializeEventListeners() {
   // Delete all button
   document.getElementById('btn-delete-all').addEventListener('click', deleteAllContent);
 
+  // Copy all button and dropdown
+  document.getElementById('btn-copy-all').addEventListener('click', toggleCopyMenu);
+  document.querySelectorAll('.copy-menu-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      const format = e.currentTarget.dataset.format;
+      copyAllContent(format);
+      closeCopyMenu();
+    });
+  });
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.copy-dropdown')) {
+      closeCopyMenu();
+    }
+  });
+
   // New content button
   document.getElementById('btn-new-content').addEventListener('click', showNewContentModal);
 
@@ -162,12 +178,14 @@ function updateUndoRedoButtons() {
   const undoBtn = document.getElementById('btn-undo');
   const redoBtn = document.getElementById('btn-redo');
   const deleteAllBtn = document.getElementById('btn-delete-all');
+  const copyAllBtn = document.getElementById('btn-copy-all');
 
   if (undoBtn) undoBtn.disabled = undoStack.length === 0;
   if (redoBtn) redoBtn.disabled = redoStack.length === 0;
 
-  // Enable delete-all button only if there are items to delete
+  // Enable delete-all and copy-all buttons only if there are items
   if (deleteAllBtn) deleteAllBtn.disabled = allContentCache.length === 0;
+  if (copyAllBtn) copyAllBtn.disabled = allContentCache.length === 0;
 }
 
 /**
@@ -1341,6 +1359,335 @@ function toggleCardExpansion(cardElement, content) {
   }
 }
 
+// ============================================
+// Copy All Functions
+// ============================================
+
+/**
+ * Toggle the copy dropdown menu visibility
+ */
+function toggleCopyMenu(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('copy-menu');
+  menu.classList.toggle('show');
+}
+
+/**
+ * Close the copy dropdown menu
+ */
+function closeCopyMenu() {
+  const menu = document.getElementById('copy-menu');
+  menu.classList.remove('show');
+}
+
+/**
+ * Convert a Blob to base64 data URI
+ */
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+/**
+ * Convert table data to tab-separated values (for Word paste)
+ */
+function tableToTSV(tableData) {
+  const { headers, rows } = tableData;
+  const lines = [];
+  if (headers && headers.length > 0) {
+    lines.push(headers.join('\t'));
+  }
+  if (rows) {
+    rows.forEach(row => lines.push(row.join('\t')));
+  }
+  return lines.join('\n');
+}
+
+/**
+ * Convert table data to HTML table
+ */
+function tableToHTML(tableData) {
+  const { headers, rows } = tableData;
+  let html = '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">';
+
+  if (headers && headers.length > 0) {
+    html += '<thead><tr>';
+    headers.forEach(h => {
+      html += `<th style="background-color: #f0f0f0; font-weight: bold;">${escapeHtml(h)}</th>`;
+    });
+    html += '</tr></thead>';
+  }
+
+  if (rows && rows.length > 0) {
+    html += '<tbody>';
+    rows.forEach(row => {
+      html += '<tr>';
+      row.forEach(cell => {
+        html += `<td>${escapeHtml(cell)}</td>`;
+      });
+      html += '</tr>';
+    });
+    html += '</tbody>';
+  }
+
+  html += '</table>';
+  return html;
+}
+
+/**
+ * Extract note from content text (notes are appended with "\n\nNote: ")
+ */
+function extractNote(text) {
+  if (!text) return null;
+  const match = text.match(/\n\nNote: (.+?)(?:\n|$)/);
+  return match ? match[1] : null;
+}
+
+/**
+ * Extract source title from content text (format: "\n---\nSource: Title")
+ */
+function extractSourceTitle(text) {
+  if (!text) return null;
+  const match = text.match(/\n---\nSource: (.+)$/);
+  return match ? match[1] : null;
+}
+
+/**
+ * Extract main content text (remove note and source sections)
+ */
+function extractMainContent(text) {
+  if (!text) return '';
+  return text
+    .replace(/\n\nNote: .+?(?=\n|$)/, '')
+    .replace(/\n---\nSource: .+$/, '')
+    .trim();
+}
+
+/**
+ * Determine the primary content type of an item
+ */
+function getContentType(content) {
+  const hasImage = content.media && content.media.some(m => m.type === 'image');
+  const hasTable = content.media && content.media.some(m => m.type === 'table');
+  const hasAudio = content.media && content.media.some(m => m.type === 'audio');
+  const hasVideo = content.media && content.media.some(m => m.type === 'video');
+  const isLinkType = content.contentType === 'link';
+
+  if (hasTable) return 'table';
+  if (hasImage) return 'image';
+  if (hasVideo) return 'video';
+  if (hasAudio) return 'audio';
+  if (isLinkType) return 'link';
+  return 'text';
+}
+
+/**
+ * Format a single content item for copying
+ */
+async function formatContentItem(content, format, index) {
+  const contentType = getContentType(content);
+  const note = extractNote(content.text);
+  const sourceTitle = extractSourceTitle(content.text);
+  const mainText = extractMainContent(content.text);
+  const sourceUrl = content.links && content.links.length > 0 ? content.links[0] : null;
+  const date = new Date(content.modified || content.created).toLocaleDateString();
+
+  let htmlParts = [];
+  let textParts = [];
+
+  // Format based on content type
+  if (format === 'full') {
+    // Full structured format
+    htmlParts.push(`<div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">`);
+    htmlParts.push(`<div style="font-weight: bold; color: #666; margin-bottom: 10px;">[${contentType.toUpperCase()}] Item #${index + 1} - ${date}</div>`);
+    textParts.push(`---\n[${contentType.toUpperCase()}] Item #${index + 1}\nDate: ${date}\n`);
+  }
+
+  // Add main content based on type
+  switch (contentType) {
+    case 'table':
+      const table = content.media.find(m => m.type === 'table');
+      if (table && table.data) {
+        htmlParts.push(tableToHTML(table.data));
+        textParts.push(tableToTSV(table.data));
+      }
+      break;
+
+    case 'image':
+      const images = content.media.filter(m => m.type === 'image');
+      for (const img of images) {
+        if (img.blob) {
+          const base64 = await blobToBase64(img.blob);
+          htmlParts.push(`<img src="${base64}" alt="${escapeHtml(img.name || 'image')}" style="max-width: 400px; height: auto; margin: 10px 0;" />`);
+          textParts.push(`[Image: ${img.name || 'image'}]`);
+        }
+      }
+      // Also include any text description
+      if (mainText) {
+        htmlParts.push(`<p>${escapeHtml(mainText)}</p>`);
+        textParts.push(mainText);
+      }
+      break;
+
+    case 'video':
+      const videos = content.media.filter(m => m.type === 'video');
+      videos.forEach(v => {
+        htmlParts.push(`<p>[Video: ${escapeHtml(v.name || 'video')}]</p>`);
+        textParts.push(`[Video: ${v.name || 'video'}]`);
+      });
+      if (mainText) {
+        htmlParts.push(`<p>${escapeHtml(mainText)}</p>`);
+        textParts.push(mainText);
+      }
+      break;
+
+    case 'audio':
+      const audios = content.media.filter(m => m.type === 'audio');
+      audios.forEach(a => {
+        htmlParts.push(`<p>[Audio: ${escapeHtml(a.name || 'audio')}]</p>`);
+        textParts.push(`[Audio: ${a.name || 'audio'}]`);
+      });
+      if (mainText) {
+        htmlParts.push(`<p>${escapeHtml(mainText)}</p>`);
+        textParts.push(mainText);
+      }
+      break;
+
+    case 'link':
+      if (sourceUrl) {
+        htmlParts.push(`<p><a href="${sourceUrl}">${escapeHtml(sourceUrl)}</a></p>`);
+        textParts.push(sourceUrl);
+      }
+      if (mainText) {
+        htmlParts.push(`<p>${escapeHtml(mainText)}</p>`);
+        textParts.push(mainText);
+      }
+      break;
+
+    default: // text
+      if (mainText) {
+        htmlParts.push(`<p>${escapeHtml(mainText).replace(/\n/g, '<br>')}</p>`);
+        textParts.push(mainText);
+      }
+      break;
+  }
+
+  // Add note if present
+  if (note) {
+    htmlParts.push(`<p style="color: #666; font-style: italic;">Note: ${escapeHtml(note)}</p>`);
+    textParts.push(`\nNote: ${note}`);
+  }
+
+  // Add source info based on format
+  if (format === 'full' || format === 'content-notes-source') {
+    if (sourceTitle) {
+      htmlParts.push(`<p style="color: #888; font-size: 12px;">Source: ${escapeHtml(sourceTitle)}</p>`);
+      textParts.push(`\nSource: ${sourceTitle}`);
+    }
+    if (sourceUrl) {
+      htmlParts.push(`<p style="color: #888; font-size: 12px;">URL: <a href="${sourceUrl}">${escapeHtml(sourceUrl)}</a></p>`);
+      textParts.push(`URL: ${sourceUrl}`);
+    }
+  }
+
+  if (format === 'full') {
+    htmlParts.push('</div>');
+    textParts.push('\n---\n');
+  }
+
+  return {
+    html: htmlParts.join('\n'),
+    text: textParts.join('\n')
+  };
+}
+
+/**
+ * Copy all content to clipboard in the specified format
+ */
+async function copyAllContent(format) {
+  try {
+    const allContent = await DBUtils.getAllContent();
+
+    if (!allContent || allContent.length === 0) {
+      showCopyFeedback('No content to copy');
+      return;
+    }
+
+    // Sort by order or modified date
+    allContent.sort((a, b) => {
+      if (a.order !== undefined && b.order !== undefined) {
+        return a.order - b.order;
+      }
+      return (b.modified || b.created) - (a.modified || a.created);
+    });
+
+    let htmlContent = '<html><body>';
+    let plainText = '';
+
+    // Process each content item
+    for (let i = 0; i < allContent.length; i++) {
+      const formatted = await formatContentItem(allContent[i], format, i);
+      htmlContent += formatted.html;
+      plainText += formatted.text;
+
+      // Add separator between items (except for full format which has its own)
+      if (format !== 'full' && i < allContent.length - 1) {
+        htmlContent += '<hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;" />';
+        plainText += '\n\n---\n\n';
+      }
+    }
+
+    htmlContent += '</body></html>';
+
+    // Write to clipboard with both HTML and plain text
+    const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+    const textBlob = new Blob([plainText], { type: 'text/plain' });
+
+    const clipboardItem = new ClipboardItem({
+      'text/html': htmlBlob,
+      'text/plain': textBlob
+    });
+
+    await navigator.clipboard.write([clipboardItem]);
+
+    showCopyFeedback(`Copied ${allContent.length} item${allContent.length > 1 ? 's' : ''}`);
+
+  } catch (error) {
+    console.error('Copy failed:', error);
+    showCopyFeedback('Copy failed', true);
+  }
+}
+
+/**
+ * Show copy success/error feedback toast
+ */
+function showCopyFeedback(message, isError = false) {
+  // Remove any existing toast
+  const existingToast = document.querySelector('.copy-success');
+  if (existingToast) {
+    existingToast.remove();
+  }
+
+  const toast = document.createElement('div');
+  toast.className = 'copy-success';
+  toast.textContent = message;
+
+  if (isError) {
+    toast.style.backgroundColor = '#DC2626';
+  }
+
+  document.body.appendChild(toast);
+
+  // Remove after animation
+  setTimeout(() => {
+    toast.remove();
+  }, 1500);
+}
+
 // Make functions available in global scope for testing
 window.ContentAssistant = {
   createContent,
@@ -1350,5 +1697,6 @@ window.ContentAssistant = {
   renderContentList,
   undo,
   redo,
+  copyAllContent,
   DBUtils
 };

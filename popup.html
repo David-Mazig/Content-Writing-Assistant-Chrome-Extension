@@ -28,6 +28,37 @@
             <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14zM10 11v6M14 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
+        <div class="copy-dropdown">
+          <button id="btn-copy-all" class="btn-icon" disabled aria-label="Copy all content" title="Copy All">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="copy-dropdown-menu" id="copy-menu">
+            <button class="copy-menu-item" data-format="full">
+              <span class="copy-menu-icon">📋</span>
+              <span class="copy-menu-text">
+                <span class="copy-menu-title">Full (Structured)</span>
+                <span class="copy-menu-desc">Complete export for Word</span>
+              </span>
+            </button>
+            <button class="copy-menu-item" data-format="content-notes">
+              <span class="copy-menu-icon">📝</span>
+              <span class="copy-menu-text">
+                <span class="copy-menu-title">Content + Notes</span>
+                <span class="copy-menu-desc">Main content only</span>
+              </span>
+            </button>
+            <button class="copy-menu-item" data-format="content-notes-source">
+              <span class="copy-menu-icon">🔗</span>
+              <span class="copy-menu-text">
+                <span class="copy-menu-title">Content + Notes + Source</span>
+                <span class="copy-menu-desc">Include source URLs</span>
+              </span>
+            </button>
+          </div>
+        </div>
         <button id="btn-new-content" class="btn-primary" aria-label="Create new content">+ New</button>
       </div>
     </div>
