@@ -23,6 +23,15 @@ let detectedElements = {
 };
 
 /**
+ * Escape HTML to prevent XSS and display HTML tags as literal text
+ */
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+/**
  * Check if extension context is still valid
  */
 function isExtensionContextValid() {
@@ -355,16 +364,16 @@ function showPopover(x, y) {
   popover.innerHTML = `
     <div class="cwa-popover-preview">
       ${contentType === 'text' ? `
-        <div class="cwa-preview-text">"${previewContent}"</div>
+        <div class="cwa-preview-text">"${escapeHtml(previewContent)}"</div>
         <div class="cwa-preview-meta">${charCount} chars from ${document.title.substring(0, 30)}${document.title.length > 30 ? '...' : ''}</div>
       ` : contentType === 'link' ? `
-        <div class="cwa-preview-label">Link: ${previewContent}</div>
-        <div class="cwa-preview-meta">${previewMeta}</div>
+        <div class="cwa-preview-label">Link: ${escapeHtml(previewContent)}</div>
+        <div class="cwa-preview-meta">${escapeHtml(previewMeta)}</div>
       ` : contentType === 'multi' ? `
-        <div class="cwa-preview-label">${previewContent}</div>
-        <div class="cwa-preview-meta">${previewMeta}</div>
+        <div class="cwa-preview-label">${escapeHtml(previewContent)}</div>
+        <div class="cwa-preview-meta">${escapeHtml(previewMeta)}</div>
       ` : `
-        <div class="cwa-preview-label">${previewContent}</div>
+        <div class="cwa-preview-label">${escapeHtml(previewContent)}</div>
         <div class="cwa-preview-meta">from ${document.title.substring(0, 30)}${document.title.length > 30 ? '...' : ''}</div>
       `}
     </div>

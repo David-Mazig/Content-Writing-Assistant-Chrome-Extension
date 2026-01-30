@@ -1217,7 +1217,7 @@ function createContentItemElement(content) {
 
     <div class="content-body">
       <span class="content-type-icon ${badgeClass}">${typeIcon}</span>
-      <div class="content-text">${textPreview || '<em>No text</em>'}</div>
+      <div class="content-text">${textPreview ? escapeHtml(textPreview) : '<em>No text</em>'}</div>
 
       ${sourceDomain ? `<div class="content-source">Source: ${sourceDomain}</div>` : ''}
 
@@ -1294,7 +1294,7 @@ function toggleCardExpansion(cardElement, content) {
     expandedSection.className = 'content-expanded';
 
     let expandedHTML = `
-      <div class="content-full-text">${content.text}</div>
+      <div class="content-full-text">${escapeHtml(content.text)}</div>
     `;
 
     // Show all links
@@ -1304,7 +1304,7 @@ function toggleCardExpansion(cardElement, content) {
           <div class="section-label">Links:</div>
           ${content.links.map(link => `
             <a href="${link}" target="_blank" class="content-link">
-              ${link}
+              ${escapeHtml(link)}
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" stroke-width="2"/>
               </svg>
@@ -1327,7 +1327,7 @@ function toggleCardExpansion(cardElement, content) {
               return `
                 <div class="media-item">
                   <img src="${url}" alt="${m.name}" />
-                  <div class="media-name">${m.name}</div>
+                  <div class="media-name">${escapeHtml(m.name)}</div>
                 </div>
               `;
             }).join('')}
