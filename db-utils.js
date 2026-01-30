@@ -271,7 +271,7 @@ const DBUtils = {
           console.error('[DB] Invalid media blob provided:', mediaItem);
           throw new Error('Invalid media blob provided');
         }
-        return {
+        const processedItem = {
           id: mediaItem.id || this.generateMediaId(mediaItem.type || 'media'),
           type: mediaItem.type || 'image',
           mimeType: mediaItem.mimeType || mediaItem.blob?.type || 'application/octet-stream',
@@ -279,6 +279,11 @@ const DBUtils = {
           size: mediaItem.blob?.size || 0,
           name: mediaItem.name || 'untitled'
         };
+        // Preserve tableImageIndex for table images (used for cell positioning)
+        if (mediaItem.tableImageIndex !== undefined) {
+          processedItem.tableImageIndex = mediaItem.tableImageIndex;
+        }
+        return processedItem;
       });
 
       const contentObject = {

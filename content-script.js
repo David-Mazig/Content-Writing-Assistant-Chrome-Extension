@@ -277,7 +277,12 @@ function showPopover(x, y) {
     contentType = 'image';
   } else if (selectedTable) {
     const data = extractTableData(selectedTable);
-    previewContent = `Table: ${data.rows.length} rows`;
+    const imageCount = data.images ? data.images.length : 0;
+    if (imageCount > 0) {
+      previewContent = `Table: ${data.rows.length} rows, ${imageCount} image${imageCount > 1 ? 's' : ''}`;
+    } else {
+      previewContent = `Table: ${data.rows.length} rows`;
+    }
     contentType = 'table';
   } else if (selectedLink) {
     try {
@@ -514,11 +519,12 @@ function handlePopoverKeydown(event) {
 }
 
 /**
- * Extract table data into JSON structure
+ * Extract table data into JSON structure, including embedded images with position info
  */
 function extractTableData(table) {
   const headers = [];
   const rows = [];
+  const images = [];
 
   // Extract headers from thead or first row
   const headerCells = table.querySelectorAll('thead th');
@@ -543,10 +549,32 @@ function extractTableData(table) {
     startIndex = 1;
   }
 
-  Array.from(rowsToExtract).slice(startIndex).forEach(tr => {
+  // Track image index across all cells for placeholder replacement
+  let imageIndex = 0;
+
+  Array.from(rowsToExtract).slice(startIndex).forEach((tr, rowIdx) => {
     const rowData = [];
-    tr.querySelectorAll('td, th').forEach(cell => {
-      rowData.push(cell.textContent.trim());
+    tr.querySelectorAll('td, th').forEach((cell, colIdx) => {
+      // Check for images in this cell
+      const cellImages = cell.querySelectorAll('img');
+      let cellContent = cell.textContent.trim();
+
+      cellImages.forEach(img => {
+        if (img.src && img.src.trim() !== '') {
+          // Add placeholder for this image
+          cellContent += `{{img:${imageIndex}}}`;
+          // Store image with position metadata
+          images.push({
+            element: img,
+            rowIndex: rowIdx,
+            colIndex: colIdx,
+            index: imageIndex
+          });
+          imageIndex++;
+        }
+      });
+
+      rowData.push(cellContent);
     });
     if (rowData.length > 0) {
       rows.push(rowData);
@@ -555,7 +583,8 @@ function extractTableData(table) {
 
   return {
     headers,
-    rows
+    rows,
+    images  // Array of image objects with position info
   };
 }
 
@@ -838,11 +867,41 @@ async function handleSave(event) {
     if (selectedTable) {
       const tableData = extractTableData(selectedTable);
 
+      // Fetch all images embedded in the table
+      const imageDataArray = [];
+      if (tableData.images && tableData.images.length > 0) {
+        saveBtn.innerHTML = `<span>Fetching images (0/${tableData.images.length})...</span>`;
+
+        for (let i = 0; i < tableData.images.length; i++) {
+          const img = tableData.images[i];
+          try {
+            // img is now {element, rowIndex, colIndex, index} - pass the actual element
+            const imageData = await fetchImageData(img.element);
+            imageDataArray.push(imageData);
+
+            // Update progress
+            saveBtn.innerHTML = `<span>Fetching images (${i + 1}/${tableData.images.length})...</span>`;
+          } catch (error) {
+            console.warn(`Failed to fetch image ${i + 1}:`, error);
+            // Continue with other images even if one fails
+          }
+        }
+
+        saveBtn.innerHTML = '<span>Saving...</span>';
+      }
+
+      // Remove images array from tableData before sending (we've extracted them)
+      const cleanTableData = {
+        headers: tableData.headers,
+        rows: tableData.rows
+      };
+
       response = await chrome.runtime.sendMessage({
         action: 'saveSelection',
         data: {
           type: 'table',
-          tableData: tableData,
+          tableData: cleanTableData,
+          tableImages: imageDataArray,  // Send fetched image data separately
           note: noteText,
           url: window.location.href,
           title: document.title

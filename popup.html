@@ -57,6 +57,13 @@
                 <span class="copy-menu-desc">Include source URLs</span>
               </span>
             </button>
+            <button class="copy-menu-item" data-format="download-word">
+              <span class="copy-menu-icon">📥</span>
+              <span class="copy-menu-text">
+                <span class="copy-menu-title">Download for Word</span>
+                <span class="copy-menu-desc">Save as HTML file to open in Word</span>
+              </span>
+            </button>
           </div>
         </div>
         <button id="btn-new-content" class="btn-primary" aria-label="Create new content">+ New</button>
@@ -120,6 +127,8 @@
   <script src="db-utils.js"></script>
   <!-- SortableJS for drag-drop reordering -->
   <script src="vendor/sortable.min.js"></script>
+  <!-- html2canvas for capturing content as image -->
+  <script src="html2canvas.min.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

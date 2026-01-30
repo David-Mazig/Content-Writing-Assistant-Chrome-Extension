@@ -41,8 +41,16 @@ function initializeEventListeners() {
   // Copy all button and dropdown
   document.getElementById('btn-copy-all').addEventListener('click', toggleCopyMenu);
   document.querySelectorAll('.copy-menu-item').forEach(item => {
-    item.addEventListener('click', (e) => {
+    item.addEventListener('click', async (e) => {
       const format = e.currentTarget.dataset.format;
+
+      // Handle download separately
+      if (format === 'download-word') {
+        await downloadForWord();
+        closeCopyMenu();
+        return;
+      }
+
       copyAllContent(format);
       closeCopyMenu();
     });
@@ -1090,7 +1098,9 @@ function createTablePreview(tableData) {
   previewRows.forEach(row => {
     html += '<tr>';
     row.forEach(cell => {
-      html += `<td>${escapeHtml(cell)}</td>`;
+      // Strip image placeholders from preview (images shown separately as thumbnails)
+      const cleanCell = cell.replace(/\{\{img:\d+\}\}/g, '').trim();
+      html += `<td>${escapeHtml(cleanCell)}</td>`;
     });
     html += '</tr>';
   });
@@ -1408,10 +1418,19 @@ function tableToTSV(tableData) {
 }
 
 /**
- * Convert table data to HTML table
+ * Convert table data to HTML table with optional embedded images
  */
-function tableToHTML(tableData) {
+function tableToHTML(tableData, images = []) {
   const { headers, rows } = tableData;
+
+  // Build lookup map: index -> image data
+  const imageMap = new Map();
+  images.forEach(img => {
+    if (img.tableImageIndex !== undefined && img.base64) {
+      imageMap.set(img.tableImageIndex, img);
+    }
+  });
+
   let html = '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">';
 
   if (headers && headers.length > 0) {
@@ -1427,7 +1446,21 @@ function tableToHTML(tableData) {
     rows.forEach(row => {
       html += '<tr>';
       row.forEach(cell => {
-        html += `<td>${escapeHtml(cell)}</td>`;
+        // Replace image placeholders with actual images BEFORE escaping
+        // Split by placeholder pattern, escape text parts, insert images between
+        const parts = cell.split(/(\{\{img:\d+\}\})/g);
+        let cellHtml = parts.map(part => {
+          const match = part.match(/^\{\{img:(\d+)\}\}$/);
+          if (match) {
+            const imgData = imageMap.get(parseInt(match[1]));
+            if (imgData && imgData.base64) {
+              return `<img src="${imgData.base64}" style="max-width:100px; max-height:100px; vertical-align:middle;">`;
+            }
+            return '';
+          }
+          return escapeHtml(part);
+        }).join('');
+        html += `<td>${cellHtml}</td>`;
       });
       html += '</tr>';
     });
@@ -1511,8 +1544,17 @@ async function formatContentItem(content, format, index) {
   switch (contentType) {
     case 'table':
       const table = content.media.find(m => m.type === 'table');
+      const tableImages = content.media.filter(m => m.type === 'image' && m.tableImageIndex !== undefined);
+
+      // Convert image blobs to base64 for embedding in cells
+      for (const img of tableImages) {
+        if (img.blob) {
+          img.base64 = await blobToBase64(img.blob);
+        }
+      }
+
       if (table && table.data) {
-        htmlParts.push(tableToHTML(table.data));
+        htmlParts.push(tableToHTML(table.data, tableImages));
         textParts.push(tableToTSV(table.data));
       }
       break;
@@ -1643,18 +1685,53 @@ async function copyAllContent(format) {
 
     htmlContent += '</body></html>';
 
-    // Write to clipboard with both HTML and plain text
-    const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
-    const textBlob = new Blob([plainText], { type: 'text/plain' });
+    // Capture content as image for Word compatibility
+    // (Word cannot paste base64 images from HTML clipboard - this is a browser limitation)
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = htmlContent;
+    tempElement.style.position = 'absolute';
+    tempElement.style.left = '-9999px';
+    tempElement.style.top = '0';
+    tempElement.style.backgroundColor = 'white';
+    tempElement.style.padding = '20px';
+    tempElement.style.maxWidth = '800px';
+    document.body.appendChild(tempElement);
 
-    const clipboardItem = new ClipboardItem({
-      'text/html': htmlBlob,
-      'text/plain': textBlob
+    // Wait for images to load
+    const images = tempElement.querySelectorAll('img');
+    if (images.length > 0) {
+      await Promise.all(Array.from(images).map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise(resolve => {
+          img.onload = resolve;
+          img.onerror = resolve;
+          setTimeout(resolve, 3000); // Timeout fallback
+        });
+      }));
+    }
+
+    // Capture as canvas using html2canvas
+    const canvas = await html2canvas(tempElement, {
+      backgroundColor: '#ffffff',
+      scale: 2, // Higher quality for better readability
+      logging: false,
+      useCORS: true
     });
 
-    await navigator.clipboard.write([clipboardItem]);
+    // Convert canvas to blob
+    const blob = await new Promise(resolve =>
+      canvas.toBlob(resolve, 'image/png', 0.95)
+    );
 
-    showCopyFeedback(`Copied ${allContent.length} item${allContent.length > 1 ? 's' : ''}`);
+    // Write image to clipboard
+    await navigator.clipboard.write([
+      new ClipboardItem({ 'image/png': blob })
+    ]);
+
+    // Cleanup
+    document.body.removeChild(tempElement);
+
+    showCopyFeedback(`Copied ${allContent.length} item${allContent.length > 1 ? 's' : ''} as image`);
 
   } catch (error) {
     console.error('Copy failed:', error);
@@ -1686,6 +1763,166 @@ function showCopyFeedback(message, isError = false) {
   setTimeout(() => {
     toast.remove();
   }, 1500);
+}
+
+/**
+ * Download content as HTML file for opening in Word
+ */
+async function downloadForWord() {
+  try {
+    const allContent = await DBUtils.getAllContent();
+
+    if (!allContent || allContent.length === 0) {
+      showCopyFeedback('No content to download');
+      return;
+    }
+
+    // Sort by order or modified date
+    allContent.sort((a, b) => {
+      if (a.order !== undefined && b.order !== undefined) {
+        return a.order - b.order;
+      }
+      return (b.modified || b.created) - (a.modified || a.created);
+    });
+
+    // Build HTML document with Office namespaces for better Word compatibility
+    let html = `<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word">
+<head>
+<meta charset="utf-8">
+<meta name="ProgId" content="Word.Document">
+<meta name="Generator" content="Content Writing Assistant">
+<title>Content Export</title>
+<style>
+  body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; line-height: 1.5; margin: 1in; }
+  table { border-collapse: collapse; margin: 10px 0; }
+  table, th, td { border: 1px solid #000; }
+  th { background-color: #f0f0f0; font-weight: bold; padding: 8px; }
+  td { padding: 8px; vertical-align: top; }
+  img { max-width: 150px; max-height: 150px; }
+  h2 { color: #333; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+  .item-header { margin-top: 20px; margin-bottom: 10px; }
+  .source-link { color: #0066cc; font-size: 10pt; }
+  hr { border: none; border-top: 1px solid #ccc; margin: 20px 0; }
+</style>
+</head>
+<body>
+`;
+
+    // Process each content item
+    for (let i = 0; i < allContent.length; i++) {
+      const content = allContent[i];
+      const date = new Date(content.modified || content.created).toLocaleDateString();
+      const contentType = getContentType(content);
+
+      html += `<div class="item-header"><h2>[${contentType.toUpperCase()}] Item #${i + 1} - ${date}</h2></div>\n`;
+
+      // Add content based on type
+      if (contentType === 'table') {
+        const table = content.media.find(m => m.type === 'table');
+        const tableImages = content.media.filter(m => m.type === 'image' && m.tableImageIndex !== undefined);
+
+        // Convert images to base64
+        const imageMap = new Map();
+        for (const img of tableImages) {
+          if (img.blob) {
+            const base64 = await blobToBase64(img.blob);
+            imageMap.set(img.tableImageIndex, base64);
+          }
+        }
+
+        if (table && table.data) {
+          html += tableToHTMLForWord(table.data, imageMap);
+        }
+      } else if (contentType === 'image') {
+        const images = content.media.filter(m => m.type === 'image');
+        for (const img of images) {
+          if (img.blob) {
+            const base64 = await blobToBase64(img.blob);
+            html += `<p><img src="${base64}" alt="${escapeHtml(img.name || 'image')}" /></p>\n`;
+          }
+        }
+      } else {
+        // Text content
+        if (content.text) {
+          const paragraphs = content.text.split('\n').filter(p => p.trim());
+          paragraphs.forEach(p => {
+            html += `<p>${escapeHtml(p)}</p>\n`;
+          });
+        }
+      }
+
+      // Add source URL if available
+      if (content.links && content.links.length > 0) {
+        html += `<p class="source-link">Source: <a href="${escapeHtml(content.links[0])}">${escapeHtml(content.links[0])}</a></p>\n`;
+      }
+
+      // Add separator between items
+      if (i < allContent.length - 1) {
+        html += '<hr />\n';
+      }
+    }
+
+    html += '</body></html>';
+
+    // Create and download file
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `content-export-${new Date().toISOString().slice(0,10)}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    showCopyFeedback('Downloaded! Open file in Word');
+  } catch (error) {
+    console.error('Download failed:', error);
+    showCopyFeedback('Download failed', true);
+  }
+}
+
+/**
+ * Convert table to HTML with embedded images for Word export
+ */
+function tableToHTMLForWord(tableData, imageMap) {
+  const { headers, rows } = tableData;
+
+  let html = '<table>\n';
+
+  if (headers && headers.length > 0) {
+    html += '<thead><tr>';
+    headers.forEach(h => {
+      html += `<th>${escapeHtml(h)}</th>`;
+    });
+    html += '</tr></thead>\n';
+  }
+
+  if (rows && rows.length > 0) {
+    html += '<tbody>\n';
+    rows.forEach(row => {
+      html += '<tr>';
+      row.forEach(cell => {
+        // Replace image placeholders with actual images
+        let cellHtml = escapeHtml(cell);
+        cellHtml = cellHtml.replace(/\{\{img:(\d+)\}\}/g, (match, idx) => {
+          const base64 = imageMap.get(parseInt(idx));
+          if (base64) {
+            return `<img src="${base64}" />`;
+          }
+          return '';
+        });
+        html += `<td>${cellHtml}</td>`;
+      });
+      html += '</tr>\n';
+    });
+    html += '</tbody>\n';
+  }
+
+  html += '</table>\n';
+  return html;
 }
 
 // Make functions available in global scope for testing
