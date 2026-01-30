@@ -402,3 +402,48 @@ To view the database directly:
 
 ### Migration Notes
 The extension auto-migrates from database version 1 (old dual-storage) to version 2 (unified storage). If you have data from an older version, it will be preserved during the migration.
+
+## Feature Tracking
+
+This project uses **Project Follower** for feature tracking. Features are tracked in `features.json`.
+
+### Proactive Status Updates
+
+**IMPORTANT**: Proactively suggest updating feature status when:
+
+1. **Implementation complete** - Suggest marking `done`
+   - Example: "I've completed the export functionality. Should I update features.json to mark it as done?"
+
+2. **Starting work** - Suggest marking `in-progress`
+   - Example: "We're starting work on folder organization. Should I mark it as in-progress?"
+
+3. **Bug found** in a `done` feature - Suggest marking `needs-fix`
+   - Example: "Found a bug in the text selection feature. Should I mark it as needs-fix?"
+
+4. **Session ending** - Review what was accomplished and suggest updates
+   - Example: "Before we end, we completed feature X. Should I update its status?"
+
+5. **New idea discussed** - Suggest adding as `idea`
+   - Example: "That's a great idea for search filtering. Should I add it to features.json?"
+
+### Feature Commands
+
+```bash
+# Update feature status
+npx project-follower update <id> --status done --reason "Implementation complete"
+
+# Add new feature
+npx project-follower add "Feature title" --status idea --priority 2
+
+# List features
+npx project-follower list
+
+# Sync to central dashboard
+npx project-follower sync
+```
+
+### Status Values
+- `idea` - Not started, just an idea
+- `in-progress` - Currently being worked on
+- `done` - Completed and working
+- `needs-fix` - Has bugs or issues to resolve
