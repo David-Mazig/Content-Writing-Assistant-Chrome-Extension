@@ -148,7 +148,9 @@ async function handleSaveSelection(data, sender) {
             mimeType: imageData.mimeType,
             blob: blob,
             name: imageName,
-            tableImageIndex: i  // This matches the {{img:N}} placeholder
+            tableImageIndex: i,  // This matches the {{img:N}} placeholder
+            width: imageData.width,
+            height: imageData.height
           });
         }
 
@@ -193,7 +195,9 @@ async function handleSaveSelection(data, sender) {
             type: imageData.mimeType.startsWith('image/') ? 'image' : 'media',
             mimeType: imageData.mimeType,
             blob: blob,
-            name: imageData.name
+            name: imageData.name,
+            width: imageData.width,
+            height: imageData.height
           }
         ],
         projectId: projectId
@@ -228,7 +232,9 @@ async function handleSaveSelection(data, sender) {
             type: 'image',
             mimeType: imageData.mimeType,
             blob: blob,
-            name: imageData.name
+            name: imageData.name,
+            width: imageData.width,
+            height: imageData.height
           }
         ],
         contentType: 'imagelink',

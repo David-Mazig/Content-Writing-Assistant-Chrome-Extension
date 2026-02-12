@@ -150,17 +150,14 @@ Export your collected content in 4 specialized formats:
      - Includes item numbers, types, dates
      - All metadata (notes, sources, URLs)
      - Structured layout
-     - Copied as PNG image for Word compatibility
 
    - **📄 Content + Notes**: Best for clean documents
      - Main content with notes
      - No item numbers or dates
-     - Copied as PNG image for Word compatibility
 
    - **🔗 Content + Notes + Source**: Best for research
      - Main content with sources and notes
      - Preserves references and URLs
-     - Copied as PNG image for Word compatibility
 
    - **🤖 AI Chatbot Format**: Best for AI conversations
      - XML-style delimiters: `<item id="1" type="text">...</item>`
@@ -297,7 +294,7 @@ Contributions welcome! Please:
 
 ## License
 
-[Your License Here]
+MIT License - See [LICENSE](LICENSE) file for details
 
 ## Support
 

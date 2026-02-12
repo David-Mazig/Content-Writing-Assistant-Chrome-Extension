@@ -1736,15 +1736,20 @@ async function deleteContent(contentId) {
  */
 async function deleteAllContent() {
   try {
-    // Get all content items
-    const allContent = await DBUtils.getAllContent();
+    // Get content items from active project only (use cached content)
+    const allContent = [...allContentCache];
 
     if (allContent.length === 0) {
       return; // Nothing to delete
     }
 
+    // Get active project name for confirmation message
+    const activeProjectId = await getActiveProjectId();
+    const activeProject = await DBUtils.getProject(activeProjectId);
+    const projectName = activeProject ? activeProject.name : 'this project';
+
     // Show confirmation dialog
-    const confirmMessage = `Are you sure you want to delete all ${allContent.length} content item${allContent.length > 1 ? 's' : ''}?\n\nThis action can be undone.`;
+    const confirmMessage = `Are you sure you want to delete all ${allContent.length} content item${allContent.length > 1 ? 's' : ''} from "${projectName}"?\n\nThis action can be undone.`;
     if (!confirm(confirmMessage)) {
       return; // User cancelled
     }
@@ -2272,6 +2277,15 @@ function tableToHTML(tableData, images = []) {
           if (match) {
             const imgData = imageMap.get(parseInt(match[1]));
             if (imgData && imgData.base64) {
+              // Use stored dimensions if available, otherwise fallback to constrained size
+              const widthAttr = imgData.width ? `width="${imgData.width}"` : 'style="max-width:100px;"';
+              const heightAttr = imgData.height ? `height="${imgData.height}"` : 'style="max-height:100px;"';
+              const style = imgData.width && imgData.height ? '' : (imgData.width ? heightAttr : (imgData.height ? widthAttr : 'style="max-width:100px; max-height:100px;"'));
+
+              // Apply exact dimensions if both are available
+              if (imgData.width && imgData.height) {
+                return `<img src="${imgData.base64}" width="${imgData.width}" height="${imgData.height}" style="vertical-align:middle;">`;
+              }
               return `<img src="${imgData.base64}" style="max-width:100px; max-height:100px; vertical-align:middle;">`;
             }
             return '';
@@ -2488,7 +2502,14 @@ async function formatContentItem(content, format, index) {
       for (const img of images) {
         if (img.blob) {
           const base64 = await blobToBase64(img.blob);
-          htmlParts.push(`<img src="${base64}" alt="${escapeHtml(img.name || 'image')}" style="max-width: 400px; height: auto; margin: 10px 0;" />`);
+          // Use stored dimensions if available, otherwise fallback to constrained size
+          let imgStyle = 'margin: 10px 0;';
+          if (img.width && img.height) {
+            imgStyle = `width: ${img.width}px; height: ${img.height}px; ${imgStyle}`;
+          } else {
+            imgStyle = `max-width: 400px; height: auto; ${imgStyle}`;
+          }
+          htmlParts.push(`<img src="${base64}" alt="${escapeHtml(img.name || 'image')}" style="${imgStyle}" />`);
           textParts.push(`[Image: ${img.name || 'image'}]`);
         }
       }
@@ -2576,7 +2597,8 @@ async function formatContentItem(content, format, index) {
  */
 async function copyAllContent(format) {
   try {
-    const allContent = await DBUtils.getAllContent();
+    // Use cached content (already filtered by active project)
+    const allContent = [...allContentCache];
 
     if (!allContent || allContent.length === 0) {
       showCopyFeedback('No content to copy');
@@ -2665,15 +2687,22 @@ async function copyAllContent(format) {
       canvas.toBlob(resolve, 'image/png', 0.95)
     );
 
-    // Write image to clipboard
+    // Write multiple formats to clipboard
+    // - HTML: preserves text/links as selectable content, tables as HTML tables
+    // - Plain text: fallback for simple text editors
+    // - Image: fallback for Word and image editors (handles base64 images that Word can't paste from HTML)
     await navigator.clipboard.write([
-      new ClipboardItem({ 'image/png': blob })
+      new ClipboardItem({
+        'text/html': new Blob([htmlContent], { type: 'text/html' }),
+        'text/plain': new Blob([plainText], { type: 'text/plain' }),
+        'image/png': blob
+      })
     ]);
 
     // Cleanup
     document.body.removeChild(tempElement);
 
-    showCopyFeedback(`Copied ${allContent.length} item${allContent.length > 1 ? 's' : ''} as image`);
+    showCopyFeedback(`Copied ${allContent.length} item${allContent.length > 1 ? 's' : ''}`);
 
   } catch (error) {
     console.error('Copy failed:', error);

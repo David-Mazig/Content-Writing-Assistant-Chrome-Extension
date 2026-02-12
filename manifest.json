@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Content Writing Assistant",
-  "version": "1.0.0",
-  "description": "A minimal Chrome extension placeholder for content writing assistance",
+  "version": "1.1.0",
+  "description": "Collect, organize, and manage web content for research and AI-assisted writing. Capture text, images, tables, and links with 100% local storage.",
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

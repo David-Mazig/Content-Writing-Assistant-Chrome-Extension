@@ -16,6 +16,17 @@ let prewarmSent = false;
 let extensionContextValid = true;
 let savedSelectionRange = null; // Store selection range for restoration
 
+/**
+ * Clear all capture states except the specified type
+ * @param {string} keepType - Type to preserve ('text'|'image'|'table'|'link'|'all')
+ */
+function clearCaptureStates(keepType = 'all') {
+  if (keepType !== 'text') selectedText = '';
+  if (keepType !== 'image') selectedImage = null;
+  if (keepType !== 'table') selectedTable = null;
+  if (keepType !== 'link') selectedLink = null;
+}
+
 // Track multiple detected elements for nested scenarios (e.g., image inside link)
 let detectedElements = {
   image: null,
@@ -49,17 +60,17 @@ function isExtensionContextValid() {
 document.addEventListener('mouseup', handleTextSelection);
 document.addEventListener('touchend', handleTextSelection);
 
-// Listen for image hover
-document.addEventListener('mouseover', handleImageHover);
-document.addEventListener('mouseout', handleImageHoverEnd);
+// Listen for image hover (use capture phase to intercept before websites can stop propagation)
+document.addEventListener('mouseover', handleImageHover, true);
+document.addEventListener('mouseout', handleImageHoverEnd, true);
 
-// Listen for table hover
-document.addEventListener('mouseover', handleTableHover);
-document.addEventListener('mouseout', handleTableHoverEnd);
+// Listen for table hover (use capture phase to work with complex tables like Ninja Tables)
+document.addEventListener('mouseover', handleTableHover, true);
+document.addEventListener('mouseout', handleTableHoverEnd, true);
 
-// Listen for link hover
-document.addEventListener('mouseover', handleLinkHover);
-document.addEventListener('mouseout', handleLinkHoverEnd);
+// Listen for link hover (use capture phase to intercept before websites can stop propagation)
+document.addEventListener('mouseover', handleLinkHover, true);
+document.addEventListener('mouseout', handleLinkHoverEnd, true);
 
 /**
  * Handle text selection event
@@ -94,11 +105,18 @@ function handleTextSelection(event) {
       }
     }
 
-    // Store selected text
-    selectedText = text;
+    // Cancel pending hover timers and clear other states
+    if (hoverTimer) {
+      clearTimeout(hoverTimer);
+      hoverTimer = null;
+    }
 
     // Show popover near cursor
     showPopover(event.clientX, event.clientY);
+
+    // Store selected text AFTER showPopover (which calls hidePopover that clears state)
+    clearCaptureStates('text');
+    selectedText = text;
   }, 10);
 }
 
@@ -142,8 +160,8 @@ function handleImageHover(event) {
     showPopover(rect.right - 10, rect.top + 10);
 
     // Set selected state AFTER showPopover
+    clearCaptureStates('image');
     selectedImage = img;
-    selectedText = '';
   }, 1000);
 }
 
@@ -183,9 +201,8 @@ function handleTableHover(event) {
     const rect = table.getBoundingClientRect();
     showPopover(rect.right - 10, rect.top + 10);
     // Set state AFTER showPopover (which calls hidePopover that clears state)
+    clearCaptureStates('table');
     selectedTable = table;
-    selectedText = '';
-    selectedImage = null;
   }, 1000);
 }
 
@@ -243,10 +260,8 @@ function handleLinkHover(event) {
     showPopover(rect.left + rect.width / 2, rect.bottom);
 
     // Set selected state AFTER showPopover
+    clearCaptureStates('link');
     selectedLink = link;
-    selectedText = '';
-    selectedImage = null;
-    selectedTable = null;
   }, 1000);
 }
 
@@ -563,11 +578,9 @@ function hidePopover() {
   }
 
   // Clear state (but keep detectedElements - they're set fresh before each showPopover call)
-  selectedImage = null;
+  clearCaptureStates('all');
   hoveredImage = null;
-  selectedTable = null;
   hoveredTable = null;
-  selectedLink = null;
   hoveredLink = null;
   savedSelectionRange = null;
   if (hoverTimer) {
@@ -784,17 +797,25 @@ async function fetchViaBackgroundWorker(img) {
  * Uses Canvas API for same-origin images, background worker for cross-origin
  */
 async function fetchImageData(img) {
+  // Capture original dimensions
+  const width = img.naturalWidth || img.width;
+  const height = img.naturalHeight || img.height;
+
   // Quick check: if definitely cross-origin, skip canvas and use background fetch directly
   if (!canUseCanvasExtraction(img)) {
-    return await fetchViaBackgroundWorker(img);
+    const imageData = await fetchViaBackgroundWorker(img);
+    // Add dimensions to background-fetched image
+    imageData.width = width;
+    imageData.height = height;
+    return imageData;
   }
 
   // Try canvas for same-origin/data-url/blob-url/CORS images
   try {
     // STRATEGY 1: Canvas extraction (works for same-origin or CORS-enabled images)
     const canvas = document.createElement('canvas');
-    canvas.width = img.naturalWidth || img.width;
-    canvas.height = img.naturalHeight || img.height;
+    canvas.width = width;
+    canvas.height = height;
 
     const ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0);
@@ -828,13 +849,19 @@ async function fetchImageData(img) {
     return {
       arrayBuffer: base64String,  // Now it's a Base64 string, not an ArrayBuffer
       mimeType: blob.type,
-      name: name.endsWith('.png') ? name : name + '.png'
+      name: name.endsWith('.png') ? name : name + '.png',
+      width: width,
+      height: height
     };
 
   } catch (error) {
     // STRATEGY 2: Background worker fetch (bypasses CORS restrictions)
     try {
-      return await fetchViaBackgroundWorker(img);
+      const imageData = await fetchViaBackgroundWorker(img);
+      // Add dimensions to background-fetched image
+      imageData.width = width;
+      imageData.height = height;
+      return imageData;
     } catch (fetchError) {
       console.error('[CWA] Both canvas and background fetch failed:', fetchError);
       throw new Error('Unable to save image. It may be protected by CORS restrictions.');
