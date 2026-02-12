@@ -1,0 +1,4554 @@
+- generic [active] [ref=e1]:
+  - list:
+    - listitem:
+      - link "Skip to main content" [ref=e2] [cursor=pointer]:
+        - /url: "#content"
+    - listitem:
+      - link "Skip to search" [ref=e3] [cursor=pointer]:
+        - /url: "#search"
+  - banner [ref=e7]:
+    - navigation [ref=e8]:
+      - link "MDN" [ref=e10] [cursor=pointer]:
+        - /url: /en-US/
+        - img "MDN" [ref=e11]
+      - generic [ref=e15]:
+        - navigation [ref=e17]:
+          - button "HTML" [ref=e20] [cursor=pointer]:
+            - generic [ref=e21]: HTML
+          - button "CSS" [ref=e24] [cursor=pointer]:
+            - generic [ref=e25]: CSS
+          - button "JavaScript" [ref=e28] [cursor=pointer]:
+            - generic [ref=e29]: JavaScript
+          - button "Web APIs" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]: Web APIs
+          - button "All" [ref=e36] [cursor=pointer]:
+            - generic [ref=e37]: All
+          - button "Learn" [ref=e40] [cursor=pointer]:
+            - generic [ref=e41]: Learn
+          - button "Tools" [ref=e44] [cursor=pointer]:
+            - generic [ref=e45]: Tools
+          - generic [ref=e47]:
+            - button "About" [ref=e48] [cursor=pointer]:
+              - generic [ref=e49]: About
+            - text: (external)
+          - link "Blog" [ref=e51] [cursor=pointer]:
+            - /url: /en-US/blog/
+        - button "Search the site" [ref=e54] [cursor=pointer]:
+          - img [ref=e55]
+        - link "Log in" [ref=e60] [cursor=pointer]:
+          - /url: https://developer.mozilla.org/users/fxa/login/authenticate/?next=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable
+          - img [ref=e62]
+          - generic [ref=e64]:
+            - generic: Log in
+    - generic [ref=e65]:
+      - list [ref=e66]:
+        - listitem [ref=e67]:
+          - link "Web" [ref=e68] [cursor=pointer]:
+            - /url: /en-US/docs/Web
+        - listitem [ref=e69]:
+          - link "HTML" [ref=e70] [cursor=pointer]:
+            - /url: /en-US/docs/Web/HTML
+        - listitem [ref=e71]:
+          - link "Reference" [ref=e72] [cursor=pointer]:
+            - /url: /en-US/docs/Web/HTML/Reference
+        - listitem [ref=e73]:
+          - link "Elements" [ref=e74] [cursor=pointer]:
+            - /url: /en-US/docs/Web/HTML/Reference/Elements
+        - listitem [ref=e75]:
+          - link "<table>" [ref=e76] [cursor=pointer]:
+            - /url: /en-US/docs/Web/HTML/Reference/Elements/table
+      - button "Switch color theme" [ref=e80] [cursor=pointer]:
+        - generic [ref=e81]: Theme
+      - generic [ref=e84]:
+        - button "English (US)" [ref=e85] [cursor=pointer]:
+          - generic [ref=e86]: English (US)
+        - generic: Remember language
+  - generic [ref=e88]:
+    - main [ref=e89]:
+      - generic [ref=e90]:
+        - 'heading "<table>: The Table element" [level=1] [ref=e91]'
+        - group [ref=e92]:
+          - generic "Baseline Check Baseline Widely available * Chrome check Edge check Firefox check Safari check" [ref=e93] [cursor=pointer]:
+            - img "Baseline Check" [ref=e94]
+            - generic [ref=e95]: Baseline Widely available *
+            - generic [ref=e96]:
+              - generic "Supported in Chrome and Edge" [ref=e97]:
+                - img "Chrome check" [ref=e98]
+                - img "Edge check" [ref=e99]
+              - generic "Supported in Firefox" [ref=e100]:
+                - img "Firefox check" [ref=e101]
+              - generic "Supported in Safari" [ref=e102]:
+                - img "Safari check" [ref=e103]
+        - paragraph [ref=e106]:
+          - text: The
+          - strong [ref=e107]:
+            - code [ref=e108]: <table>
+          - link "HTML" [ref=e109] [cursor=pointer]:
+            - /url: /en-US/docs/Web/HTML
+          - text: element represents tabular data—that is, information presented in a two-dimensional table comprised of rows and columns of cells containing data.
+      - complementary [ref=e110]:
+        - navigation [ref=e111]:
+          - heading "In this article" [level=2] [ref=e112]
+          - list [ref=e113]:
+            - listitem [ref=e114]:
+              - link "Try it" [ref=e115] [cursor=pointer]:
+                - /url: "#try_it"
+            - listitem [ref=e116]:
+              - link "Attributes" [ref=e117] [cursor=pointer]:
+                - /url: "#attributes"
+            - listitem [ref=e118]:
+              - link "Visual layout of table contents" [ref=e119] [cursor=pointer]:
+                - /url: "#visual_layout_of_table_contents"
+            - listitem [ref=e120]:
+              - link "Accessibility" [ref=e121] [cursor=pointer]:
+                - /url: "#accessibility"
+            - listitem [ref=e122]:
+              - link "Examples" [ref=e123] [cursor=pointer]:
+                - /url: "#examples"
+            - listitem [ref=e124]:
+              - link "Technical summary" [ref=e125] [cursor=pointer]:
+                - /url: "#technical_summary"
+            - listitem [ref=e126]:
+              - link "Specifications" [ref=e127] [cursor=pointer]:
+                - /url: "#specifications"
+            - listitem [ref=e128]:
+              - link "Browser compatibility" [ref=e129] [cursor=pointer]:
+                - /url: "#browser_compatibility"
+            - listitem [ref=e130]:
+              - link "See also" [ref=e131] [cursor=pointer]:
+                - /url: "#see_also"
+      - generic [ref=e132]:
+        - region "Try it" [ref=e133]:
+          - heading "Try it" [level=2] [ref=e134]:
+            - link "Try it" [ref=e135] [cursor=pointer]:
+              - /url: "#try_it"
+          - 'generic "HTML Demo: <table>" [ref=e138]':
+            - generic [ref=e139]:
+              - 'heading "HTML Demo: <table>" [level=4] [ref=e140]'
+              - button "Reset" [ref=e142] [cursor=pointer]:
+                - generic [ref=e143]:
+                  - generic: Reset
+            - generic [ref=e144]:
+              - tablist [ref=e145]:
+                - generic:
+                  - tab "HTML" [selected] [ref=e146] [cursor=pointer]:
+                    - generic: HTML
+                  - tab "CSS" [ref=e147] [cursor=pointer]:
+                    - generic: CSS
+              - tabpanel "HTML" [ref=e148]:
+                - generic [ref=e152]:
+                  - generic [ref=e154]:
+                    - generic [ref=e155]: "1"
+                    - generic [ref=e156]: "2"
+                    - generic [ref=e157]: "3"
+                    - generic [ref=e158]: "4"
+                    - generic [ref=e159]: "5"
+                    - generic [ref=e160]: "6"
+                    - generic [ref=e161]: "7"
+                    - generic [ref=e162]: "8"
+                    - generic [ref=e163]: "9"
+                    - generic [ref=e164]: "10"
+                    - generic [ref=e165]: "11"
+                    - generic [ref=e166]: "12"
+                    - generic [ref=e167]: "13"
+                    - generic [ref=e168]: "14"
+                    - generic [ref=e169]: "15"
+                    - generic [ref=e170]: "16"
+                    - generic [ref=e171]: "17"
+                    - generic [ref=e172]: "18"
+                    - generic [ref=e173]: "19"
+                    - generic [ref=e174]: "20"
+                    - generic [ref=e175]: "21"
+                    - generic [ref=e176]: "22"
+                    - generic [ref=e177]: "23"
+                    - generic [ref=e178]: "24"
+                    - generic [ref=e179]: "25"
+                    - generic [ref=e180]: "26"
+                    - generic [ref=e181]: "27"
+                    - generic [ref=e182]: "28"
+                    - generic [ref=e183]: "29"
+                    - generic [ref=e184]: "30"
+                  - textbox [ref=e185]:
+                    - generic [ref=e186]: <table>
+                    - generic [ref=e187]: <caption>
+                    - generic [ref=e188]: Front-end web developer course 2021
+                    - generic [ref=e189]: </caption>
+                    - generic [ref=e190]: <thead>
+                    - generic [ref=e191]: <tr>
+                    - generic [ref=e192]: <th scope="col">Person</th>
+                    - generic [ref=e193]: <th scope="col">Most interest in</th>
+                    - generic [ref=e194]: <th scope="col">Age</th>
+                    - generic [ref=e195]: </tr>
+                    - generic [ref=e196]: </thead>
+                    - generic [ref=e197]: <tbody>
+                    - generic [ref=e198]: <tr>
+                    - generic [ref=e199]: <th scope="row">Chris</th>
+                    - generic [ref=e200]: <td>HTML tables</td>
+                    - generic [ref=e201]: <td>22</td>
+                    - generic [ref=e202]: </tr>
+                    - generic [ref=e203]: <tr>
+                    - generic [ref=e204]: <th scope="row">Dennis</th>
+                    - generic [ref=e205]: <td>Web accessibility</td>
+                    - generic [ref=e206]: <td>45</td>
+                    - generic [ref=e207]: </tr>
+                    - generic [ref=e208]: <tr>
+                    - generic [ref=e209]: <th scope="row">Sarah</th>
+                    - generic [ref=e210]: <td>JavaScript frameworks</td>
+                    - generic [ref=e211]: <td>29</td>
+                    - generic [ref=e212]: </tr>
+                    - generic [ref=e213]: <tr>
+                    - generic [ref=e214]: <th scope="row">Karen</th>
+                    - generic [ref=e215]: <td>Web performance</td>
+            - generic [ref=e217]:
+              - heading "Output" [level=4] [ref=e218]
+              - iframe [ref=e220]:
+                - table "Front-end web developer course 2021" [ref=f39e2]:
+                  - caption [ref=f39e3]: Front-end web developer course 2021
+                  - rowgroup [ref=f39e4]:
+                    - row "Person Most interest in Age" [ref=f39e5]:
+                      - columnheader "Person" [ref=f39e6]
+                      - columnheader "Most interest in" [ref=f39e7]
+                      - columnheader "Age" [ref=f39e8]
+                  - rowgroup [ref=f39e9]:
+                    - row "Chris HTML tables 22" [ref=f39e10]:
+                      - rowheader "Chris" [ref=f39e11]
+                      - cell "HTML tables" [ref=f39e12]
+                      - cell "22" [ref=f39e13]
+                    - row "Dennis Web accessibility 45" [ref=f39e14]:
+                      - rowheader "Dennis" [ref=f39e15]
+                      - cell "Web accessibility" [ref=f39e16]
+                      - cell "45" [ref=f39e17]
+                    - row "Sarah JavaScript frameworks 29" [ref=f39e18]:
+                      - rowheader "Sarah" [ref=f39e19]
+                      - cell "JavaScript frameworks" [ref=f39e20]
+                      - cell "29" [ref=f39e21]
+                    - row "Karen Web performance 36" [ref=f39e22]:
+                      - rowheader "Karen" [ref=f39e23]
+                      - cell "Web performance" [ref=f39e24]
+                      - cell "36" [ref=f39e25]
+                  - rowgroup [ref=f39e26]:
+                    - row "Average age 33" [ref=f39e27]:
+                      - rowheader "Average age" [ref=f39e28]
+                      - cell "33" [ref=f39e29]
+        - region "Attributes" [ref=e221]:
+          - heading "Attributes" [level=2] [ref=e222]:
+            - link "Attributes" [ref=e223] [cursor=pointer]:
+              - /url: "#attributes"
+          - paragraph [ref=e224]:
+            - text: This element includes the
+            - link "global attributes" [ref=e225] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Global_attributes
+            - text: .
+        - region "Deprecated attributes" [ref=e226]:
+          - heading "Deprecated attributes" [level=3] [ref=e227]:
+            - link "Deprecated attributes" [ref=e228] [cursor=pointer]:
+              - /url: "#deprecated_attributes"
+          - paragraph [ref=e229]: The following attributes are deprecated and should not be used. They are documented below for reference when updating existing code and for historical interest only.
+          - generic [ref=e230]:
+            - term [ref=e231]:
+              - link "align Deprecated" [ref=e232] [cursor=pointer]:
+                - /url: "#align"
+                - code [ref=e233]: align
+                - generic "Deprecated. Not for use in new websites." [ref=e234]:
+                  - generic [ref=e235]: Deprecated
+            - definition [ref=e236]:
+              - paragraph [ref=e237]:
+                - text: Specifies the horizontal alignment of the table within its parent element. The possible
+                - link "enumerated" [ref=e238] [cursor=pointer]:
+                  - /url: /en-US/docs/Glossary/Enumerated
+                - text: values are
+                - code [ref=e239]: left
+                - text: ","
+                - code [ref=e240]: center
+                - text: ", and"
+                - code [ref=e241]: right
+                - text: . Use the
+                - link "margin-inline-start" [ref=e242] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/CSS/Reference/Properties/margin-inline-start
+                  - code [ref=e243]: margin-inline-start
+                - text: and
+                - link "margin-inline-end" [ref=e244] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/CSS/Reference/Properties/margin-inline-end
+                  - code [ref=e245]: margin-inline-end
+                - text: CSS properties instead, as this attribute is deprecated.
+            - term [ref=e246]:
+              - link "bgcolor Deprecated" [ref=e247] [cursor=pointer]:
+                - /url: "#bgcolor"
+                - code [ref=e248]: bgcolor
+                - generic "Deprecated. Not for use in new websites." [ref=e249]:
+                  - generic [ref=e250]: Deprecated
+            - definition [ref=e251]:
+              - paragraph [ref=e252]:
+                - text: Defines the background color of the table. The value is an HTML color; either a
+                - link "6-digit hexadecimal RGB code" [ref=e253] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/CSS/Reference/Values/hex-color
+                - text: ", prefixed by a"
+                - code [ref=e254]: "#"
+                - text: ", or a"
+                - link "color keyword" [ref=e255] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/CSS/Reference/Values/named-color
+                - text: . Other CSS
+                - link "<color>" [ref=e256] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/CSS/Reference/Values/color_value
+                  - code [ref=e257]: <color>
+                - text: values are not supported. Use the
+                - link "background-color" [ref=e258] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/CSS/Reference/Properties/background-color
+                  - code [ref=e259]: background-color
+                - text: CSS property instead, as this attribute is deprecated.
+            - term [ref=e260]:
+              - link "border Deprecated" [ref=e261] [cursor=pointer]:
+                - /url: "#border"
+                - code [ref=e262]: border
+                - generic "Deprecated. Not for use in new websites." [ref=e263]:
+                  - generic [ref=e264]: Deprecated
+            - definition [ref=e265]:
+              - paragraph [ref=e266]:
+                - text: Defines, as a non-negative integer value (in pixels), the size of the frame surrounding the table. If set to
+                - code [ref=e267]: "0"
+                - text: ", the"
+                - link "frame" [ref=e268] [cursor=pointer]:
+                  - /url: "#frame"
+                  - code [ref=e269]: frame
+                - text: attribute is set to void. Use the
+                - link "border" [ref=e270] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/CSS/Reference/Properties/border
+                  - code [ref=e271]: border
+                - text: CSS property instead, as this attribute is deprecated.
+            - term [ref=e272]:
+              - link "cellpadding Deprecated" [ref=e273] [cursor=pointer]:
+                - /url: "#cellpadding"
+                - code [ref=e274]: cellpadding
+                - generic "Deprecated. Not for use in new websites." [ref=e275]:
+                  - generic [ref=e276]: Deprecated
+            - definition [ref=e277]:
+              - paragraph [ref=e278]:
+                - text: "Defines the space between the content of a cell and its border. This attribute is obsolete: instead of using it, apply the"
+                - link "padding" [ref=e279] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/CSS/Reference/Properties/padding
+                  - code [ref=e280]: padding
+                - text: CSS property to the
+                - link "<th>" [ref=e281] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+                  - code [ref=e282]: <th>
+                - text: and
+                - link "<td>" [ref=e283] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/HTML/Reference/Elements/td
+                  - code [ref=e284]: <td>
+                - text: elements.
+            - term [ref=e285]:
+              - link "cellspacing Deprecated" [ref=e286] [cursor=pointer]:
+                - /url: "#cellspacing"
+                - code [ref=e287]: cellspacing
+                - generic "Deprecated. Not for use in new websites." [ref=e288]:
+                  - generic [ref=e289]: Deprecated
+            - definition [ref=e290]:
+              - paragraph [ref=e291]:
+                - text: "Defines the size of the space between two cells. This attribute is obsolete: instead of using it, set the"
+                - link "border-spacing" [ref=e292] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/CSS/Reference/Properties/border-spacing
+                  - code [ref=e293]: border-spacing
+                - text: CSS property on the
+                - code [ref=e294]: <table>
+                - text: element. Note that this has no effect if the
+                - code [ref=e295]: <table>
+                - text: element's
+                - link "border-collapse" [ref=e296] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/CSS/Reference/Properties/border-collapse
+                  - code [ref=e297]: border-collapse
+                - text: CSS property is set to
+                - code [ref=e298]: collapse
+                - text: .
+            - term [ref=e299]:
+              - link "frame Deprecated" [ref=e300] [cursor=pointer]:
+                - /url: "#frame"
+                - code [ref=e301]: frame
+                - generic "Deprecated. Not for use in new websites." [ref=e302]:
+                  - generic [ref=e303]: Deprecated
+            - definition [ref=e304]:
+              - paragraph [ref=e305]:
+                - text: Defines which side of the frame surrounding the table must be displayed. The possible
+                - link "enumerated" [ref=e306] [cursor=pointer]:
+                  - /url: /en-US/docs/Glossary/Enumerated
+                - text: values are
+                - code [ref=e307]: void
+                - text: ","
+                - code [ref=e308]: above
+                - text: ","
+                - code [ref=e309]: below
+                - text: ","
+                - code [ref=e310]: hsides
+                - text: ","
+                - code [ref=e311]: vsides
+                - text: ","
+                - code [ref=e312]: lhs
+                - text: ","
+                - code [ref=e313]: rhs
+                - text: ","
+                - code [ref=e314]: box
+                - text: and
+                - code [ref=e315]: border
+                - text: . Use the
+                - link "border-style" [ref=e316] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/CSS/Reference/Properties/border-style
+                  - code [ref=e317]: border-style
+                - text: and
+                - link "border-width" [ref=e318] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/CSS/Reference/Properties/border-width
+                  - code [ref=e319]: border-width
+                - text: CSS properties instead, as this attribute is deprecated.
+            - term [ref=e320]:
+              - link "rules Deprecated" [ref=e321] [cursor=pointer]:
+                - /url: "#rules"
+                - code [ref=e322]: rules
+                - generic "Deprecated. Not for use in new websites." [ref=e323]:
+                  - generic [ref=e324]: Deprecated
+            - definition [ref=e325]:
+              - paragraph [ref=e326]:
+                - text: Defines where rules (borders) are displayed in the table. The possible
+                - link "enumerated" [ref=e327] [cursor=pointer]:
+                  - /url: /en-US/docs/Glossary/Enumerated
+                - text: values are
+                - code [ref=e328]: none
+                - text: (default value),
+                - code [ref=e329]: groups
+                - text: (
+                - link "<thead>" [ref=e330] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/HTML/Reference/Elements/thead
+                  - code [ref=e331]: <thead>
+                - text: ","
+                - link "<tbody>" [ref=e332] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/HTML/Reference/Elements/tbody
+                  - code [ref=e333]: <tbody>
+                - text: ", and"
+                - link "<tfoot>" [ref=e334] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/HTML/Reference/Elements/tfoot
+                  - code [ref=e335]: <tfoot>
+                - text: elements),
+                - code [ref=e336]: rows
+                - text: (horizontal lines),
+                - code [ref=e337]: cols
+                - text: (vertical lines), and
+                - code [ref=e338]: all
+                - text: (border around every cell). Use the
+                - link "border" [ref=e339] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/CSS/Reference/Properties/border
+                  - code [ref=e340]: border
+                - text: CSS property on the appropriate table-related elements, as well as on the
+                - code [ref=e341]: <table>
+                - text: itself, instead, as this attribute is deprecated.
+            - term [ref=e342]:
+              - link "summary Deprecated" [ref=e343] [cursor=pointer]:
+                - /url: "#summary"
+                - code [ref=e344]: summary
+                - generic "Deprecated. Not for use in new websites." [ref=e345]:
+                  - generic [ref=e346]: Deprecated
+            - definition [ref=e347]:
+              - paragraph [ref=e348]:
+                - text: Defines an alternative text that summarizes the content of the table. Use the
+                - link "<caption>" [ref=e349] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/HTML/Reference/Elements/caption
+                  - code [ref=e350]: <caption>
+                - text: element instead, as this attribute is deprecated.
+            - term [ref=e351]:
+              - link "width Deprecated" [ref=e352] [cursor=pointer]:
+                - /url: "#width"
+                - code [ref=e353]: width
+                - generic "Deprecated. Not for use in new websites." [ref=e354]:
+                  - generic [ref=e355]: Deprecated
+            - definition [ref=e356]:
+              - paragraph [ref=e357]:
+                - text: Specifies the width of the table. Use the
+                - link "width" [ref=e358] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/CSS/Reference/Properties/width
+                  - code [ref=e359]: width
+                - text: CSS property instead, as this attribute is deprecated.
+              - paragraph [ref=e361]:
+                - strong [ref=e362]: "Note:"
+                - text: While no HTML specification includes
+                - code [ref=e363]: height
+                - text: as a
+                - code [ref=e364]: <table>
+                - text: attribute, some browsers support a non-standard interpretation of
+                - code [ref=e365]: height
+                - text: . The unitless value sets a minimum absolute height in pixels. If set as a percent value, the minimum table height will be relative to the parent container's height. Use the
+                - link "min-height" [ref=e366] [cursor=pointer]:
+                  - /url: /en-US/docs/Web/CSS/Reference/Properties/min-height
+                  - code [ref=e367]: min-height
+                - text: CSS property instead, as this attribute is deprecated.
+        - region "Visual layout of table contents" [ref=e368]:
+          - heading "Visual layout of table contents" [level=2] [ref=e369]:
+            - link "Visual layout of table contents" [ref=e370] [cursor=pointer]:
+              - /url: "#visual_layout_of_table_contents"
+          - paragraph [ref=e371]: "Following elements are part of the table structure:"
+          - list [ref=e372]:
+            - listitem [ref=e373]:
+              - link "<caption>" [ref=e374] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/caption
+                - code [ref=e375]: <caption>
+            - listitem [ref=e376]:
+              - link "<thead>" [ref=e377] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/thead
+                - code [ref=e378]: <thead>
+            - listitem [ref=e379]:
+              - link "<colgroup>" [ref=e380] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/colgroup
+                - code [ref=e381]: <colgroup>
+            - listitem [ref=e382]:
+              - link "<col>" [ref=e383] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/col
+                - code [ref=e384]: <col>
+            - listitem [ref=e385]:
+              - link "<th>" [ref=e386] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+                - code [ref=e387]: <th>
+            - listitem [ref=e388]:
+              - link "<tbody>" [ref=e389] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/tbody
+                - code [ref=e390]: <tbody>
+            - listitem [ref=e391]:
+              - link "<tr>" [ref=e392] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/tr
+                - code [ref=e393]: <tr>
+            - listitem [ref=e394]:
+              - link "<td>" [ref=e395] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/td
+                - code [ref=e396]: <td>
+            - listitem [ref=e397]:
+              - link "<tfoot>" [ref=e398] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/tfoot
+                - code [ref=e399]: <tfoot>
+          - paragraph [ref=e400]:
+            - text: The
+            - code [ref=e401]: <table>
+            - text: box establishes a table formatting context. Elements inside the
+            - code [ref=e402]: <table>
+            - text: "generate rectangular boxes. Each box occupies a number of table cells according to the following rules:"
+          - list [ref=e403]:
+            - listitem [ref=e404]: The row boxes fill the table in the source code order from top to bottom. Each row box occupies one row of cells.
+            - listitem [ref=e405]: A row group box occupies one or more row boxes.
+            - listitem [ref=e406]:
+              - text: Column boxes are placed next to each other in source code order. Depending on the value of the
+              - link "dir" [ref=e407] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Global_attributes/dir
+                - code [ref=e408]: dir
+              - text: attribute, the columns are laid in left-to-right or right-to-left direction. A column box occupies one or more columns of table cells.
+            - listitem [ref=e409]: A column group box occupies one or more column boxes.
+            - listitem [ref=e410]: A cell box may span over multiple rows and columns. User agents trim cells to fit in the available number of rows and columns.
+          - paragraph [ref=e411]: Table cells do have padding. Boxes that make up a table do not have margins.
+        - region "Table layers and transparency" [ref=e412]:
+          - heading "Table layers and transparency" [level=3] [ref=e413]:
+            - link "Table layers and transparency" [ref=e414] [cursor=pointer]:
+              - /url: "#table_layers_and_transparency"
+          - paragraph [ref=e415]: "For styling purpose the table elements may be thought of as being put on six superimposed layers:"
+          - paragraph [ref=e416]:
+            - img "Table element layers" [ref=e417]
+          - paragraph [ref=e418]: The background set on an element in one layer will be visible only if the layers above it have transparent background. A missing cell is rendered as if an anonymous table-cell box occupied that place.
+        - region "Accessibility" [ref=e419]:
+          - heading "Accessibility" [level=2] [ref=e420]:
+            - link "Accessibility" [ref=e421] [cursor=pointer]:
+              - /url: "#accessibility"
+        - region "Captions" [ref=e422]:
+          - heading "Captions" [level=3] [ref=e423]:
+            - link "Captions" [ref=e424] [cursor=pointer]:
+              - /url: "#captions"
+          - paragraph [ref=e425]:
+            - text: By supplying a
+            - link "<caption>" [ref=e426] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/caption
+              - code [ref=e427]: <caption>
+            - text: element whose value clearly and concisely describes the table's purpose, it helps the people decide if they need to check the rest of the table content or skip over it.
+          - paragraph [ref=e428]: This helps people navigating with the aid of assistive technology such as a screen reader, people experiencing low vision conditions, and people with cognitive concerns.
+          - list [ref=e429]:
+            - listitem [ref=e430]:
+              - link "MDN Adding a caption to your table with <caption>" [ref=e431] [cursor=pointer]:
+                - /url: /en-US/docs/Learn_web_development/Core/Structuring_content/Table_accessibility#adding_a_caption_to_your_table_with_caption
+            - listitem [ref=e432]:
+              - link "Caption & Summary • Tables • W3C WAI Web Accessibility Tutorials (external)" [ref=e433] [cursor=pointer]:
+                - /url: https://www.w3.org/WAI/tutorials/tables/caption-summary/
+        - region "Scoping rows and columns" [ref=e434]:
+          - heading "Scoping rows and columns" [level=3] [ref=e435]:
+            - link "Scoping rows and columns" [ref=e436] [cursor=pointer]:
+              - /url: "#scoping_rows_and_columns"
+          - paragraph [ref=e437]:
+            - text: The
+            - link "scope" [ref=e438] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th#scope
+              - code [ref=e439]: scope
+            - text: attribute on header cells (
+            - link "<th>" [ref=e440] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+              - code [ref=e441]: <th>
+            - text: elements) is redundant in simple contexts, because scope is inferred. However, some assistive technologies may fail to draw correct inferences, so specifying header scope may improve user experiences. In complex tables,
+            - link "scope" [ref=e442] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th#scope
+              - code [ref=e443]: scope
+            - text: can be specified to provide necessary information about the cells related to a header.
+          - list [ref=e444]:
+            - listitem [ref=e445]:
+              - link "MDN table accessibility guide" [ref=e446] [cursor=pointer]:
+                - /url: /en-US/docs/Learn_web_development/Core/Structuring_content/Table_accessibility
+            - listitem [ref=e447]:
+              - link "Tables with two headers • Tables • W3C WAI Web Accessibility Tutorials (external)" [ref=e448] [cursor=pointer]:
+                - /url: https://www.w3.org/WAI/tutorials/tables/two-headers/
+            - listitem [ref=e449]:
+              - link "Tables with irregular headers • Tables • W3C WAI Web Accessibility Tutorials (external)" [ref=e450] [cursor=pointer]:
+                - /url: https://www.w3.org/WAI/tutorials/tables/irregular/
+            - listitem [ref=e451]:
+              - 'link "H63: Using the scope attribute to associate header cells and data cells in data tables | W3C Techniques for WCAG 2.0 (external)" [ref=e452] [cursor=pointer]':
+                - /url: https://www.w3.org/TR/WCAG20-TECHS/H63.html
+        - region "Complicated tables" [ref=e453]:
+          - heading "Complicated tables" [level=3] [ref=e454]:
+            - link "Complicated tables" [ref=e455] [cursor=pointer]:
+              - /url: "#complicated_tables"
+          - paragraph [ref=e456]:
+            - text: Assistive technologies such as screen readers may have difficulty parsing tables that are so complex that header cells can't be associated in a strictly horizontal or vertical way. This is typically indicated by the presence of the
+            - link "colspan" [ref=e457] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/td#colspan
+              - code [ref=e458]: colspan
+            - text: and
+            - link "rowspan" [ref=e459] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/td#rowspan
+              - code [ref=e460]: rowspan
+            - text: attributes.
+          - paragraph [ref=e461]:
+            - text: Ideally, consider alternate ways to present the table's content, including breaking it apart into a collection of smaller, related tables that don't have to rely on using the
+            - link "colspan" [ref=e462] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/td#colspan
+              - code [ref=e463]: colspan
+            - text: and
+            - link "rowspan" [ref=e464] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/td#rowspan
+              - code [ref=e465]: rowspan
+            - text: attributes. In addition to helping people who use assistive technology understand the table's content, this may also benefit people with cognitive concerns who may have difficulty understanding the associations the table layout is describing.
+          - paragraph [ref=e466]:
+            - text: If the table cannot be broken apart, use a combination of the
+            - link "id" [ref=e467] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Global_attributes/id
+              - code [ref=e468]: id
+            - text: and
+            - link "headers" [ref=e469] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/td#headers
+              - code [ref=e470]: headers
+            - text: attributes to programmatically associate each table cell with the header(s) (
+            - link "<th>" [ref=e471] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+              - code [ref=e472]: <th>
+            - text: elements) the cell is associated with.
+          - list [ref=e473]:
+            - listitem [ref=e474]:
+              - link "MDN table accessibility guide" [ref=e475] [cursor=pointer]:
+                - /url: /en-US/docs/Learn_web_development/Core/Structuring_content/Table_accessibility
+            - listitem [ref=e476]:
+              - link "Tables with multi-level headers • Tables • W3C WAI Web Accessibility Tutorials (external)" [ref=e477] [cursor=pointer]:
+                - /url: https://www.w3.org/WAI/tutorials/tables/multi-level/
+            - listitem [ref=e478]:
+              - 'link "H43: Using id and headers attributes to associate data cells with header cells in data tables | Techniques for W3C WCAG 2.0 (external)" [ref=e479] [cursor=pointer]':
+                - /url: https://www.w3.org/TR/WCAG20-TECHS/H43.html
+        - region "Examples" [ref=e480]:
+          - heading "Examples" [level=2] [ref=e481]:
+            - link "Examples" [ref=e482] [cursor=pointer]:
+              - /url: "#examples"
+          - paragraph [ref=e483]:
+            - text: The examples below include tables of progressively increasing complexity. See also our beginner's
+            - link "Styling tables" [ref=e484] [cursor=pointer]:
+              - /url: /en-US/docs/Learn_web_development/Core/Styling_basics/Tables
+            - text: guide for table styling information including common, useful techniques.
+          - paragraph [ref=e485]:
+            - text: Since the structure of a
+            - code [ref=e486]: <table>
+            - text: involves the use of several table-related HTML elements along with various associated attributes, the following examples are intended to provide a simplified explanation that covers the basics and common standards. Additional and more detailed information can be found on the corresponding linked pages.
+          - paragraph [ref=e487]:
+            - text: These table examples demonstrate how to create an
+            - link "accessible" [ref=e488] [cursor=pointer]:
+              - /url: /en-US/docs/Glossary/Accessibility
+            - text: table that is structured with HTML and styled with
+            - link "CSS" [ref=e489] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS
+            - text: .
+          - paragraph [ref=e490]:
+            - text: Because of how HTML tables are structured, the
+            - link "markup" [ref=e491] [cursor=pointer]:
+              - /url: /en-US/docs/Glossary/Markup
+            - text: can quickly grow. For this reason, it is important to clearly define the table's purpose and final appearance to create the appropriate structure. A logical structure developed with
+            - link "semantic" [ref=e492] [cursor=pointer]:
+              - /url: /en-US/docs/Glossary/Semantics
+            - text: markup is not only easier to style, but enables useful and accessible tables that can be understood and navigated by everyone, including search engines and users of assistive technologies.
+          - paragraph [ref=e493]: The first example is basic, with subsequent examples growing in complexity. First, we will develop a very basic HTML table structure for the table. The first two examples contain no table section groups such as a defined head, body, or foot, and involve no cell spanning or explicitly defined cell relationships. Not even a caption is provided. As we work through the examples, they will be progressively enhanced to include all the table features that a complex data table should possess.
+        - region "Basic table" [ref=e494]:
+          - heading "Basic table" [level=3] [ref=e495]:
+            - link "Basic table" [ref=e496] [cursor=pointer]:
+              - /url: "#basic_table"
+          - paragraph [ref=e497]:
+            - text: This example includes a
+            - emphasis [ref=e498]: very
+            - text: basic table with three rows and two columns. To demonstrate default browser table styles, no CSS has been included in this example.
+          - heading "HTML" [level=4] [ref=e499]
+          - paragraph [ref=e500]:
+            - text: The table rows are defined with
+            - link "<tr>" [ref=e501] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/tr
+              - code [ref=e502]: <tr>
+            - text: elements, and the columns are defined with table header and data cells within them. The first row contains the header cells (
+            - link "<th>" [ref=e503] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+              - code [ref=e504]: <th>
+            - text: elements) that serve as column headers for the data cells (
+            - link "<td>" [ref=e505] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/td
+              - code [ref=e506]: <td>
+            - text: elements). Each element (
+            - link "<th>" [ref=e507] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+              - code [ref=e508]: <th>
+            - text: or
+            - link "<td>" [ref=e509] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/td
+              - code [ref=e510]: <td>
+            - text: ) per row is in its respective column—that is, the first element of a row is in the first column, and the second element of that row is in the second column.
+          - generic [ref=e512]:
+            - generic [ref=e513]:
+              - generic [ref=e514]: html
+              - button "Copy" [ref=e517] [cursor=pointer]:
+                - generic [ref=e518]:
+                  - generic: Copy
+              - generic "Run example in MDN Playground (opens in new tab)" [ref=e519]:
+                - link "Play" [ref=e520] [cursor=pointer]:
+                  - /url: https://developer.mozilla.org/en-US/play?uuid=0f216330c996fdfd1a7bab06057aa5b06383e9eb&state=dY4xCwIxDIX%2FSsl8UFAHKaHgKuji6hJ74VJpe3DNpPjfRTm1HDi9x5d88O4gmhM4QKVLYn8uxqBO73w18UfKjFalQbvhR9DO363V%2BwNNkcyJShC%2BodW%2Bua22X%2FDPjkGIk9mPUupYFv56s%2FTRftZDB6FWcAAdXOdU4czgIMVBFB5P&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                  - generic [ref=e521]:
+                    - generic: Play
+            - code [ref=e523]:
+              - generic [ref=e524]:
+                - generic [ref=e525]: <table
+                - text: ">"
+              - generic [ref=e526]:
+                - generic [ref=e527]: <tr
+                - text: ">"
+              - generic [ref=e528]:
+                - generic [ref=e529]: <th
+                - text: ">"
+              - text: Name
+              - generic [ref=e530]:
+                - generic [ref=e531]: </th
+                - text: ">"
+              - generic [ref=e532]:
+                - generic [ref=e533]: <th
+                - text: ">"
+              - text: Age
+              - generic [ref=e534]:
+                - generic [ref=e535]: </th
+                - text: ">"
+              - generic [ref=e536]:
+                - generic [ref=e537]: </tr
+                - text: ">"
+              - generic [ref=e538]:
+                - generic [ref=e539]: <tr
+                - text: ">"
+              - generic [ref=e540]:
+                - generic [ref=e541]: <td
+                - text: ">"
+              - text: Maria Sanchez
+              - generic [ref=e542]:
+                - generic [ref=e543]: </td
+                - text: ">"
+              - generic [ref=e544]:
+                - generic [ref=e545]: <td
+                - text: ">"
+              - text: "28"
+              - generic [ref=e546]:
+                - generic [ref=e547]: </td
+                - text: ">"
+              - generic [ref=e548]:
+                - generic [ref=e549]: </tr
+                - text: ">"
+              - generic [ref=e550]:
+                - generic [ref=e551]: <tr
+                - text: ">"
+              - generic [ref=e552]:
+                - generic [ref=e553]: <td
+                - text: ">"
+              - text: Michael Johnson
+              - generic [ref=e554]:
+                - generic [ref=e555]: </td
+                - text: ">"
+              - generic [ref=e556]:
+                - generic [ref=e557]: <td
+                - text: ">"
+              - text: "34"
+              - generic [ref=e558]:
+                - generic [ref=e559]: </td
+                - text: ">"
+              - generic [ref=e560]:
+                - generic [ref=e561]: </tr
+                - text: ">"
+              - generic [ref=e562]:
+                - generic [ref=e563]: </table
+                - text: ">"
+          - heading "Result" [level=4] [ref=e564]
+          - paragraph [ref=e565]:
+            - text: There is no custom
+            - link "CSS" [ref=e566] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS
+            - text: or
+            - link "user stylesheet" [ref=e567] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Guides/Cascade/Introduction#author_stylesheets
+            - text: applied to this table. The styling results purely from the
+            - link "user-agent stylesheet" [ref=e568] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Guides/Cascade/Introduction#user-agent_stylesheets
+            - text: .
+          - generic [ref=e570]:
+            - generic "Run example in MDN Playground (opens in new tab)" [ref=e572]:
+              - link "Play" [ref=e573] [cursor=pointer]:
+                - /url: https://developer.mozilla.org/en-US/play?uuid=0f216330c996fdfd1a7bab06057aa5b06383e9eb&state=dY4xCwIxDIX%2FSsl8UFAHKaHgKuji6hJ74VJpe3DNpPjfRTm1HDi9x5d88O4gmhM4QKVLYn8uxqBO73w18UfKjFalQbvhR9DO363V%2BwNNkcyJShC%2BodW%2Bua22X%2FDPjkGIk9mPUupYFv56s%2FTRftZDB6FWcAAdXOdU4czgIMVBFB5P&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                - generic [ref=e574]:
+                  - generic: Play
+            - iframe [ref=e576]:
+              - table [ref=f40e2]:
+                - rowgroup [ref=f40e3]:
+                  - row "Name Age" [ref=f40e4]:
+                    - columnheader "Name" [ref=f40e5]
+                    - columnheader "Age" [ref=f40e6]
+                  - row "Maria Sanchez 28" [ref=f40e7]:
+                    - cell "Maria Sanchez" [ref=f40e8]
+                    - cell "28" [ref=f40e9]
+                  - row "Michael Johnson 34" [ref=f40e10]:
+                    - cell "Michael Johnson" [ref=f40e11]
+                    - cell "34" [ref=f40e12]
+        - region "Expanded table with header cells" [ref=e577]:
+          - heading "Expanded table with header cells" [level=3] [ref=e578]:
+            - link "Expanded table with header cells" [ref=e579] [cursor=pointer]:
+              - /url: "#expanded_table_with_header_cells"
+          - paragraph [ref=e580]:
+            - text: This example extends the
+            - link "basic table" [ref=e581] [cursor=pointer]:
+              - /url: "#basic_table"
+            - text: ", extending the content and adding basic CSS styles."
+          - heading "HTML" [level=4] [ref=e582]
+          - paragraph [ref=e583]:
+            - text: The table comprises four rows (
+            - link "<tr>" [ref=e584] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/tr
+              - code [ref=e585]: <tr>
+            - text: elements) now, with four columns each. The first row is a row of header cells (The first row contains only
+            - link "<th>" [ref=e586] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+              - code [ref=e587]: <th>
+            - text: elements). Subsequent rows include a header column (
+            - link "<th>" [ref=e588] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+              - code [ref=e589]: <th>
+            - text: elements as the first child elements of each row) and three data columns (
+            - link "<td>" [ref=e590] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/td
+              - code [ref=e591]: <td>
+            - text: elements). As table sectioning elements are not used, the browser automatically defines the content group structure, i.e., all rows are wrapped within the body of the table of an implicit
+            - link "<tbody>" [ref=e592] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/tbody
+              - code [ref=e593]: <tbody>
+            - text: element.
+          - generic [ref=e595]:
+            - generic [ref=e596]:
+              - generic [ref=e597]: html
+              - button "Copy" [ref=e600] [cursor=pointer]:
+                - generic [ref=e601]:
+                  - generic: Copy
+              - generic "Run example in MDN Playground (opens in new tab)" [ref=e602]:
+                - link "Play" [ref=e603] [cursor=pointer]:
+                  - /url: https://developer.mozilla.org/en-US/play?uuid=e35770884f71561c7e259f2009a7fca8596f4dc7&state=jZJdS8MwFIb%2FyuFcKbQ2SbcVa%2ByFKH7AduNtb9IlNHFtJmkqjrH%2FLt2qrKXCLg4JD%2Bc95yFkj9rXFabIvSgqleUWgHt3PLubzlaiVjzy%2Bgy9Po7AUtWFcvBu7Hrc%2ByAqcU551E8fblkKVwqnPKzKdqfsYIjMZiyJKeWRl2eQe1MrkMKr7nKfIyOUhGQRkjjH7K21CuIAOsijriMb5ckNIX%2FoH60n%2BSWchGdRGdtszEhrHsc0mV%2BgRUNCQ3rUErYVbgf0pEan1eLkAreXbaMNrMRG1K0TI7UFobczdoEaC0kSstOLVTtgJy827UXnE148%2Bv06GOC6aTDFI4B911RsnVQuBfb5Dc22MhJcWVzRGYG%2Bru9ye8htbr0OcuvlMEaHsQWBvvoYBvjRbcQAvVa1whQrU2qPhx8%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                  - generic [ref=e604]:
+                    - generic: Play
+            - code [ref=e606]:
+              - generic [ref=e607]:
+                - generic [ref=e608]: <table
+                - text: ">"
+              - generic [ref=e609]:
+                - generic [ref=e610]: <tr
+                - text: ">"
+              - generic [ref=e611]:
+                - generic [ref=e612]: <th
+                - text: ">"
+              - text: Name
+              - generic [ref=e613]:
+                - generic [ref=e614]: </th
+                - text: ">"
+              - generic [ref=e615]:
+                - generic [ref=e616]: <th
+                - text: ">"
+              - text: ID
+              - generic [ref=e617]:
+                - generic [ref=e618]: </th
+                - text: ">"
+              - generic [ref=e619]:
+                - generic [ref=e620]: <th
+                - text: ">"
+              - text: Member Since
+              - generic [ref=e621]:
+                - generic [ref=e622]: </th
+                - text: ">"
+              - generic [ref=e623]:
+                - generic [ref=e624]: <th
+                - text: ">"
+              - text: Balance
+              - generic [ref=e625]:
+                - generic [ref=e626]: </th
+                - text: ">"
+              - generic [ref=e627]:
+                - generic [ref=e628]: </tr
+                - text: ">"
+              - generic [ref=e629]:
+                - generic [ref=e630]: <tr
+                - text: ">"
+              - generic [ref=e631]:
+                - generic [ref=e632]: <th
+                - text: ">"
+              - text: Margaret Nguyen
+              - generic [ref=e633]:
+                - generic [ref=e634]: </th
+                - text: ">"
+              - generic [ref=e635]:
+                - generic [ref=e636]: <td
+                - text: ">"
+              - text: "427311"
+              - generic [ref=e637]:
+                - generic [ref=e638]: </td
+                - text: ">"
+              - generic [ref=e639]:
+                - generic [ref=e640]: <td
+                - text: ">"
+              - generic [ref=e641]:
+                - generic [ref=e642]: <time
+                - text: datetime
+                - generic [ref=e643]: ="2010-06-03"
+                - text: ">"
+              - text: June 3, 2010
+              - generic [ref=e644]:
+                - generic [ref=e645]: </time
+                - text: ">"
+              - generic [ref=e646]:
+                - generic [ref=e647]: </td
+                - text: ">"
+              - generic [ref=e648]:
+                - generic [ref=e649]: <td
+                - text: ">"
+              - text: "0.00"
+              - generic [ref=e650]:
+                - generic [ref=e651]: </td
+                - text: ">"
+              - generic [ref=e652]:
+                - generic [ref=e653]: </tr
+                - text: ">"
+              - generic [ref=e654]:
+                - generic [ref=e655]: <tr
+                - text: ">"
+              - generic [ref=e656]:
+                - generic [ref=e657]: <th
+                - text: ">"
+              - text: Edvard Galinski
+              - generic [ref=e658]:
+                - generic [ref=e659]: </th
+                - text: ">"
+              - generic [ref=e660]:
+                - generic [ref=e661]: <td
+                - text: ">"
+              - text: "533175"
+              - generic [ref=e662]:
+                - generic [ref=e663]: </td
+                - text: ">"
+              - generic [ref=e664]:
+                - generic [ref=e665]: <td
+                - text: ">"
+              - generic [ref=e666]:
+                - generic [ref=e667]: <time
+                - text: datetime
+                - generic [ref=e668]: ="2011-01-13"
+                - text: ">"
+              - text: January 13, 2011
+              - generic [ref=e669]:
+                - generic [ref=e670]: </time
+                - text: ">"
+              - generic [ref=e671]:
+                - generic [ref=e672]: </td
+                - text: ">"
+              - generic [ref=e673]:
+                - generic [ref=e674]: <td
+                - text: ">"
+              - text: "37.00"
+              - generic [ref=e675]:
+                - generic [ref=e676]: </td
+                - text: ">"
+              - generic [ref=e677]:
+                - generic [ref=e678]: </tr
+                - text: ">"
+              - generic [ref=e679]:
+                - generic [ref=e680]: <tr
+                - text: ">"
+              - generic [ref=e681]:
+                - generic [ref=e682]: <th
+                - text: ">"
+              - text: Hoshi Nakamura
+              - generic [ref=e683]:
+                - generic [ref=e684]: </th
+                - text: ">"
+              - generic [ref=e685]:
+                - generic [ref=e686]: <td
+                - text: ">"
+              - text: "601942"
+              - generic [ref=e687]:
+                - generic [ref=e688]: </td
+                - text: ">"
+              - generic [ref=e689]:
+                - generic [ref=e690]: <td
+                - text: ">"
+              - generic [ref=e691]:
+                - generic [ref=e692]: <time
+                - text: datetime
+                - generic [ref=e693]: ="2012-07-23"
+                - text: ">"
+              - text: July 23, 2012
+              - generic [ref=e694]:
+                - generic [ref=e695]: </time
+                - text: ">"
+              - generic [ref=e696]:
+                - generic [ref=e697]: </td
+                - text: ">"
+              - generic [ref=e698]:
+                - generic [ref=e699]: <td
+                - text: ">"
+              - text: "15.00"
+              - generic [ref=e700]:
+                - generic [ref=e701]: </td
+                - text: ">"
+              - generic [ref=e702]:
+                - generic [ref=e703]: </tr
+                - text: ">"
+              - generic [ref=e704]:
+                - generic [ref=e705]: </table
+                - text: ">"
+          - heading "CSS" [level=4] [ref=e706]
+          - paragraph [ref=e707]:
+            - text: With CSS, we provide the basic styling to create lines around the components of the table to make the data structure clearer. The CSS adds a solid border around the
+            - code [ref=e708]: <table>
+            - text: and around each of the table's cells, including those specified with both
+            - link "<th>" [ref=e709] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+              - code [ref=e710]: <th>
+            - text: and
+            - link "<td>" [ref=e711] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/td
+              - code [ref=e712]: <td>
+            - text: elements, demarcating every header and data cells.
+          - generic [ref=e714]:
+            - generic [ref=e715]:
+              - generic [ref=e716]: css
+              - button "Copy" [ref=e719] [cursor=pointer]:
+                - generic [ref=e720]:
+                  - generic: Copy
+              - generic "Run example in MDN Playground (opens in new tab)" [ref=e721]:
+                - link "Play" [ref=e722] [cursor=pointer]:
+                  - /url: https://developer.mozilla.org/en-US/play?uuid=e35770884f71561c7e259f2009a7fca8596f4dc7&state=jZJdS8MwFIb%2FyuFcKbQ2SbcVa%2ByFKH7AduNtb9IlNHFtJmkqjrH%2FLt2qrKXCLg4JD%2Bc95yFkj9rXFabIvSgqleUWgHt3PLubzlaiVjzy%2Bgy9Po7AUtWFcvBu7Hrc%2ByAqcU551E8fblkKVwqnPKzKdqfsYIjMZiyJKeWRl2eQe1MrkMKr7nKfIyOUhGQRkjjH7K21CuIAOsijriMb5ckNIX%2FoH60n%2BSWchGdRGdtszEhrHsc0mV%2BgRUNCQ3rUErYVbgf0pEan1eLkAreXbaMNrMRG1K0TI7UFobczdoEaC0kSstOLVTtgJy827UXnE148%2Bv06GOC6aTDFI4B911RsnVQuBfb5Dc22MhJcWVzRGYG%2Bru9ye8htbr0OcuvlMEaHsQWBvvoYBvjRbcQAvVa1whQrU2qPhx8%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                  - generic [ref=e723]:
+                    - generic: Play
+            - code [ref=e725]: "table { border: 2px solid rgb(140 140 140); } th, td { border: 1px solid rgb(160 160 160); }"
+          - heading "Result" [level=4] [ref=e726]
+          - generic [ref=e728]:
+            - generic "Run example in MDN Playground (opens in new tab)" [ref=e730]:
+              - link "Play" [ref=e731] [cursor=pointer]:
+                - /url: https://developer.mozilla.org/en-US/play?uuid=e35770884f71561c7e259f2009a7fca8596f4dc7&state=jZJdS8MwFIb%2FyuFcKbQ2SbcVa%2ByFKH7AduNtb9IlNHFtJmkqjrH%2FLt2qrKXCLg4JD%2Bc95yFkj9rXFabIvSgqleUWgHt3PLubzlaiVjzy%2Bgy9Po7AUtWFcvBu7Hrc%2ByAqcU551E8fblkKVwqnPKzKdqfsYIjMZiyJKeWRl2eQe1MrkMKr7nKfIyOUhGQRkjjH7K21CuIAOsijriMb5ckNIX%2FoH60n%2BSWchGdRGdtszEhrHsc0mV%2BgRUNCQ3rUErYVbgf0pEan1eLkAreXbaMNrMRG1K0TI7UFobczdoEaC0kSstOLVTtgJy827UXnE148%2Bv06GOC6aTDFI4B911RsnVQuBfb5Dc22MhJcWVzRGYG%2Bru9ye8htbr0OcuvlMEaHsQWBvvoYBvjRbcQAvVa1whQrU2qPhx8%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                - generic [ref=e732]:
+                  - generic: Play
+            - iframe [ref=e734]:
+              - table [ref=f41e2]:
+                - rowgroup [ref=f41e3]:
+                  - row "Name ID Member Since Balance" [ref=f41e4]:
+                    - columnheader "Name" [ref=f41e5]
+                    - columnheader "ID" [ref=f41e6]
+                    - columnheader "Member Since" [ref=f41e7]
+                    - columnheader "Balance" [ref=f41e8]
+                  - row "Margaret Nguyen 427311 June 3, 2010 0.00" [ref=f41e9]:
+                    - rowheader "Margaret Nguyen" [ref=f41e10]
+                    - cell "427311" [ref=f41e11]
+                    - cell "June 3, 2010" [ref=f41e12]:
+                      - time [ref=f41e13]: June 3, 2010
+                    - cell "0.00" [ref=f41e14]
+                  - row "Edvard Galinski 533175 January 13, 2011 37.00" [ref=f41e15]:
+                    - rowheader "Edvard Galinski" [ref=f41e16]
+                    - cell "533175" [ref=f41e17]
+                    - cell "January 13, 2011" [ref=f41e18]:
+                      - time [ref=f41e19]: January 13, 2011
+                    - cell "37.00" [ref=f41e20]
+                  - row "Hoshi Nakamura 601942 July 23, 2012 15.00" [ref=f41e21]:
+                    - rowheader "Hoshi Nakamura" [ref=f41e22]
+                    - cell "601942" [ref=f41e23]
+                    - cell "July 23, 2012" [ref=f41e24]:
+                      - time [ref=f41e25]: July 23, 2012
+                    - cell "15.00" [ref=f41e26]
+        - region "Specifying table cell relations" [ref=e735]:
+          - heading "Specifying table cell relations" [level=3] [ref=e736]:
+            - link "Specifying table cell relations" [ref=e737] [cursor=pointer]:
+              - /url: "#specifying_table_cell_relations"
+          - paragraph [ref=e738]:
+            - text: Before moving on to extend the table in more advanced ways, it's advisable to improve
+            - link "accessibility" [ref=e739] [cursor=pointer]:
+              - /url: /en-US/docs/Glossary/Accessibility
+            - text: by defining relationships between the header and data cells (
+            - link "<th>" [ref=e740] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+              - code [ref=e741]: <th>
+            - text: and
+            - link "<td>" [ref=e742] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/td
+              - code [ref=e743]: <td>
+            - text: elements).
+          - heading "HTML" [level=4] [ref=e744]
+          - paragraph [ref=e745]:
+            - text: This is accomplished by introducing the
+            - link "scope" [ref=e746] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th#scope
+              - code [ref=e747]: scope
+            - text: attribute on the
+            - link "<th>" [ref=e748] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+              - code [ref=e749]: <th>
+            - text: elements and setting the values to the corresponding
+            - code [ref=e750]: col
+            - text: (column) or
+            - code [ref=e751]: row
+            - text: value.
+          - generic [ref=e753]:
+            - generic [ref=e754]:
+              - generic [ref=e755]: html
+              - button "Copy" [ref=e758] [cursor=pointer]:
+                - generic [ref=e759]:
+                  - generic: Copy
+            - code [ref=e761]:
+              - generic [ref=e762]:
+                - generic [ref=e763]: <table
+                - text: ">"
+              - generic [ref=e764]:
+                - generic [ref=e765]: <tr
+                - text: ">"
+              - generic [ref=e766]:
+                - generic [ref=e767]: <th
+                - text: scope
+                - generic [ref=e768]: ="col"
+                - text: ">"
+              - text: Name
+              - generic [ref=e769]:
+                - generic [ref=e770]: </th
+                - text: ">"
+              - generic [ref=e771]:
+                - generic [ref=e772]: <th
+                - text: scope
+                - generic [ref=e773]: ="col"
+                - text: ">"
+              - text: ID
+              - generic [ref=e774]:
+                - generic [ref=e775]: </th
+                - text: ">"
+              - generic [ref=e776]:
+                - generic [ref=e777]: <th
+                - text: scope
+                - generic [ref=e778]: ="col"
+                - text: ">"
+              - text: Member Since
+              - generic [ref=e779]:
+                - generic [ref=e780]: </th
+                - text: ">"
+              - generic [ref=e781]:
+                - generic [ref=e782]: <th
+                - text: scope
+                - generic [ref=e783]: ="col"
+                - text: ">"
+              - text: Balance
+              - generic [ref=e784]:
+                - generic [ref=e785]: </th
+                - text: ">"
+              - generic [ref=e786]:
+                - generic [ref=e787]: </tr
+                - text: ">"
+              - generic [ref=e788]:
+                - generic [ref=e789]: <tr
+                - text: ">"
+              - generic [ref=e790]:
+                - generic [ref=e791]: <th
+                - text: scope
+                - generic [ref=e792]: ="row"
+                - text: ">"
+              - text: Margaret Nguyen
+              - generic [ref=e793]:
+                - generic [ref=e794]: </th
+                - text: ">"
+              - generic [ref=e795]:
+                - generic [ref=e796]: <td
+                - text: ">"
+              - text: "427311"
+              - generic [ref=e797]:
+                - generic [ref=e798]: </td
+                - text: ">"
+              - generic [ref=e799]:
+                - generic [ref=e800]: <td
+                - text: ">"
+              - generic [ref=e801]:
+                - generic [ref=e802]: <time
+                - text: datetime
+                - generic [ref=e803]: ="2010-06-03"
+                - text: ">"
+              - text: June 3, 2010
+              - generic [ref=e804]:
+                - generic [ref=e805]: </time
+                - text: ">"
+              - generic [ref=e806]:
+                - generic [ref=e807]: </td
+                - text: ">"
+              - generic [ref=e808]:
+                - generic [ref=e809]: <td
+                - text: ">"
+              - text: "0.00"
+              - generic [ref=e810]:
+                - generic [ref=e811]: </td
+                - text: ">"
+              - generic [ref=e812]:
+                - generic [ref=e813]: </tr
+                - text: ">"
+              - generic [ref=e814]:
+                - generic [ref=e815]: <tr
+                - text: ">"
+              - generic [ref=e816]:
+                - generic [ref=e817]: <th
+                - text: scope
+                - generic [ref=e818]: ="row"
+                - text: ">"
+              - text: Edvard Galinski
+              - generic [ref=e819]:
+                - generic [ref=e820]: </th
+                - text: ">"
+              - generic [ref=e821]:
+                - generic [ref=e822]: <td
+                - text: ">"
+              - text: "533175"
+              - generic [ref=e823]:
+                - generic [ref=e824]: </td
+                - text: ">"
+              - generic [ref=e825]:
+                - generic [ref=e826]: <td
+                - text: ">"
+              - generic [ref=e827]:
+                - generic [ref=e828]: <time
+                - text: datetime
+                - generic [ref=e829]: ="2011-01-13"
+                - text: ">"
+              - text: January 13, 2011
+              - generic [ref=e830]:
+                - generic [ref=e831]: </time
+                - text: ">"
+              - generic [ref=e832]:
+                - generic [ref=e833]: </td
+                - text: ">"
+              - generic [ref=e834]:
+                - generic [ref=e835]: <td
+                - text: ">"
+              - text: "37.00"
+              - generic [ref=e836]:
+                - generic [ref=e837]: </td
+                - text: ">"
+              - generic [ref=e838]:
+                - generic [ref=e839]: </tr
+                - text: ">"
+              - generic [ref=e840]:
+                - generic [ref=e841]: <tr
+                - text: ">"
+              - generic [ref=e842]:
+                - generic [ref=e843]: <th
+                - text: scope
+                - generic [ref=e844]: ="row"
+                - text: ">"
+              - text: Hoshi Nakamura
+              - generic [ref=e845]:
+                - generic [ref=e846]: </th
+                - text: ">"
+              - generic [ref=e847]:
+                - generic [ref=e848]: <td
+                - text: ">"
+              - text: "601942"
+              - generic [ref=e849]:
+                - generic [ref=e850]: </td
+                - text: ">"
+              - generic [ref=e851]:
+                - generic [ref=e852]: <td
+                - text: ">"
+              - generic [ref=e853]:
+                - generic [ref=e854]: <time
+                - text: datetime
+                - generic [ref=e855]: ="2012-07-23"
+                - text: ">"
+              - text: July 23, 2012
+              - generic [ref=e856]:
+                - generic [ref=e857]: </time
+                - text: ">"
+              - generic [ref=e858]:
+                - generic [ref=e859]: </td
+                - text: ">"
+              - generic [ref=e860]:
+                - generic [ref=e861]: <td
+                - text: ">"
+              - text: "15.00"
+              - generic [ref=e862]:
+                - generic [ref=e863]: </td
+                - text: ">"
+              - generic [ref=e864]:
+                - generic [ref=e865]: </tr
+                - text: ">"
+              - generic [ref=e866]:
+                - generic [ref=e867]: </table
+                - text: ">"
+          - paragraph [ref=e868]: The CSS and visual result are unchanged—the adaptation provides valuable contextual information for assistive technologies such as screen readers to help identify which cells the headers relate to.
+          - paragraph [ref=e870]:
+            - strong [ref=e871]: "Note:"
+            - text: If the table structure is even more complex, the (additional) use of the
+            - link "headers" [ref=e872] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th#headers
+              - code [ref=e873]: headers
+            - text: attribute on the
+            - link "<th>" [ref=e874] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+              - code [ref=e875]: <th>
+            - text: and
+            - link "<td>" [ref=e876] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/td
+              - code [ref=e877]: <td>
+            - text: elements may improve accessibility and help assistive technologies identify the relationships between cells; see
+            - link "Complicated tables" [ref=e878] [cursor=pointer]:
+              - /url: "#complicated_tables"
+            - text: .
+        - region "Explicitly specifying table section groups" [ref=e879]:
+          - heading "Explicitly specifying table section groups" [level=3] [ref=e880]:
+            - link "Explicitly specifying table section groups" [ref=e881] [cursor=pointer]:
+              - /url: "#explicitly_specifying_table_section_groups"
+          - paragraph [ref=e882]:
+            - text: In addition to improving accessibility by
+            - link "specifying cell relations" [ref=e883] [cursor=pointer]:
+              - /url: "#specifying_table_cell_relations"
+            - text: ", the"
+            - link "semantics" [ref=e884] [cursor=pointer]:
+              - /url: /en-US/docs/Glossary/Semantics
+            - text: of the table can be improved by introducing table section groups.
+          - heading "HTML" [level=4] [ref=e885]
+          - paragraph [ref=e886]:
+            - text: Since the first row (
+            - link "<tr>" [ref=e887] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/tr
+              - code [ref=e888]: <tr>
+            - text: element) contains only column header cells and provides the header for the rest of the table's contents, it can be enclosed in the
+            - link "<thead>" [ref=e889] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/thead
+              - code [ref=e890]: <thead>
+            - text: element to explicitly specify that row as the head section of the table. Moreover, what is automatically accomplished by the browser can also be defined explicitly—the body section of the table, which contains the main data of the table, is specified by enclosing the corresponding rows in the
+            - link "<tbody>" [ref=e891] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/tbody
+              - code [ref=e892]: <tbody>
+            - text: element. The explicit use of the
+            - link "<tbody>" [ref=e893] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/tbody
+              - code [ref=e894]: <tbody>
+            - text: element helps the browser to create the intended table structure, avoiding unwanted results.
+          - generic [ref=e896]:
+            - generic [ref=e897]:
+              - generic [ref=e898]: html
+              - button "Copy" [ref=e901] [cursor=pointer]:
+                - generic [ref=e902]:
+                  - generic: Copy
+            - code [ref=e904]:
+              - generic [ref=e905]:
+                - generic [ref=e906]: <table
+                - text: ">"
+              - generic [ref=e907]:
+                - generic [ref=e908]: <thead
+                - text: ">"
+              - generic [ref=e909]:
+                - generic [ref=e910]: <tr
+                - text: ">"
+              - generic [ref=e911]:
+                - generic [ref=e912]: <th
+                - text: scope
+                - generic [ref=e913]: ="col"
+                - text: ">"
+              - text: Name
+              - generic [ref=e914]:
+                - generic [ref=e915]: </th
+                - text: ">"
+              - generic [ref=e916]:
+                - generic [ref=e917]: <th
+                - text: scope
+                - generic [ref=e918]: ="col"
+                - text: ">"
+              - text: ID
+              - generic [ref=e919]:
+                - generic [ref=e920]: </th
+                - text: ">"
+              - generic [ref=e921]:
+                - generic [ref=e922]: <th
+                - text: scope
+                - generic [ref=e923]: ="col"
+                - text: ">"
+              - text: Member Since
+              - generic [ref=e924]:
+                - generic [ref=e925]: </th
+                - text: ">"
+              - generic [ref=e926]:
+                - generic [ref=e927]: <th
+                - text: scope
+                - generic [ref=e928]: ="col"
+                - text: ">"
+              - text: Balance
+              - generic [ref=e929]:
+                - generic [ref=e930]: </th
+                - text: ">"
+              - generic [ref=e931]:
+                - generic [ref=e932]: </tr
+                - text: ">"
+              - generic [ref=e933]:
+                - generic [ref=e934]: </thead
+                - text: ">"
+              - generic [ref=e935]:
+                - generic [ref=e936]: <tbody
+                - text: ">"
+              - generic [ref=e937]:
+                - generic [ref=e938]: <tr
+                - text: ">"
+              - generic [ref=e939]:
+                - generic [ref=e940]: <th
+                - text: scope
+                - generic [ref=e941]: ="row"
+                - text: ">"
+              - text: Margaret Nguyen
+              - generic [ref=e942]:
+                - generic [ref=e943]: </th
+                - text: ">"
+              - generic [ref=e944]:
+                - generic [ref=e945]: <td
+                - text: ">"
+              - text: "427311"
+              - generic [ref=e946]:
+                - generic [ref=e947]: </td
+                - text: ">"
+              - generic [ref=e948]:
+                - generic [ref=e949]: <td
+                - text: ">"
+              - generic [ref=e950]:
+                - generic [ref=e951]: <time
+                - text: datetime
+                - generic [ref=e952]: ="2010-06-03"
+                - text: ">"
+              - text: June 3, 2010
+              - generic [ref=e953]:
+                - generic [ref=e954]: </time
+                - text: ">"
+              - generic [ref=e955]:
+                - generic [ref=e956]: </td
+                - text: ">"
+              - generic [ref=e957]:
+                - generic [ref=e958]: <td
+                - text: ">"
+              - text: "0.00"
+              - generic [ref=e959]:
+                - generic [ref=e960]: </td
+                - text: ">"
+              - generic [ref=e961]:
+                - generic [ref=e962]: </tr
+                - text: ">"
+              - generic [ref=e963]:
+                - generic [ref=e964]: <tr
+                - text: ">"
+              - generic [ref=e965]:
+                - generic [ref=e966]: <th
+                - text: scope
+                - generic [ref=e967]: ="row"
+                - text: ">"
+              - text: Edvard Galinski
+              - generic [ref=e968]:
+                - generic [ref=e969]: </th
+                - text: ">"
+              - generic [ref=e970]:
+                - generic [ref=e971]: <td
+                - text: ">"
+              - text: "533175"
+              - generic [ref=e972]:
+                - generic [ref=e973]: </td
+                - text: ">"
+              - generic [ref=e974]:
+                - generic [ref=e975]: <td
+                - text: ">"
+              - generic [ref=e976]:
+                - generic [ref=e977]: <time
+                - text: datetime
+                - generic [ref=e978]: ="2011-01-13"
+                - text: ">"
+              - text: January 13, 2011
+              - generic [ref=e979]:
+                - generic [ref=e980]: </time
+                - text: ">"
+              - generic [ref=e981]:
+                - generic [ref=e982]: </td
+                - text: ">"
+              - generic [ref=e983]:
+                - generic [ref=e984]: <td
+                - text: ">"
+              - text: "37.00"
+              - generic [ref=e985]:
+                - generic [ref=e986]: </td
+                - text: ">"
+              - generic [ref=e987]:
+                - generic [ref=e988]: </tr
+                - text: ">"
+              - generic [ref=e989]:
+                - generic [ref=e990]: <tr
+                - text: ">"
+              - generic [ref=e991]:
+                - generic [ref=e992]: <th
+                - text: scope
+                - generic [ref=e993]: ="row"
+                - text: ">"
+              - text: Hoshi Nakamura
+              - generic [ref=e994]:
+                - generic [ref=e995]: </th
+                - text: ">"
+              - generic [ref=e996]:
+                - generic [ref=e997]: <td
+                - text: ">"
+              - text: "601942"
+              - generic [ref=e998]:
+                - generic [ref=e999]: </td
+                - text: ">"
+              - generic [ref=e1000]:
+                - generic [ref=e1001]: <td
+                - text: ">"
+              - generic [ref=e1002]:
+                - generic [ref=e1003]: <time
+                - text: datetime
+                - generic [ref=e1004]: ="2012-07-23"
+                - text: ">"
+              - text: July 23, 2012
+              - generic [ref=e1005]:
+                - generic [ref=e1006]: </time
+                - text: ">"
+              - generic [ref=e1007]:
+                - generic [ref=e1008]: </td
+                - text: ">"
+              - generic [ref=e1009]:
+                - generic [ref=e1010]: <td
+                - text: ">"
+              - text: "15.00"
+              - generic [ref=e1011]:
+                - generic [ref=e1012]: </td
+                - text: ">"
+              - generic [ref=e1013]:
+                - generic [ref=e1014]: </tr
+                - text: ">"
+              - generic [ref=e1015]:
+                - generic [ref=e1016]: </tbody
+                - text: ">"
+              - generic [ref=e1017]:
+                - generic [ref=e1018]: </table
+                - text: ">"
+          - paragraph [ref=e1019]: Once again, the CSS and visual result are unchanged—specifying such table section groups provides valuable contextual information for assistive technologies, including screen readers and search engines, as well as for styling in the CSS, which will be shown in a later example.
+        - region "Column and row spanning" [ref=e1020]:
+          - heading "Column and row spanning" [level=3] [ref=e1021]:
+            - link "Column and row spanning" [ref=e1022] [cursor=pointer]:
+              - /url: "#column_and_row_spanning"
+          - paragraph [ref=e1023]: In this example, we extend the table even more by adding a column and introducing a multi-row head section.
+          - heading "HTML" [level=4] [ref=e1024]
+          - paragraph [ref=e1025]:
+            - text: Building on the table created so far, a new column for a "Membership End Date" is added in each body row with the
+            - link "<td>" [ref=e1026] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/td
+              - code [ref=e1027]: <td>
+            - text: element. An additional row (
+            - link "<tr>" [ref=e1028] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/tr
+              - code [ref=e1029]: <tr>
+            - text: element) is also added within the head section (
+            - link "<thead>" [ref=e1030] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/thead
+              - code [ref=e1031]: <thead>
+            - text: element) to introduce a "Membership Dates" header as a heading for the "Joined" and "Canceled" columns.
+          - paragraph [ref=e1032]:
+            - text: The creation of the second header row involves adding
+            - link "colspan" [ref=e1033] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th#colspan
+              - code [ref=e1034]: colspan
+            - text: and
+            - link "rowspan" [ref=e1035] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th#rowspan
+              - code [ref=e1036]: rowspan
+            - text: attributes to the
+            - link "<th>" [ref=e1037] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+              - code [ref=e1038]: <th>
+            - text: elements to allocate the header cells to the correct columns and rows.
+          - generic [ref=e1040]:
+            - generic [ref=e1041]:
+              - generic [ref=e1042]: html
+              - button "Copy" [ref=e1045] [cursor=pointer]:
+                - generic [ref=e1046]:
+                  - generic: Copy
+              - generic "Run example in MDN Playground (opens in new tab)" [ref=e1047]:
+                - link "Play" [ref=e1048] [cursor=pointer]:
+                  - /url: https://developer.mozilla.org/en-US/play?uuid=af5765cf44b1585b1ed7a121a154dbaba436d0e3&state=nZRhb9sgEIb%2Fyuk%2BbZI9g53EXUotteu0rdLyC%2FiCDYppMViYrIuq%2FvcJJ6mSZWnTfUA6v9y9dw8gP2EbOoNzZEHURlXcArDQKiHHMH74bTRuwNC4Xl1xbJzhCN49Dr2wVxxzjtVCdIploT274MftG%2BmNM3vpP1VXKz%2B0uodbEdTwrl43wgjb7M%2FHshe2VymrO6etkq93q75Ed3OQ9tIgarsjZaF2cv1GX%2B8eI6%2FwS%2BFVgMVytVb2rwFkNcnLglKWBXkgs6A7BVIEFYOITyhJySwlRYRZWQVFAlFkWcyojhxsJo408omQPfGMw9tAfJW%2FhJfwTRhthwd9BDEtClpOz4KgKaEpHSGEXQm%2FBroBoadA%2FuVSpmSSkguO1XXvtYGL0aI8ZVGU%2Fwn%2B3Q2thoV4EN3KiyPuGaGfJ%2FlZE%2BcpKdN8c3lmDfkGOn%2FP7dHpCQqW7d4jy3a%2FAEywGQac4yjAU8yrnZfKzyHvf8PgjJbgl%2FUHOiGwXR8vuX3mltvQJtwGeVhGD8tmBLZrW4YJ3seOmGBoVadwjkYv24DPfwA%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                  - generic [ref=e1049]:
+                    - generic: Play
+            - code [ref=e1051]:
+              - generic [ref=e1052]:
+                - generic [ref=e1053]: <table
+                - text: ">"
+              - generic [ref=e1054]:
+                - generic [ref=e1055]: <thead
+                - text: ">"
+              - generic [ref=e1056]:
+                - generic [ref=e1057]: <tr
+                - text: ">"
+              - generic [ref=e1058]:
+                - generic [ref=e1059]: <th
+                - text: scope
+                - generic [ref=e1060]: ="col"
+                - text: rowspan
+                - generic [ref=e1061]: ="2"
+                - text: ">"
+              - text: Name
+              - generic [ref=e1062]:
+                - generic [ref=e1063]: </th
+                - text: ">"
+              - generic [ref=e1064]:
+                - generic [ref=e1065]: <th
+                - text: scope
+                - generic [ref=e1066]: ="col"
+                - text: rowspan
+                - generic [ref=e1067]: ="2"
+                - text: ">"
+              - text: ID
+              - generic [ref=e1068]:
+                - generic [ref=e1069]: </th
+                - text: ">"
+              - generic [ref=e1070]:
+                - generic [ref=e1071]: <th
+                - text: scope
+                - generic [ref=e1072]: ="col"
+                - text: colspan
+                - generic [ref=e1073]: ="2"
+                - text: ">"
+              - text: Membership Dates
+              - generic [ref=e1074]:
+                - generic [ref=e1075]: </th
+                - text: ">"
+              - generic [ref=e1076]:
+                - generic [ref=e1077]: <th
+                - text: scope
+                - generic [ref=e1078]: ="col"
+                - text: rowspan
+                - generic [ref=e1079]: ="2"
+                - text: ">"
+              - text: Balance
+              - generic [ref=e1080]:
+                - generic [ref=e1081]: </th
+                - text: ">"
+              - generic [ref=e1082]:
+                - generic [ref=e1083]: </tr
+                - text: ">"
+              - generic [ref=e1084]:
+                - generic [ref=e1085]: <tr
+                - text: ">"
+              - generic [ref=e1086]:
+                - generic [ref=e1087]: <th
+                - text: scope
+                - generic [ref=e1088]: ="col"
+                - text: ">"
+              - text: Joined
+              - generic [ref=e1089]:
+                - generic [ref=e1090]: </th
+                - text: ">"
+              - generic [ref=e1091]:
+                - generic [ref=e1092]: <th
+                - text: scope
+                - generic [ref=e1093]: ="col"
+                - text: ">"
+              - text: Canceled
+              - generic [ref=e1094]:
+                - generic [ref=e1095]: </th
+                - text: ">"
+              - generic [ref=e1096]:
+                - generic [ref=e1097]: </tr
+                - text: ">"
+              - generic [ref=e1098]:
+                - generic [ref=e1099]: </thead
+                - text: ">"
+              - generic [ref=e1100]:
+                - generic [ref=e1101]: <tbody
+                - text: ">"
+              - generic [ref=e1102]:
+                - generic [ref=e1103]: <tr
+                - text: ">"
+              - generic [ref=e1104]:
+                - generic [ref=e1105]: <th
+                - text: scope
+                - generic [ref=e1106]: ="row"
+                - text: ">"
+              - text: Margaret Nguyen
+              - generic [ref=e1107]:
+                - generic [ref=e1108]: </th
+                - text: ">"
+              - generic [ref=e1109]:
+                - generic [ref=e1110]: <td
+                - text: ">"
+              - text: "427311"
+              - generic [ref=e1111]:
+                - generic [ref=e1112]: </td
+                - text: ">"
+              - generic [ref=e1113]:
+                - generic [ref=e1114]: <td
+                - text: ">"
+              - generic [ref=e1115]:
+                - generic [ref=e1116]: <time
+                - text: datetime
+                - generic [ref=e1117]: ="2010-06-03"
+                - text: ">"
+              - text: June 3, 2010
+              - generic [ref=e1118]:
+                - generic [ref=e1119]: </time
+                - text: ">"
+              - generic [ref=e1120]:
+                - generic [ref=e1121]: </td
+                - text: ">"
+              - generic [ref=e1122]:
+                - generic [ref=e1123]: <td
+                - text: ">"
+              - text: n/a
+              - generic [ref=e1124]:
+                - generic [ref=e1125]: </td
+                - text: ">"
+              - generic [ref=e1126]:
+                - generic [ref=e1127]: <td
+                - text: ">"
+              - text: "0.00"
+              - generic [ref=e1128]:
+                - generic [ref=e1129]: </td
+                - text: ">"
+              - generic [ref=e1130]:
+                - generic [ref=e1131]: </tr
+                - text: ">"
+              - generic [ref=e1132]:
+                - generic [ref=e1133]: <tr
+                - text: ">"
+              - generic [ref=e1134]:
+                - generic [ref=e1135]: <th
+                - text: scope
+                - generic [ref=e1136]: ="row"
+                - text: ">"
+              - text: Edvard Galinski
+              - generic [ref=e1137]:
+                - generic [ref=e1138]: </th
+                - text: ">"
+              - generic [ref=e1139]:
+                - generic [ref=e1140]: <td
+                - text: ">"
+              - text: "533175"
+              - generic [ref=e1141]:
+                - generic [ref=e1142]: </td
+                - text: ">"
+              - generic [ref=e1143]:
+                - generic [ref=e1144]: <td
+                - text: ">"
+              - generic [ref=e1145]:
+                - generic [ref=e1146]: <time
+                - text: datetime
+                - generic [ref=e1147]: ="2011-01-13"
+                - text: ">"
+              - text: January 13, 2011
+              - generic [ref=e1148]:
+                - generic [ref=e1149]: </time
+                - text: ">"
+              - generic [ref=e1150]:
+                - generic [ref=e1151]: </td
+                - text: ">"
+              - generic [ref=e1152]:
+                - generic [ref=e1153]: <td
+                - text: ">"
+              - generic [ref=e1154]:
+                - generic [ref=e1155]: <time
+                - text: datetime
+                - generic [ref=e1156]: ="2017-04-08"
+                - text: ">"
+              - text: April 8, 2017
+              - generic [ref=e1157]:
+                - generic [ref=e1158]: </time
+                - text: ">"
+              - generic [ref=e1159]:
+                - generic [ref=e1160]: </td
+                - text: ">"
+              - generic [ref=e1161]:
+                - generic [ref=e1162]: <td
+                - text: ">"
+              - text: "37.00"
+              - generic [ref=e1163]:
+                - generic [ref=e1164]: </td
+                - text: ">"
+              - generic [ref=e1165]:
+                - generic [ref=e1166]: </tr
+                - text: ">"
+              - generic [ref=e1167]:
+                - generic [ref=e1168]: <tr
+                - text: ">"
+              - generic [ref=e1169]:
+                - generic [ref=e1170]: <th
+                - text: scope
+                - generic [ref=e1171]: ="row"
+                - text: ">"
+              - text: Hoshi Nakamura
+              - generic [ref=e1172]:
+                - generic [ref=e1173]: </th
+                - text: ">"
+              - generic [ref=e1174]:
+                - generic [ref=e1175]: <td
+                - text: ">"
+              - text: "601942"
+              - generic [ref=e1176]:
+                - generic [ref=e1177]: </td
+                - text: ">"
+              - generic [ref=e1178]:
+                - generic [ref=e1179]: <td
+                - text: ">"
+              - generic [ref=e1180]:
+                - generic [ref=e1181]: <time
+                - text: datetime
+                - generic [ref=e1182]: ="2012-07-23"
+                - text: ">"
+              - text: July 23, 2012
+              - generic [ref=e1183]:
+                - generic [ref=e1184]: </time
+                - text: ">"
+              - generic [ref=e1185]:
+                - generic [ref=e1186]: </td
+                - text: ">"
+              - generic [ref=e1187]:
+                - generic [ref=e1188]: <td
+                - text: ">"
+              - text: n/a
+              - generic [ref=e1189]:
+                - generic [ref=e1190]: </td
+                - text: ">"
+              - generic [ref=e1191]:
+                - generic [ref=e1192]: <td
+                - text: ">"
+              - text: "15.00"
+              - generic [ref=e1193]:
+                - generic [ref=e1194]: </td
+                - text: ">"
+              - generic [ref=e1195]:
+                - generic [ref=e1196]: </tr
+                - text: ">"
+              - generic [ref=e1197]:
+                - generic [ref=e1198]: </tbody
+                - text: ">"
+              - generic [ref=e1199]:
+                - generic [ref=e1200]: </table
+                - text: ">"
+          - heading "Result" [level=4] [ref=e1201]
+          - generic [ref=e1203]:
+            - generic "Run example in MDN Playground (opens in new tab)" [ref=e1205]:
+              - link "Play" [ref=e1206] [cursor=pointer]:
+                - /url: https://developer.mozilla.org/en-US/play?uuid=af5765cf44b1585b1ed7a121a154dbaba436d0e3&state=nZRhb9sgEIb%2Fyuk%2BbZI9g53EXUotteu0rdLyC%2FiCDYppMViYrIuq%2FvcJJ6mSZWnTfUA6v9y9dw8gP2EbOoNzZEHURlXcArDQKiHHMH74bTRuwNC4Xl1xbJzhCN49Dr2wVxxzjtVCdIploT274MftG%2BmNM3vpP1VXKz%2B0uodbEdTwrl43wgjb7M%2FHshe2VymrO6etkq93q75Ed3OQ9tIgarsjZaF2cv1GX%2B8eI6%2FwS%2BFVgMVytVb2rwFkNcnLglKWBXkgs6A7BVIEFYOITyhJySwlRYRZWQVFAlFkWcyojhxsJo408omQPfGMw9tAfJW%2FhJfwTRhthwd9BDEtClpOz4KgKaEpHSGEXQm%2FBroBoadA%2FuVSpmSSkguO1XXvtYGL0aI8ZVGU%2Fwn%2B3Q2thoV4EN3KiyPuGaGfJ%2FlZE%2BcpKdN8c3lmDfkGOn%2FP7dHpCQqW7d4jy3a%2FAEywGQac4yjAU8yrnZfKzyHvf8PgjJbgl%2FUHOiGwXR8vuX3mltvQJtwGeVhGD8tmBLZrW4YJ3seOmGBoVadwjkYv24DPfwA%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                - generic [ref=e1207]:
+                  - generic: Play
+            - iframe [ref=e1209]:
+              - table [ref=f42e2]:
+                - rowgroup [ref=f42e3]:
+                  - row "Name ID Membership Dates Balance" [ref=f42e4]:
+                    - columnheader "Name" [ref=f42e5]
+                    - columnheader "ID" [ref=f42e6]
+                    - columnheader "Membership Dates" [ref=f42e7]
+                    - columnheader "Balance" [ref=f42e8]
+                  - row "Joined Canceled" [ref=f42e9]:
+                    - columnheader "Joined" [ref=f42e10]
+                    - columnheader "Canceled" [ref=f42e11]
+                - rowgroup [ref=f42e12]:
+                  - row "Margaret Nguyen 427311 June 3, 2010 n/a 0.00" [ref=f42e13]:
+                    - rowheader "Margaret Nguyen" [ref=f42e14]
+                    - cell "427311" [ref=f42e15]
+                    - cell "June 3, 2010" [ref=f42e16]:
+                      - time [ref=f42e17]: June 3, 2010
+                    - cell "n/a" [ref=f42e18]
+                    - cell "0.00" [ref=f42e19]
+                  - row "Edvard Galinski 533175 January 13, 2011 April 8, 2017 37.00" [ref=f42e20]:
+                    - rowheader "Edvard Galinski" [ref=f42e21]
+                    - cell "533175" [ref=f42e22]
+                    - cell "January 13, 2011" [ref=f42e23]:
+                      - time [ref=f42e24]: January 13, 2011
+                    - cell "April 8, 2017" [ref=f42e25]:
+                      - time [ref=f42e26]: April 8, 2017
+                    - cell "37.00" [ref=f42e27]
+                  - row "Hoshi Nakamura 601942 July 23, 2012 n/a 15.00" [ref=f42e28]:
+                    - rowheader "Hoshi Nakamura" [ref=f42e29]
+                    - cell "601942" [ref=f42e30]
+                    - cell "July 23, 2012" [ref=f42e31]:
+                      - time [ref=f42e32]: July 23, 2012
+                    - cell "n/a" [ref=f42e33]
+                    - cell "15.00" [ref=f42e34]
+          - paragraph [ref=e1210]:
+            - text: The head section now has two rows, one with the headers (
+            - link "<th>" [ref=e1211] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+              - code [ref=e1212]: <th>
+            - text: "elements) \"Name\", \"ID\", \"Membership Dates\", and \"Balance\", and a \"Membership Dates\" header with two subheaders that are in a second row: \"Joined\" and \"Canceled\". This is accomplished by:"
+          - list [ref=e1213]:
+            - listitem [ref=e1214]:
+              - text: The first row's "Name", "ID", and "Balance" header cells span both table header rows by using the
+              - link "rowspan" [ref=e1215] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/th#rowspan
+                - code [ref=e1216]: rowspan
+              - text: attribute, making them each two rows tall.
+            - listitem [ref=e1217]:
+              - text: The first row's "Membership Dates" header cell spans two columns using the
+              - link "colspan" [ref=e1218] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/th#colspan
+                - code [ref=e1219]: colspan
+              - text: attribute, causing it to be two columns wide.
+            - listitem [ref=e1220]: The second row contains only the two header cells "Joined" and "Canceled" because the other three columns are merged with the cells in the first row that span two rows. The two header cells are correctly positioned under the "Membership Dates" header.
+        - region "Table caption and column summary" [ref=e1221]:
+          - heading "Table caption and column summary" [level=3] [ref=e1222]:
+            - link "Table caption and column summary" [ref=e1223] [cursor=pointer]:
+              - /url: "#table_caption_and_column_summary"
+          - paragraph [ref=e1224]: It's a common and advisable practice to provide a summary for the table's content, allowing users to quickly determine the table's relevance. Furthermore, the "Balance" column is summarized by displaying the sum of the balances of the individual members.
+          - heading "HTML" [level=4] [ref=e1225]
+          - paragraph [ref=e1226]:
+            - text: A table summary is added by using a table
+            - link "caption" [ref=e1227] [cursor=pointer]:
+              - /url: "#captions"
+            - text: (
+            - link "<caption>" [ref=e1228] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/caption
+              - code [ref=e1229]: <caption>
+            - text: element) as the first child element of the
+            - code [ref=e1230]: <table>
+            - text: . The caption provides the
+            - link "accessible name" [ref=e1231] [cursor=pointer]:
+              - /url: /en-US/docs/Glossary/Accessible_name
+            - text: or
+            - link "accessible description" [ref=e1232] [cursor=pointer]:
+              - /url: /en-US/docs/Glossary/Accessible_description
+            - text: for the table.
+          - paragraph [ref=e1233]:
+            - text: Lastly, a table foot section (
+            - link "<tfoot>" [ref=e1234] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/tfoot
+              - code [ref=e1235]: <tfoot>
+            - text: element) is added below the body, with a row that summarizes the "Balance" column by displaying a sum. The elements and attributes introduced earlier are applied.
+          - generic [ref=e1237]:
+            - generic [ref=e1238]:
+              - generic [ref=e1239]: html
+              - button "Copy" [ref=e1242] [cursor=pointer]:
+                - generic [ref=e1243]:
+                  - generic: Copy
+              - generic "Run example in MDN Playground (opens in new tab)" [ref=e1244]:
+                - link "Play" [ref=e1245] [cursor=pointer]:
+                  - /url: https://developer.mozilla.org/en-US/play?uuid=e290c9e91e73f61dd35227832a04ce105fe9aeb8&state=nZTLbtswEEV%2FZcBVC1gVSdlW4jIC2qboA6g37ZIbSmQsNRQpUKOmRpB%2FL%2FRIasd14nRBgBrNnTuHI%2BqWlFhbsiICVW5NJh2AKFSDlXfDA8B3VNi14K8ASwOF7XKoTZ2b0AKnnA2KeFcisDRKT2qBYdoNL6AtfGMuJCm8lQSCv2kb5S4k4ZJka1UbEWN5suDL5TPphbc76d%2FGtsuqgUuFpn2R13tllSt2%2BxPxA9uTlNlXXzmjn3bLPvTV7V7ag0Efuz9SgbnX22d8g7%2FpeVXYqGAQ1ptua9yjBnQ252nCmIhR74UFVrUBrdD0mx6fMhrRZUSTHqZzBpIZ9EER9xnZQQUXq4MYfUPpTvCEwxshPupfKmj4pGzl2uvqAGKRJCxdnATBIsoiNkAo16mwBTaCsGMg%2F6qSRnQe0TNJsndNqCycDSXSYyWS9D%2FBP%2Fu2rGCtrlXdBXXAvaTsfM5P6phHNI34ODy7BT5C85dMjy2OUIj47%2Fco8Mp7PAVu52LOJcl%2BeFQW8oMbNk2YH%2FeeDEV8%2F%2FsiM1K0LVmRIQC3fV7ugzZhBbz5Da23lYawyV%2BxOYVpvX4r3Z100mE5kw71vozty5YUpjXJyIz87B3JjGBpakNWxFabEsndHw%3D%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                  - generic [ref=e1246]:
+                    - generic: Play
+            - code [ref=e1248]:
+              - generic [ref=e1249]:
+                - generic [ref=e1250]: <table
+                - text: ">"
+              - generic [ref=e1251]:
+                - generic [ref=e1252]: <caption
+                - text: ">"
+              - text: Status of the club members 2021
+              - generic [ref=e1253]:
+                - generic [ref=e1254]: </caption
+                - text: ">"
+              - generic [ref=e1255]:
+                - generic [ref=e1256]: <thead
+                - text: ">"
+              - generic [ref=e1257]:
+                - generic [ref=e1258]: <tr
+                - text: ">"
+              - generic [ref=e1259]:
+                - generic [ref=e1260]: <th
+                - text: scope
+                - generic [ref=e1261]: ="col"
+                - text: rowspan
+                - generic [ref=e1262]: ="2"
+                - text: ">"
+              - text: Name
+              - generic [ref=e1263]:
+                - generic [ref=e1264]: </th
+                - text: ">"
+              - generic [ref=e1265]:
+                - generic [ref=e1266]: <th
+                - text: scope
+                - generic [ref=e1267]: ="col"
+                - text: rowspan
+                - generic [ref=e1268]: ="2"
+                - text: ">"
+              - text: ID
+              - generic [ref=e1269]:
+                - generic [ref=e1270]: </th
+                - text: ">"
+              - generic [ref=e1271]:
+                - generic [ref=e1272]: <th
+                - text: scope
+                - generic [ref=e1273]: ="col"
+                - text: colspan
+                - generic [ref=e1274]: ="2"
+                - text: ">"
+              - text: Membership Dates
+              - generic [ref=e1275]:
+                - generic [ref=e1276]: </th
+                - text: ">"
+              - generic [ref=e1277]:
+                - generic [ref=e1278]: <th
+                - text: scope
+                - generic [ref=e1279]: ="col"
+                - text: rowspan
+                - generic [ref=e1280]: ="2"
+                - text: ">"
+              - text: Balance
+              - generic [ref=e1281]:
+                - generic [ref=e1282]: </th
+                - text: ">"
+              - generic [ref=e1283]:
+                - generic [ref=e1284]: </tr
+                - text: ">"
+              - generic [ref=e1285]:
+                - generic [ref=e1286]: <tr
+                - text: ">"
+              - generic [ref=e1287]:
+                - generic [ref=e1288]: <th
+                - text: scope
+                - generic [ref=e1289]: ="col"
+                - text: ">"
+              - text: Joined
+              - generic [ref=e1290]:
+                - generic [ref=e1291]: </th
+                - text: ">"
+              - generic [ref=e1292]:
+                - generic [ref=e1293]: <th
+                - text: scope
+                - generic [ref=e1294]: ="col"
+                - text: ">"
+              - text: Canceled
+              - generic [ref=e1295]:
+                - generic [ref=e1296]: </th
+                - text: ">"
+              - generic [ref=e1297]:
+                - generic [ref=e1298]: </tr
+                - text: ">"
+              - generic [ref=e1299]:
+                - generic [ref=e1300]: </thead
+                - text: ">"
+              - generic [ref=e1301]:
+                - generic [ref=e1302]: <tbody
+                - text: ">"
+              - generic [ref=e1303]:
+                - generic [ref=e1304]: <tr
+                - text: ">"
+              - generic [ref=e1305]:
+                - generic [ref=e1306]: <th
+                - text: scope
+                - generic [ref=e1307]: ="row"
+                - text: ">"
+              - text: Margaret Nguyen
+              - generic [ref=e1308]:
+                - generic [ref=e1309]: </th
+                - text: ">"
+              - generic [ref=e1310]:
+                - generic [ref=e1311]: <td
+                - text: ">"
+              - text: "427311"
+              - generic [ref=e1312]:
+                - generic [ref=e1313]: </td
+                - text: ">"
+              - generic [ref=e1314]:
+                - generic [ref=e1315]: <td
+                - text: ">"
+              - generic [ref=e1316]:
+                - generic [ref=e1317]: <time
+                - text: datetime
+                - generic [ref=e1318]: ="2010-06-03"
+                - text: ">"
+              - text: June 3, 2010
+              - generic [ref=e1319]:
+                - generic [ref=e1320]: </time
+                - text: ">"
+              - generic [ref=e1321]:
+                - generic [ref=e1322]: </td
+                - text: ">"
+              - generic [ref=e1323]:
+                - generic [ref=e1324]: <td
+                - text: ">"
+              - text: n/a
+              - generic [ref=e1325]:
+                - generic [ref=e1326]: </td
+                - text: ">"
+              - generic [ref=e1327]:
+                - generic [ref=e1328]: <td
+                - text: ">"
+              - text: "0.00"
+              - generic [ref=e1329]:
+                - generic [ref=e1330]: </td
+                - text: ">"
+              - generic [ref=e1331]:
+                - generic [ref=e1332]: </tr
+                - text: ">"
+              - generic [ref=e1333]:
+                - generic [ref=e1334]: <tr
+                - text: ">"
+              - generic [ref=e1335]:
+                - generic [ref=e1336]: <th
+                - text: scope
+                - generic [ref=e1337]: ="row"
+                - text: ">"
+              - text: Edvard Galinski
+              - generic [ref=e1338]:
+                - generic [ref=e1339]: </th
+                - text: ">"
+              - generic [ref=e1340]:
+                - generic [ref=e1341]: <td
+                - text: ">"
+              - text: "533175"
+              - generic [ref=e1342]:
+                - generic [ref=e1343]: </td
+                - text: ">"
+              - generic [ref=e1344]:
+                - generic [ref=e1345]: <td
+                - text: ">"
+              - generic [ref=e1346]:
+                - generic [ref=e1347]: <time
+                - text: datetime
+                - generic [ref=e1348]: ="2011-01-13"
+                - text: ">"
+              - text: January 13, 2011
+              - generic [ref=e1349]:
+                - generic [ref=e1350]: </time
+                - text: ">"
+              - generic [ref=e1351]:
+                - generic [ref=e1352]: </td
+                - text: ">"
+              - generic [ref=e1353]:
+                - generic [ref=e1354]: <td
+                - text: ">"
+              - generic [ref=e1355]:
+                - generic [ref=e1356]: <time
+                - text: datetime
+                - generic [ref=e1357]: ="2017-04-08"
+                - text: ">"
+              - text: April 8, 2017
+              - generic [ref=e1358]:
+                - generic [ref=e1359]: </time
+                - text: ">"
+              - generic [ref=e1360]:
+                - generic [ref=e1361]: </td
+                - text: ">"
+              - generic [ref=e1362]:
+                - generic [ref=e1363]: <td
+                - text: ">"
+              - text: "37.00"
+              - generic [ref=e1364]:
+                - generic [ref=e1365]: </td
+                - text: ">"
+              - generic [ref=e1366]:
+                - generic [ref=e1367]: </tr
+                - text: ">"
+              - generic [ref=e1368]:
+                - generic [ref=e1369]: <tr
+                - text: ">"
+              - generic [ref=e1370]:
+                - generic [ref=e1371]: <th
+                - text: scope
+                - generic [ref=e1372]: ="row"
+                - text: ">"
+              - text: Hoshi Nakamura
+              - generic [ref=e1373]:
+                - generic [ref=e1374]: </th
+                - text: ">"
+              - generic [ref=e1375]:
+                - generic [ref=e1376]: <td
+                - text: ">"
+              - text: "601942"
+              - generic [ref=e1377]:
+                - generic [ref=e1378]: </td
+                - text: ">"
+              - generic [ref=e1379]:
+                - generic [ref=e1380]: <td
+                - text: ">"
+              - generic [ref=e1381]:
+                - generic [ref=e1382]: <time
+                - text: datetime
+                - generic [ref=e1383]: ="2012-07-23"
+                - text: ">"
+              - text: July 23, 2012
+              - generic [ref=e1384]:
+                - generic [ref=e1385]: </time
+                - text: ">"
+              - generic [ref=e1386]:
+                - generic [ref=e1387]: </td
+                - text: ">"
+              - generic [ref=e1388]:
+                - generic [ref=e1389]: <td
+                - text: ">"
+              - text: n/a
+              - generic [ref=e1390]:
+                - generic [ref=e1391]: </td
+                - text: ">"
+              - generic [ref=e1392]:
+                - generic [ref=e1393]: <td
+                - text: ">"
+              - text: "15.00"
+              - generic [ref=e1394]:
+                - generic [ref=e1395]: </td
+                - text: ">"
+              - generic [ref=e1396]:
+                - generic [ref=e1397]: </tr
+                - text: ">"
+              - generic [ref=e1398]:
+                - generic [ref=e1399]: </tbody
+                - text: ">"
+              - generic [ref=e1400]:
+                - generic [ref=e1401]: <tfoot
+                - text: ">"
+              - generic [ref=e1402]:
+                - generic [ref=e1403]: <tr
+                - text: ">"
+              - generic [ref=e1404]:
+                - generic [ref=e1405]: <th
+                - text: scope
+                - generic [ref=e1406]: ="row"
+                - text: colspan
+                - generic [ref=e1407]: ="4"
+                - text: ">"
+              - text: Total balance
+              - generic [ref=e1408]:
+                - generic [ref=e1409]: </th
+                - text: ">"
+              - generic [ref=e1410]:
+                - generic [ref=e1411]: <td
+                - text: ">"
+              - text: "52.00"
+              - generic [ref=e1412]:
+                - generic [ref=e1413]: </td
+                - text: ">"
+              - generic [ref=e1414]:
+                - generic [ref=e1415]: </tr
+                - text: ">"
+              - generic [ref=e1416]:
+                - generic [ref=e1417]: </tfoot
+                - text: ">"
+              - generic [ref=e1418]:
+                - generic [ref=e1419]: </table
+                - text: ">"
+          - heading "Result" [level=4] [ref=e1420]
+          - generic [ref=e1422]:
+            - generic "Run example in MDN Playground (opens in new tab)" [ref=e1424]:
+              - link "Play" [ref=e1425] [cursor=pointer]:
+                - /url: https://developer.mozilla.org/en-US/play?uuid=e290c9e91e73f61dd35227832a04ce105fe9aeb8&state=nZTLbtswEEV%2FZcBVC1gVSdlW4jIC2qboA6g37ZIbSmQsNRQpUKOmRpB%2FL%2FRIasd14nRBgBrNnTuHI%2BqWlFhbsiICVW5NJh2AKFSDlXfDA8B3VNi14K8ASwOF7XKoTZ2b0AKnnA2KeFcisDRKT2qBYdoNL6AtfGMuJCm8lQSCv2kb5S4k4ZJka1UbEWN5suDL5TPphbc76d%2FGtsuqgUuFpn2R13tllSt2%2BxPxA9uTlNlXXzmjn3bLPvTV7V7ag0Efuz9SgbnX22d8g7%2FpeVXYqGAQ1ptua9yjBnQ252nCmIhR74UFVrUBrdD0mx6fMhrRZUSTHqZzBpIZ9EER9xnZQQUXq4MYfUPpTvCEwxshPupfKmj4pGzl2uvqAGKRJCxdnATBIsoiNkAo16mwBTaCsGMg%2F6qSRnQe0TNJsndNqCycDSXSYyWS9D%2FBP%2Fu2rGCtrlXdBXXAvaTsfM5P6phHNI34ODy7BT5C85dMjy2OUIj47%2Fco8Mp7PAVu52LOJcl%2BeFQW8oMbNk2YH%2FeeDEV8%2F%2FsiM1K0LVmRIQC3fV7ugzZhBbz5Da23lYawyV%2BxOYVpvX4r3Z100mE5kw71vozty5YUpjXJyIz87B3JjGBpakNWxFabEsndHw%3D%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                - generic [ref=e1426]:
+                  - generic: Play
+            - iframe [ref=e1428]:
+              - table "Status of the club members 2021" [ref=f43e2]:
+                - caption [ref=f43e3]: Status of the club members 2021
+                - rowgroup [ref=f43e4]:
+                  - row "Name ID Membership Dates Balance" [ref=f43e5]:
+                    - columnheader "Name" [ref=f43e6]
+                    - columnheader "ID" [ref=f43e7]
+                    - columnheader "Membership Dates" [ref=f43e8]
+                    - columnheader "Balance" [ref=f43e9]
+                  - row "Joined Canceled" [ref=f43e10]:
+                    - columnheader "Joined" [ref=f43e11]
+                    - columnheader "Canceled" [ref=f43e12]
+                - rowgroup [ref=f43e13]:
+                  - row "Margaret Nguyen 427311 June 3, 2010 n/a 0.00" [ref=f43e14]:
+                    - rowheader "Margaret Nguyen" [ref=f43e15]
+                    - cell "427311" [ref=f43e16]
+                    - cell "June 3, 2010" [ref=f43e17]:
+                      - time [ref=f43e18]: June 3, 2010
+                    - cell "n/a" [ref=f43e19]
+                    - cell "0.00" [ref=f43e20]
+                  - row "Edvard Galinski 533175 January 13, 2011 April 8, 2017 37.00" [ref=f43e21]:
+                    - rowheader "Edvard Galinski" [ref=f43e22]
+                    - cell "533175" [ref=f43e23]
+                    - cell "January 13, 2011" [ref=f43e24]:
+                      - time [ref=f43e25]: January 13, 2011
+                    - cell "April 8, 2017" [ref=f43e26]:
+                      - time [ref=f43e27]: April 8, 2017
+                    - cell "37.00" [ref=f43e28]
+                  - row "Hoshi Nakamura 601942 July 23, 2012 n/a 15.00" [ref=f43e29]:
+                    - rowheader "Hoshi Nakamura" [ref=f43e30]
+                    - cell "601942" [ref=f43e31]
+                    - cell "July 23, 2012" [ref=f43e32]:
+                      - time [ref=f43e33]: July 23, 2012
+                    - cell "n/a" [ref=f43e34]
+                    - cell "15.00" [ref=f43e35]
+                - rowgroup [ref=f43e36]:
+                  - row "Total balance 52.00" [ref=f43e37]:
+                    - rowheader "Total balance" [ref=f43e38]
+                    - cell "52.00" [ref=f43e39]
+        - region "Basic table styling" [ref=e1429]:
+          - heading "Basic table styling" [level=3] [ref=e1430]:
+            - link "Basic table styling" [ref=e1431] [cursor=pointer]:
+              - /url: "#basic_table_styling"
+          - paragraph [ref=e1432]:
+            - text: Let's apply a basic style to the table to adjust the typeface and add a
+            - link "background-color" [ref=e1433] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/background-color
+              - code [ref=e1434]: background-color
+            - text: to the head and foot rows. The HTML is unchanged this time, so let's dive right into the CSS.
+          - heading "CSS" [level=4] [ref=e1435]
+          - paragraph [ref=e1436]:
+            - text: While a
+            - link "font" [ref=e1437] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/font
+              - code [ref=e1438]: font
+            - text: property is added to the
+            - code [ref=e1439]: <table>
+            - text: element here to set a more visually appealing typeface (or an abominable sans-serif typeface, depending on your personal opinion), the interesting part is the second style, where the
+            - link "<tr>" [ref=e1440] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/tr
+              - code [ref=e1441]: <tr>
+            - text: elements located within the
+            - link "<thead>" [ref=e1442] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/thead
+              - code [ref=e1443]: <thead>
+            - text: and
+            - link "<tfoot>" [ref=e1444] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/tfoot
+              - code [ref=e1445]: <tfoot>
+            - text: are styled adding a light blue
+            - link "background-color" [ref=e1446] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/background-color
+              - code [ref=e1447]: background-color
+            - text: . This is a way to quickly apply a background color to all the cells in specific sections simultaneously.
+          - generic [ref=e1449]:
+            - generic [ref=e1450]:
+              - generic [ref=e1451]: css
+              - button "Copy" [ref=e1454] [cursor=pointer]:
+                - generic [ref=e1455]:
+                  - generic: Copy
+              - generic "Run example in MDN Playground (opens in new tab)" [ref=e1456]:
+                - link "Play" [ref=e1457] [cursor=pointer]:
+                  - /url: https://developer.mozilla.org/en-US/play?uuid=8f16755f679a5c10a2affd658f8dd9960ae188cd&state=nZRdb9sgFIb%2FyhFXqxTPQJyPpdRSt07rJq276C65wTaJWTBYgNtGVf975Y%2B2ybK06S6Q4OWc854HjO9RGSqNFogFkWmZcgPAclEHZU23ALgOIjQe7BJCKSHXTQaVrDLpPFBMSZcRb6ewUEpRDNksuGHWbYDPbS3POMqt5gicvfW1MGccUY7SK1FJFofy6ITvF2%2BE51Zvhf%2Fs2y5VDRciSP8ur89CC5Nv98fiZ7ZXKdMfVhlZvO6Wfmmr652wZ4NWezpSFjJbbN7wdfa25RVuJZwMcLVqNtL81UCRJnQ2JoTFodiRWVCVhEIE2U5afExwhKcRHrcwjZEwHkErsriNSPcqmFjsafgjxlviEYfXQ3wtboQr4JvQyvi12oOYjMdkNjkKgkSYRKSDEKYRbgOkByGHQP5VZRbhJMJzjtLz2ikN867E7FCJ8ew%2FwS%2BtLxVcibWoGif2uKeYfEroUR3TCM8i2l%2Be3gDtoel7bo9MDlCw%2BOV7ZGFpbTgGbuthJhylv20QGrK9FzbcMD3sPRiy%2BOn3hUYo9x4tUCfAfRuXWVdItwBa34G3WhXgVtkHkmAYxslpG7a0Jix6CzKt74CjX7U0cC2M52jUb3B0KfWNDCoXW9q5U0I%2Fr70wPvLSqeUpNw%2FccNO9XkghuBE3Xc%2FdYuhO5OuVs40potxq6xZdd5TOgSYYaDI5eSnTphe7UGQXaophGEMaGqE%2F7XmgEQqlrCRaIK1WZUAPjw%3D%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                  - generic [ref=e1458]:
+                    - generic: Play
+            - code [ref=e1460]: "table { border: 2px solid rgb(140 140 140); font: 16px \"Open Sans\", \"Helvetica\", \"Arial\", sans-serif; } thead > tr, tfoot > tr { background-color: rgb(228 240 245); } th, td { border: 1px solid rgb(160 160 160); }"
+          - heading "Result" [level=4] [ref=e1461]
+          - generic [ref=e1463]:
+            - generic "Run example in MDN Playground (opens in new tab)" [ref=e1465]:
+              - link "Play" [ref=e1466] [cursor=pointer]:
+                - /url: https://developer.mozilla.org/en-US/play?uuid=8f16755f679a5c10a2affd658f8dd9960ae188cd&state=nZRdb9sgFIb%2FyhFXqxTPQJyPpdRSt07rJq276C65wTaJWTBYgNtGVf975Y%2B2ybK06S6Q4OWc854HjO9RGSqNFogFkWmZcgPAclEHZU23ALgOIjQe7BJCKSHXTQaVrDLpPFBMSZcRb6ewUEpRDNksuGHWbYDPbS3POMqt5gicvfW1MGccUY7SK1FJFofy6ITvF2%2BE51Zvhf%2Fs2y5VDRciSP8ur89CC5Nv98fiZ7ZXKdMfVhlZvO6Wfmmr652wZ4NWezpSFjJbbN7wdfa25RVuJZwMcLVqNtL81UCRJnQ2JoTFodiRWVCVhEIE2U5afExwhKcRHrcwjZEwHkErsriNSPcqmFjsafgjxlviEYfXQ3wtboQr4JvQyvi12oOYjMdkNjkKgkSYRKSDEKYRbgOkByGHQP5VZRbhJMJzjtLz2ikN867E7FCJ8ew%2FwS%2BtLxVcibWoGif2uKeYfEroUR3TCM8i2l%2Be3gDtoel7bo9MDlCw%2BOV7ZGFpbTgGbuthJhylv20QGrK9FzbcMD3sPRiy%2BOn3hUYo9x4tUCfAfRuXWVdItwBa34G3WhXgVtkHkmAYxslpG7a0Jix6CzKt74CjX7U0cC2M52jUb3B0KfWNDCoXW9q5U0I%2Fr70wPvLSqeUpNw%2FccNO9XkghuBE3Xc%2FdYuhO5OuVs40potxq6xZdd5TOgSYYaDI5eSnTphe7UGQXaophGEMaGqE%2F7XmgEQqlrCRaIK1WZUAPjw%3D%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                - generic [ref=e1467]:
+                  - generic: Play
+            - iframe [ref=e1469]:
+              - table "Status of the club members 2021" [ref=f44e2]:
+                - caption [ref=f44e3]: Status of the club members 2021
+                - rowgroup [ref=f44e4]:
+                  - row "Name ID Membership Dates Balance" [ref=f44e5]:
+                    - columnheader "Name" [ref=f44e6]
+                    - columnheader "ID" [ref=f44e7]
+                    - columnheader "Membership Dates" [ref=f44e8]
+                    - columnheader "Balance" [ref=f44e9]
+                  - row "Joined Canceled" [ref=f44e10]:
+                    - columnheader "Joined" [ref=f44e11]
+                    - columnheader "Canceled" [ref=f44e12]
+                - rowgroup [ref=f44e13]:
+                  - row "Margaret Nguyen 427311 June 3, 2010 n/a 0.00" [ref=f44e14]:
+                    - rowheader "Margaret Nguyen" [ref=f44e15]
+                    - cell "427311" [ref=f44e16]
+                    - cell "June 3, 2010" [ref=f44e17]:
+                      - time [ref=f44e18]: June 3, 2010
+                    - cell "n/a" [ref=f44e19]
+                    - cell "0.00" [ref=f44e20]
+                  - row "Edvard Galinski 533175 January 13, 2011 April 8, 2017 37.00" [ref=f44e21]:
+                    - rowheader "Edvard Galinski" [ref=f44e22]
+                    - cell "533175" [ref=f44e23]
+                    - cell "January 13, 2011" [ref=f44e24]:
+                      - time [ref=f44e25]: January 13, 2011
+                    - cell "April 8, 2017" [ref=f44e26]:
+                      - time [ref=f44e27]: April 8, 2017
+                    - cell "37.00" [ref=f44e28]
+                  - row "Hoshi Nakamura 601942 July 23, 2012 n/a 15.00" [ref=f44e29]:
+                    - rowheader "Hoshi Nakamura" [ref=f44e30]
+                    - cell "601942" [ref=f44e31]
+                    - cell "July 23, 2012" [ref=f44e32]:
+                      - time [ref=f44e33]: July 23, 2012
+                    - cell "n/a" [ref=f44e34]
+                    - cell "15.00" [ref=f44e35]
+                - rowgroup [ref=f44e36]:
+                  - row "Total balance 52.00" [ref=f44e37]:
+                    - rowheader "Total balance" [ref=f44e38]
+                    - cell "52.00" [ref=f44e39]
+        - region "Advanced table styling" [ref=e1470]:
+          - heading "Advanced table styling" [level=3] [ref=e1471]:
+            - link "Advanced table styling" [ref=e1472] [cursor=pointer]:
+              - /url: "#advanced_table_styling"
+          - paragraph [ref=e1473]: Now we'll go all-out, with styles on rows in the header and body areas both, including alternating row colors, cells with different colors depending on position within a row, and so forth. Let's take a look at the result first this time.
+          - heading "Result" [level=4] [ref=e1474]
+          - paragraph [ref=e1475]: "Here's what the final table will look like:"
+          - generic [ref=e1477]:
+            - generic "Run example in MDN Playground (opens in new tab)" [ref=e1479]:
+              - link "Play" [ref=e1480] [cursor=pointer]:
+                - /url: https://developer.mozilla.org/en-US/play?uuid=520cbeca85d6426a6540e21d6f2319dd7bfb3f2c&state=nVRLj9owEP4rI5%2BKRIptAmyzaaS%2B1IfU7aE95mJiQ9I1dmQPu6Cq%2F71yErZJWVi2h0jOePw9Zjz%2BRUrcaJKQFMVSqyw3AGkhaqysaX4AvqPArQe7AiwVFHq7hI3aLJXzwClnzYlJ%2F0iKpRKyO52i61bNBvjC1up1TgqrcwLO3vtamNc54TnJbsRGpRMsLz7w%2Bf0T6YXVvfSvreyyquG9QOWfxfVWaGGKvr508uDtrMvsi62MkufZsncBXQ%2FSHghC7FDSFJdW7p%2FgdfY%2B%2BBVuLZxCuFlv98r8I0BmMV9MGUsnKAfhFKuNAilQhUWwTxmN6Dyi02BmaxRMxxCC6SRkZEcIZiKOYvQlpb3gBcVrTXyQd8JJ%2BCh0ZfxtdWRiNp2yxewiEyyiLGKNCWG2wu2BtUbYKSOPoSwiGkf0KifZm9pVGq4aiMUpiOniP41%2Fsr6s4Ebcis3WiSPfc8pexfwixTyii4i3zdN74K1p%2FpzusdkJF%2Bnk731McWUtXmKuN5hxTrIfFoWG5dGEdR3mp7k7wnRyeL7ImBTek4Q0AfgV8pbWSeWiwmotaq8SOKyue7u%2BFkVl1gnQXjQBXu%2FAW11JcOvlCxZT6L5Rk7ayBpNWFpvXO8jJt1oZ%2BC6Mz8m43cjJJ6XvFFaF6MXeuEroh38vjI%2B8ctXqOje%2Fc5Ob7kVtHXQ%2Fka%2BkSmBpEe2m4a%2BFlI1qRuvdg6LoXlXrEkOmli0gluPcoOwXJAE2NDen0H2jIXhc72De4DfSsGxh7pQLpnQkdLU2PV0NnxISMkDXUYridu3s1sjQB%2BuShpLzK%2BAxBR7PRn%2FRDycTg2VkVxHua%2FWCjwbNbLme6M9AR6KFxwNciJQDfDY6L3QGfDYDzh8Veh6an4duYXvQzUS1tWuwVpXrwTdQqHZ4KLtWK7x%2BQjp%2FBTyOj%2FAHMtWdMueVThfAp6Fj%2FFGlcliHI6EuXMruYBjc%2FvVou4q2blsqhS%2FViZl7xlVqWNqr3y7laVUnR4eMyc%2FwopAxwVJtFEmIDjnk9x8%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                - generic [ref=e1481]:
+                  - generic: Play
+            - iframe [ref=e1483]:
+              - table "Status of the club members 2021" [ref=f45e2]:
+                - caption [ref=f45e3]: Status of the club members 2021
+                - rowgroup [ref=f45e4]:
+                  - row "Name ID Membership Dates Balance" [ref=f45e5]:
+                    - columnheader "Name" [ref=f45e6]
+                    - columnheader "ID" [ref=f45e7]
+                    - columnheader "Membership Dates" [ref=f45e8]
+                    - columnheader "Balance" [ref=f45e9]
+                  - row "Joined Canceled" [ref=f45e10]:
+                    - columnheader "Joined" [ref=f45e11]
+                    - columnheader "Canceled" [ref=f45e12]
+                - rowgroup [ref=f45e13]:
+                  - row "Margaret Nguyen 427311 June 3, 2010 n/a 0.00" [ref=f45e14]:
+                    - rowheader "Margaret Nguyen" [ref=f45e15]
+                    - cell "427311" [ref=f45e16]
+                    - cell "June 3, 2010" [ref=f45e17]:
+                      - time [ref=f45e18]: June 3, 2010
+                    - cell "n/a" [ref=f45e19]
+                    - cell "0.00" [ref=f45e20]
+                  - row "Edvard Galinski 533175 January 13, 2011 April 8, 2017 37.00" [ref=f45e21]:
+                    - rowheader "Edvard Galinski" [ref=f45e22]
+                    - cell "533175" [ref=f45e23]
+                    - cell "January 13, 2011" [ref=f45e24]:
+                      - time [ref=f45e25]: January 13, 2011
+                    - cell "April 8, 2017" [ref=f45e26]:
+                      - time [ref=f45e27]: April 8, 2017
+                    - cell "37.00" [ref=f45e28]
+                  - row "Hoshi Nakamura 601942 July 23, 2012 n/a 15.00" [ref=f45e29]:
+                    - rowheader "Hoshi Nakamura" [ref=f45e30]
+                    - cell "601942" [ref=f45e31]
+                    - cell "July 23, 2012" [ref=f45e32]:
+                      - time [ref=f45e33]: July 23, 2012
+                    - cell "n/a" [ref=f45e34]
+                    - cell "15.00" [ref=f45e35]
+                - rowgroup [ref=f45e36]:
+                  - row "Total balance 52.00" [ref=f45e37]:
+                    - rowheader "Total balance" [ref=f45e38]
+                    - cell "52.00" [ref=f45e39]
+          - paragraph [ref=e1484]: There is no change to the HTML again. See what proper preparation of the HTML structure can do?
+          - heading "CSS" [level=4] [ref=e1485]
+          - paragraph [ref=e1486]: The CSS is much more involved this time. It's not complicated, but there's a lot going on. Let's break it down.
+          - paragraph [ref=e1487]:
+            - text: Here the
+            - link "border-collapse" [ref=e1488] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/border-collapse
+              - code [ref=e1489]: border-collapse
+            - text: and
+            - link "border-spacing" [ref=e1490] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/border-spacing
+              - code [ref=e1491]: border-spacing
+            - text: properties are added to eliminate spacing between cells and collapse borders that touch one another to be a single border instead of winding up with double borders. Additionally, the
+            - link "<caption>" [ref=e1492] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/caption
+              - code [ref=e1493]: <caption>
+            - text: is placed at the
+            - code [ref=e1494]: bottom
+            - text: of the table using the
+            - link "caption-side" [ref=e1495] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/caption-side
+              - code [ref=e1496]: caption-side
+            - text: "property:"
+          - generic [ref=e1498]:
+            - generic [ref=e1499]:
+              - generic [ref=e1500]: css
+              - button "Copy" [ref=e1503] [cursor=pointer]:
+                - generic [ref=e1504]:
+                  - generic: Copy
+              - generic "Run example in MDN Playground (opens in new tab)" [ref=e1505]:
+                - link "Play" [ref=e1506] [cursor=pointer]:
+                  - /url: https://developer.mozilla.org/en-US/play?uuid=520cbeca85d6426a6540e21d6f2319dd7bfb3f2c&state=nVRLj9owEP4rI5%2BKRIptAmyzaaS%2B1IfU7aE95mJiQ9I1dmQPu6Cq%2F71yErZJWVi2h0jOePw9Zjz%2BRUrcaJKQFMVSqyw3AGkhaqysaX4AvqPArQe7AiwVFHq7hI3aLJXzwClnzYlJ%2F0iKpRKyO52i61bNBvjC1up1TgqrcwLO3vtamNc54TnJbsRGpRMsLz7w%2Bf0T6YXVvfSvreyyquG9QOWfxfVWaGGKvr508uDtrMvsi62MkufZsncBXQ%2FSHghC7FDSFJdW7p%2FgdfY%2B%2BBVuLZxCuFlv98r8I0BmMV9MGUsnKAfhFKuNAilQhUWwTxmN6Dyi02BmaxRMxxCC6SRkZEcIZiKOYvQlpb3gBcVrTXyQd8JJ%2BCh0ZfxtdWRiNp2yxewiEyyiLGKNCWG2wu2BtUbYKSOPoSwiGkf0KifZm9pVGq4aiMUpiOniP41%2Fsr6s4Ebcis3WiSPfc8pexfwixTyii4i3zdN74K1p%2FpzusdkJF%2Bnk731McWUtXmKuN5hxTrIfFoWG5dGEdR3mp7k7wnRyeL7ImBTek4Q0AfgV8pbWSeWiwmotaq8SOKyue7u%2BFkVl1gnQXjQBXu%2FAW11JcOvlCxZT6L5Rk7ayBpNWFpvXO8jJt1oZ%2BC6Mz8m43cjJJ6XvFFaF6MXeuEroh38vjI%2B8ctXqOje%2Fc5Ob7kVtHXQ%2Fka%2BkSmBpEe2m4a%2BFlI1qRuvdg6LoXlXrEkOmli0gluPcoOwXJAE2NDen0H2jIXhc72De4DfSsGxh7pQLpnQkdLU2PV0NnxISMkDXUYridu3s1sjQB%2BuShpLzK%2BAxBR7PRn%2FRDycTg2VkVxHua%2FWCjwbNbLme6M9AR6KFxwNciJQDfDY6L3QGfDYDzh8Veh6an4duYXvQzUS1tWuwVpXrwTdQqHZ4KLtWK7x%2BQjp%2FBTyOj%2FAHMtWdMueVThfAp6Fj%2FFGlcliHI6EuXMruYBjc%2FvVou4q2blsqhS%2FViZl7xlVqWNqr3y7laVUnR4eMyc%2FwopAxwVJtFEmIDjnk9x8%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                  - generic [ref=e1507]:
+                    - generic: Play
+            - code [ref=e1509]: "table { border-collapse: collapse; border-spacing: 0; border: 2px solid rgb(140 140 140); font: 16px \"Open Sans\", \"Helvetica\", \"Arial\", sans-serif; } caption { caption-side: bottom; padding: 10px; font-weight: bold; }"
+          - paragraph [ref=e1510]:
+            - text: Next, the
+            - link "padding" [ref=e1511] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/padding
+              - code [ref=e1512]: padding
+            - text: property is used to give all the table cells space around their content. The
+            - link "vertical-align" [ref=e1513] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/vertical-align
+              - code [ref=e1514]: vertical-align
+            - text: property aligns the content of the header cells to the
+            - code [ref=e1515]: bottom
+            - text: "of the cell, which can be seen on the cells in the head that span two rows:"
+          - generic [ref=e1517]:
+            - generic [ref=e1518]:
+              - generic [ref=e1519]: css
+              - button "Copy" [ref=e1522] [cursor=pointer]:
+                - generic [ref=e1523]:
+                  - generic: Copy
+              - generic "Run example in MDN Playground (opens in new tab)" [ref=e1524]:
+                - link "Play" [ref=e1525] [cursor=pointer]:
+                  - /url: https://developer.mozilla.org/en-US/play?uuid=520cbeca85d6426a6540e21d6f2319dd7bfb3f2c&state=nVRLj9owEP4rI5%2BKRIptAmyzaaS%2B1IfU7aE95mJiQ9I1dmQPu6Cq%2F71yErZJWVi2h0jOePw9Zjz%2BRUrcaJKQFMVSqyw3AGkhaqysaX4AvqPArQe7AiwVFHq7hI3aLJXzwClnzYlJ%2F0iKpRKyO52i61bNBvjC1up1TgqrcwLO3vtamNc54TnJbsRGpRMsLz7w%2Bf0T6YXVvfSvreyyquG9QOWfxfVWaGGKvr508uDtrMvsi62MkufZsncBXQ%2FSHghC7FDSFJdW7p%2FgdfY%2B%2BBVuLZxCuFlv98r8I0BmMV9MGUsnKAfhFKuNAilQhUWwTxmN6Dyi02BmaxRMxxCC6SRkZEcIZiKOYvQlpb3gBcVrTXyQd8JJ%2BCh0ZfxtdWRiNp2yxewiEyyiLGKNCWG2wu2BtUbYKSOPoSwiGkf0KifZm9pVGq4aiMUpiOniP41%2Fsr6s4Ebcis3WiSPfc8pexfwixTyii4i3zdN74K1p%2FpzusdkJF%2Bnk731McWUtXmKuN5hxTrIfFoWG5dGEdR3mp7k7wnRyeL7ImBTek4Q0AfgV8pbWSeWiwmotaq8SOKyue7u%2BFkVl1gnQXjQBXu%2FAW11JcOvlCxZT6L5Rk7ayBpNWFpvXO8jJt1oZ%2BC6Mz8m43cjJJ6XvFFaF6MXeuEroh38vjI%2B8ctXqOje%2Fc5Ob7kVtHXQ%2Fka%2BkSmBpEe2m4a%2BFlI1qRuvdg6LoXlXrEkOmli0gluPcoOwXJAE2NDen0H2jIXhc72De4DfSsGxh7pQLpnQkdLU2PV0NnxISMkDXUYridu3s1sjQB%2BuShpLzK%2BAxBR7PRn%2FRDycTg2VkVxHua%2FWCjwbNbLme6M9AR6KFxwNciJQDfDY6L3QGfDYDzh8Veh6an4duYXvQzUS1tWuwVpXrwTdQqHZ4KLtWK7x%2BQjp%2FBTyOj%2FAHMtWdMueVThfAp6Fj%2FFGlcliHI6EuXMruYBjc%2FvVou4q2blsqhS%2FViZl7xlVqWNqr3y7laVUnR4eMyc%2FwopAxwVJtFEmIDjnk9x8%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                  - generic [ref=e1526]:
+                    - generic: Play
+            - code [ref=e1528]: "th, td { border: 1px solid rgb(160 160 160); padding: 4px 6px; } th { vertical-align: bottom; }"
+          - paragraph [ref=e1529]:
+            - text: The next CSS rule sets the
+            - link "background-color" [ref=e1530] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/background-color
+              - code [ref=e1531]: background-color
+            - text: of all
+            - link "<tr>" [ref=e1532] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/tr
+              - code [ref=e1533]: <tr>
+            - text: elements in the table's head (as specified using
+            - link "<thead>" [ref=e1534] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/thead
+              - code [ref=e1535]: <thead>
+            - text: ). Then the bottom border of the head is set to be a two-pixel wide line. Notice, however, that we're using the
+            - link ":nth-of-type" [ref=e1536] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Selectors/:nth-of-type
+              - code [ref=e1537]: :nth-of-type
+            - text: selector to apply the
+            - link "border-bottom" [ref=e1538] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/border-bottom
+              - code [ref=e1539]: border-bottom
+            - text: property to the
+            - emphasis [ref=e1540]: second
+            - text: "row in the head. Why? Because the head is made of two rows that are spanned by some of the cells. That means there are actually two rows there; applying the style to the first row would not give us the expected result:"
+          - generic [ref=e1542]:
+            - generic [ref=e1543]:
+              - generic [ref=e1544]: css
+              - button "Copy" [ref=e1547] [cursor=pointer]:
+                - generic [ref=e1548]:
+                  - generic: Copy
+              - generic "Run example in MDN Playground (opens in new tab)" [ref=e1549]:
+                - link "Play" [ref=e1550] [cursor=pointer]:
+                  - /url: https://developer.mozilla.org/en-US/play?uuid=520cbeca85d6426a6540e21d6f2319dd7bfb3f2c&state=nVRLj9owEP4rI5%2BKRIptAmyzaaS%2B1IfU7aE95mJiQ9I1dmQPu6Cq%2F71yErZJWVi2h0jOePw9Zjz%2BRUrcaJKQFMVSqyw3AGkhaqysaX4AvqPArQe7AiwVFHq7hI3aLJXzwClnzYlJ%2F0iKpRKyO52i61bNBvjC1up1TgqrcwLO3vtamNc54TnJbsRGpRMsLz7w%2Bf0T6YXVvfSvreyyquG9QOWfxfVWaGGKvr508uDtrMvsi62MkufZsncBXQ%2FSHghC7FDSFJdW7p%2FgdfY%2B%2BBVuLZxCuFlv98r8I0BmMV9MGUsnKAfhFKuNAilQhUWwTxmN6Dyi02BmaxRMxxCC6SRkZEcIZiKOYvQlpb3gBcVrTXyQd8JJ%2BCh0ZfxtdWRiNp2yxewiEyyiLGKNCWG2wu2BtUbYKSOPoSwiGkf0KifZm9pVGq4aiMUpiOniP41%2Fsr6s4Ebcis3WiSPfc8pexfwixTyii4i3zdN74K1p%2FpzusdkJF%2Bnk731McWUtXmKuN5hxTrIfFoWG5dGEdR3mp7k7wnRyeL7ImBTek4Q0AfgV8pbWSeWiwmotaq8SOKyue7u%2BFkVl1gnQXjQBXu%2FAW11JcOvlCxZT6L5Rk7ayBpNWFpvXO8jJt1oZ%2BC6Mz8m43cjJJ6XvFFaF6MXeuEroh38vjI%2B8ctXqOje%2Fc5Ob7kVtHXQ%2Fka%2BkSmBpEe2m4a%2BFlI1qRuvdg6LoXlXrEkOmli0gluPcoOwXJAE2NDen0H2jIXhc72De4DfSsGxh7pQLpnQkdLU2PV0NnxISMkDXUYridu3s1sjQB%2BuShpLzK%2BAxBR7PRn%2FRDycTg2VkVxHua%2FWCjwbNbLme6M9AR6KFxwNciJQDfDY6L3QGfDYDzh8Veh6an4duYXvQzUS1tWuwVpXrwTdQqHZ4KLtWK7x%2BQjp%2FBTyOj%2FAHMtWdMueVThfAp6Fj%2FFGlcliHI6EuXMruYBjc%2FvVou4q2blsqhS%2FViZl7xlVqWNqr3y7laVUnR4eMyc%2FwopAxwVJtFEmIDjnk9x8%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                  - generic [ref=e1551]:
+                    - generic: Play
+            - code [ref=e1553]: "thead > tr { background-color: rgb(228 240 245); } thead > tr:nth-of-type(2) { border-bottom: 2px solid rgb(140 140 140); }"
+          - paragraph [ref=e1554]:
+            - text: Let's style the two header cells "Joined" and "Canceled" with green and red hues to represent the "good" of a new member and the "bummer" of a canceled membership. Here we dig into the last row of the table's head section using the
+            - link ":last-of-type" [ref=e1555] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Selectors/:last-of-type
+              - code [ref=e1556]: :last-of-type
+            - text: "selector and give the first header cell in it (the \"Joined\" header) a greenish color, and the second header cell in it (the \"Canceled\" header) a reddish hue:"
+          - generic [ref=e1558]:
+            - generic [ref=e1559]:
+              - generic [ref=e1560]: css
+              - button "Copy" [ref=e1563] [cursor=pointer]:
+                - generic [ref=e1564]:
+                  - generic: Copy
+              - generic "Run example in MDN Playground (opens in new tab)" [ref=e1565]:
+                - link "Play" [ref=e1566] [cursor=pointer]:
+                  - /url: https://developer.mozilla.org/en-US/play?uuid=520cbeca85d6426a6540e21d6f2319dd7bfb3f2c&state=nVRLj9owEP4rI5%2BKRIptAmyzaaS%2B1IfU7aE95mJiQ9I1dmQPu6Cq%2F71yErZJWVi2h0jOePw9Zjz%2BRUrcaJKQFMVSqyw3AGkhaqysaX4AvqPArQe7AiwVFHq7hI3aLJXzwClnzYlJ%2F0iKpRKyO52i61bNBvjC1up1TgqrcwLO3vtamNc54TnJbsRGpRMsLz7w%2Bf0T6YXVvfSvreyyquG9QOWfxfVWaGGKvr508uDtrMvsi62MkufZsncBXQ%2FSHghC7FDSFJdW7p%2FgdfY%2B%2BBVuLZxCuFlv98r8I0BmMV9MGUsnKAfhFKuNAilQhUWwTxmN6Dyi02BmaxRMxxCC6SRkZEcIZiKOYvQlpb3gBcVrTXyQd8JJ%2BCh0ZfxtdWRiNp2yxewiEyyiLGKNCWG2wu2BtUbYKSOPoSwiGkf0KifZm9pVGq4aiMUpiOniP41%2Fsr6s4Ebcis3WiSPfc8pexfwixTyii4i3zdN74K1p%2FpzusdkJF%2Bnk731McWUtXmKuN5hxTrIfFoWG5dGEdR3mp7k7wnRyeL7ImBTek4Q0AfgV8pbWSeWiwmotaq8SOKyue7u%2BFkVl1gnQXjQBXu%2FAW11JcOvlCxZT6L5Rk7ayBpNWFpvXO8jJt1oZ%2BC6Mz8m43cjJJ6XvFFaF6MXeuEroh38vjI%2B8ctXqOje%2Fc5Ob7kVtHXQ%2Fka%2BkSmBpEe2m4a%2BFlI1qRuvdg6LoXlXrEkOmli0gluPcoOwXJAE2NDen0H2jIXhc72De4DfSsGxh7pQLpnQkdLU2PV0NnxISMkDXUYridu3s1sjQB%2BuShpLzK%2BAxBR7PRn%2FRDycTg2VkVxHua%2FWCjwbNbLme6M9AR6KFxwNciJQDfDY6L3QGfDYDzh8Veh6an4duYXvQzUS1tWuwVpXrwTdQqHZ4KLtWK7x%2BQjp%2FBTyOj%2FAHMtWdMueVThfAp6Fj%2FFGlcliHI6EuXMruYBjc%2FvVou4q2blsqhS%2FViZl7xlVqWNqr3y7laVUnR4eMyc%2FwopAxwVJtFEmIDjnk9x8%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                  - generic [ref=e1567]:
+                    - generic: Play
+            - code [ref=e1569]: "thead > tr:last-of-type > th:nth-of-type(1) { background-color: rgb(225 255 225); } thead > tr:last-of-type > th:nth-of-type(2) { background-color: rgb(255 225 225); }"
+          - paragraph [ref=e1570]:
+            - text: Since the first column should stand out as well, some custom styling is added here too. This CSS rule styles the first header cell in each row of the table's body with the
+            - link "text-align" [ref=e1571] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/text-align
+              - code [ref=e1572]: text-align
+            - text: property to left-justify the member names, and with a somewhat different
+            - link "background-color" [ref=e1573] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/background-color
+              - code [ref=e1574]: background-color
+            - text: ":"
+          - generic [ref=e1576]:
+            - generic [ref=e1577]:
+              - generic [ref=e1578]: css
+              - button "Copy" [ref=e1581] [cursor=pointer]:
+                - generic [ref=e1582]:
+                  - generic: Copy
+              - generic "Run example in MDN Playground (opens in new tab)" [ref=e1583]:
+                - link "Play" [ref=e1584] [cursor=pointer]:
+                  - /url: https://developer.mozilla.org/en-US/play?uuid=520cbeca85d6426a6540e21d6f2319dd7bfb3f2c&state=nVRLj9owEP4rI5%2BKRIptAmyzaaS%2B1IfU7aE95mJiQ9I1dmQPu6Cq%2F71yErZJWVi2h0jOePw9Zjz%2BRUrcaJKQFMVSqyw3AGkhaqysaX4AvqPArQe7AiwVFHq7hI3aLJXzwClnzYlJ%2F0iKpRKyO52i61bNBvjC1up1TgqrcwLO3vtamNc54TnJbsRGpRMsLz7w%2Bf0T6YXVvfSvreyyquG9QOWfxfVWaGGKvr508uDtrMvsi62MkufZsncBXQ%2FSHghC7FDSFJdW7p%2FgdfY%2B%2BBVuLZxCuFlv98r8I0BmMV9MGUsnKAfhFKuNAilQhUWwTxmN6Dyi02BmaxRMxxCC6SRkZEcIZiKOYvQlpb3gBcVrTXyQd8JJ%2BCh0ZfxtdWRiNp2yxewiEyyiLGKNCWG2wu2BtUbYKSOPoSwiGkf0KifZm9pVGq4aiMUpiOniP41%2Fsr6s4Ebcis3WiSPfc8pexfwixTyii4i3zdN74K1p%2FpzusdkJF%2Bnk731McWUtXmKuN5hxTrIfFoWG5dGEdR3mp7k7wnRyeL7ImBTek4Q0AfgV8pbWSeWiwmotaq8SOKyue7u%2BFkVl1gnQXjQBXu%2FAW11JcOvlCxZT6L5Rk7ayBpNWFpvXO8jJt1oZ%2BC6Mz8m43cjJJ6XvFFaF6MXeuEroh38vjI%2B8ctXqOje%2Fc5Ob7kVtHXQ%2Fka%2BkSmBpEe2m4a%2BFlI1qRuvdg6LoXlXrEkOmli0gluPcoOwXJAE2NDen0H2jIXhc72De4DfSsGxh7pQLpnQkdLU2PV0NnxISMkDXUYridu3s1sjQB%2BuShpLzK%2BAxBR7PRn%2FRDycTg2VkVxHua%2FWCjwbNbLme6M9AR6KFxwNciJQDfDY6L3QGfDYDzh8Veh6an4duYXvQzUS1tWuwVpXrwTdQqHZ4KLtWK7x%2BQjp%2FBTyOj%2FAHMtWdMueVThfAp6Fj%2FFGlcliHI6EuXMruYBjc%2FvVou4q2blsqhS%2FViZl7xlVqWNqr3y7laVUnR4eMyc%2FwopAxwVJtFEmIDjnk9x8%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                  - generic [ref=e1585]:
+                    - generic: Play
+            - code [ref=e1587]: "tbody > tr > th:first-of-type { text-align: left; background-color: rgb(225 229 244); }"
+          - paragraph [ref=e1588]:
+            - text: It's common to help improve the readability of table data by alternating row colors—this is sometimes referred to as "zebra striping". Let's add a bit of
+            - link "background-color" [ref=e1589] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/background-color
+              - code [ref=e1590]: background-color
+            - text: "to every even row:"
+          - generic [ref=e1592]:
+            - generic [ref=e1593]:
+              - generic [ref=e1594]: css
+              - button "Copy" [ref=e1597] [cursor=pointer]:
+                - generic [ref=e1598]:
+                  - generic: Copy
+              - generic "Run example in MDN Playground (opens in new tab)" [ref=e1599]:
+                - link "Play" [ref=e1600] [cursor=pointer]:
+                  - /url: https://developer.mozilla.org/en-US/play?uuid=520cbeca85d6426a6540e21d6f2319dd7bfb3f2c&state=nVRLj9owEP4rI5%2BKRIptAmyzaaS%2B1IfU7aE95mJiQ9I1dmQPu6Cq%2F71yErZJWVi2h0jOePw9Zjz%2BRUrcaJKQFMVSqyw3AGkhaqysaX4AvqPArQe7AiwVFHq7hI3aLJXzwClnzYlJ%2F0iKpRKyO52i61bNBvjC1up1TgqrcwLO3vtamNc54TnJbsRGpRMsLz7w%2Bf0T6YXVvfSvreyyquG9QOWfxfVWaGGKvr508uDtrMvsi62MkufZsncBXQ%2FSHghC7FDSFJdW7p%2FgdfY%2B%2BBVuLZxCuFlv98r8I0BmMV9MGUsnKAfhFKuNAilQhUWwTxmN6Dyi02BmaxRMxxCC6SRkZEcIZiKOYvQlpb3gBcVrTXyQd8JJ%2BCh0ZfxtdWRiNp2yxewiEyyiLGKNCWG2wu2BtUbYKSOPoSwiGkf0KifZm9pVGq4aiMUpiOniP41%2Fsr6s4Ebcis3WiSPfc8pexfwixTyii4i3zdN74K1p%2FpzusdkJF%2Bnk731McWUtXmKuN5hxTrIfFoWG5dGEdR3mp7k7wnRyeL7ImBTek4Q0AfgV8pbWSeWiwmotaq8SOKyue7u%2BFkVl1gnQXjQBXu%2FAW11JcOvlCxZT6L5Rk7ayBpNWFpvXO8jJt1oZ%2BC6Mz8m43cjJJ6XvFFaF6MXeuEroh38vjI%2B8ctXqOje%2Fc5Ob7kVtHXQ%2Fka%2BkSmBpEe2m4a%2BFlI1qRuvdg6LoXlXrEkOmli0gluPcoOwXJAE2NDen0H2jIXhc72De4DfSsGxh7pQLpnQkdLU2PV0NnxISMkDXUYridu3s1sjQB%2BuShpLzK%2BAxBR7PRn%2FRDycTg2VkVxHua%2FWCjwbNbLme6M9AR6KFxwNciJQDfDY6L3QGfDYDzh8Veh6an4duYXvQzUS1tWuwVpXrwTdQqHZ4KLtWK7x%2BQjp%2FBTyOj%2FAHMtWdMueVThfAp6Fj%2FFGlcliHI6EuXMruYBjc%2FvVou4q2blsqhS%2FViZl7xlVqWNqr3y7laVUnR4eMyc%2FwopAxwVJtFEmIDjnk9x8%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                  - generic [ref=e1601]:
+                    - generic: Play
+            - code [ref=e1603]: "tbody > tr:nth-of-type(even) { background-color: rgb(237 238 242); }"
+          - paragraph [ref=e1604]:
+            - text: Since it's standard practice to right-justify currency values in tables, let's do that here. This just sets the
+            - link "text-align" [ref=e1605] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/text-align
+              - code [ref=e1606]: text-align
+            - text: property for the last
+            - link "<td>" [ref=e1607] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/td
+              - code [ref=e1608]: <td>
+            - text: in each body row to
+            - code [ref=e1609]: right
+            - text: ":"
+          - generic [ref=e1611]:
+            - generic [ref=e1612]:
+              - generic [ref=e1613]: css
+              - button "Copy" [ref=e1616] [cursor=pointer]:
+                - generic [ref=e1617]:
+                  - generic: Copy
+              - generic "Run example in MDN Playground (opens in new tab)" [ref=e1618]:
+                - link "Play" [ref=e1619] [cursor=pointer]:
+                  - /url: https://developer.mozilla.org/en-US/play?uuid=520cbeca85d6426a6540e21d6f2319dd7bfb3f2c&state=nVRLj9owEP4rI5%2BKRIptAmyzaaS%2B1IfU7aE95mJiQ9I1dmQPu6Cq%2F71yErZJWVi2h0jOePw9Zjz%2BRUrcaJKQFMVSqyw3AGkhaqysaX4AvqPArQe7AiwVFHq7hI3aLJXzwClnzYlJ%2F0iKpRKyO52i61bNBvjC1up1TgqrcwLO3vtamNc54TnJbsRGpRMsLz7w%2Bf0T6YXVvfSvreyyquG9QOWfxfVWaGGKvr508uDtrMvsi62MkufZsncBXQ%2FSHghC7FDSFJdW7p%2FgdfY%2B%2BBVuLZxCuFlv98r8I0BmMV9MGUsnKAfhFKuNAilQhUWwTxmN6Dyi02BmaxRMxxCC6SRkZEcIZiKOYvQlpb3gBcVrTXyQd8JJ%2BCh0ZfxtdWRiNp2yxewiEyyiLGKNCWG2wu2BtUbYKSOPoSwiGkf0KifZm9pVGq4aiMUpiOniP41%2Fsr6s4Ebcis3WiSPfc8pexfwixTyii4i3zdN74K1p%2FpzusdkJF%2Bnk731McWUtXmKuN5hxTrIfFoWG5dGEdR3mp7k7wnRyeL7ImBTek4Q0AfgV8pbWSeWiwmotaq8SOKyue7u%2BFkVl1gnQXjQBXu%2FAW11JcOvlCxZT6L5Rk7ayBpNWFpvXO8jJt1oZ%2BC6Mz8m43cjJJ6XvFFaF6MXeuEroh38vjI%2B8ctXqOje%2Fc5Ob7kVtHXQ%2Fka%2BkSmBpEe2m4a%2BFlI1qRuvdg6LoXlXrEkOmli0gluPcoOwXJAE2NDen0H2jIXhc72De4DfSsGxh7pQLpnQkdLU2PV0NnxISMkDXUYridu3s1sjQB%2BuShpLzK%2BAxBR7PRn%2FRDycTg2VkVxHua%2FWCjwbNbLme6M9AR6KFxwNciJQDfDY6L3QGfDYDzh8Veh6an4duYXvQzUS1tWuwVpXrwTdQqHZ4KLtWK7x%2BQjp%2FBTyOj%2FAHMtWdMueVThfAp6Fj%2FFGlcliHI6EuXMruYBjc%2FvVou4q2blsqhS%2FViZl7xlVqWNqr3y7laVUnR4eMyc%2FwopAxwVJtFEmIDjnk9x8%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                  - generic [ref=e1620]:
+                    - generic: Play
+            - code [ref=e1622]: "tbody > tr > td:last-of-type { text-align: right; }"
+          - paragraph [ref=e1623]: "Finally, some styling similar to the head is applied to the foot section of the table to make it stand out as well:"
+          - generic [ref=e1625]:
+            - generic [ref=e1626]:
+              - generic [ref=e1627]: css
+              - button "Copy" [ref=e1630] [cursor=pointer]:
+                - generic [ref=e1631]:
+                  - generic: Copy
+              - generic "Run example in MDN Playground (opens in new tab)" [ref=e1632]:
+                - link "Play" [ref=e1633] [cursor=pointer]:
+                  - /url: https://developer.mozilla.org/en-US/play?uuid=520cbeca85d6426a6540e21d6f2319dd7bfb3f2c&state=nVRLj9owEP4rI5%2BKRIptAmyzaaS%2B1IfU7aE95mJiQ9I1dmQPu6Cq%2F71yErZJWVi2h0jOePw9Zjz%2BRUrcaJKQFMVSqyw3AGkhaqysaX4AvqPArQe7AiwVFHq7hI3aLJXzwClnzYlJ%2F0iKpRKyO52i61bNBvjC1up1TgqrcwLO3vtamNc54TnJbsRGpRMsLz7w%2Bf0T6YXVvfSvreyyquG9QOWfxfVWaGGKvr508uDtrMvsi62MkufZsncBXQ%2FSHghC7FDSFJdW7p%2FgdfY%2B%2BBVuLZxCuFlv98r8I0BmMV9MGUsnKAfhFKuNAilQhUWwTxmN6Dyi02BmaxRMxxCC6SRkZEcIZiKOYvQlpb3gBcVrTXyQd8JJ%2BCh0ZfxtdWRiNp2yxewiEyyiLGKNCWG2wu2BtUbYKSOPoSwiGkf0KifZm9pVGq4aiMUpiOniP41%2Fsr6s4Ebcis3WiSPfc8pexfwixTyii4i3zdN74K1p%2FpzusdkJF%2Bnk731McWUtXmKuN5hxTrIfFoWG5dGEdR3mp7k7wnRyeL7ImBTek4Q0AfgV8pbWSeWiwmotaq8SOKyue7u%2BFkVl1gnQXjQBXu%2FAW11JcOvlCxZT6L5Rk7ayBpNWFpvXO8jJt1oZ%2BC6Mz8m43cjJJ6XvFFaF6MXeuEroh38vjI%2B8ctXqOje%2Fc5Ob7kVtHXQ%2Fka%2BkSmBpEe2m4a%2BFlI1qRuvdg6LoXlXrEkOmli0gluPcoOwXJAE2NDen0H2jIXhc72De4DfSsGxh7pQLpnQkdLU2PV0NnxISMkDXUYridu3s1sjQB%2BuShpLzK%2BAxBR7PRn%2FRDycTg2VkVxHua%2FWCjwbNbLme6M9AR6KFxwNciJQDfDY6L3QGfDYDzh8Veh6an4duYXvQzUS1tWuwVpXrwTdQqHZ4KLtWK7x%2BQjp%2FBTyOj%2FAHMtWdMueVThfAp6Fj%2FFGlcliHI6EuXMruYBjc%2FvVou4q2blsqhS%2FViZl7xlVqWNqr3y7laVUnR4eMyc%2FwopAxwVJtFEmIDjnk9x8%3D&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                  - generic [ref=e1634]:
+                    - generic: Play
+            - code [ref=e1636]: "tfoot > tr { border-top: 2px dashed rgb(140 140 140); background-color: rgb(228 240 245); } tfoot th, tfoot td { text-align: right; font-weight: bold; }"
+        - region "Displaying large tables in small spaces" [ref=e1637]:
+          - heading "Displaying large tables in small spaces" [level=3] [ref=e1638]:
+            - link "Displaying large tables in small spaces" [ref=e1639] [cursor=pointer]:
+              - /url: "#displaying_large_tables_in_small_spaces"
+          - paragraph [ref=e1640]: A common issue with tables on the web is that they don't natively work very well on small screens when the amount of content is large, and the way to make them scrollable isn't obvious, especially when the markup may come from a CMS and cannot be modified to have a wrapper.
+          - paragraph [ref=e1641]: This example provides one way to display tables in small spaces. We've hidden the HTML content as it is very large, and there is nothing remarkable about it. The CSS is more useful to inspect in this example.
+          - heading "CSS" [level=4] [ref=e1642]
+          - paragraph [ref=e1643]:
+            - text: When looking at these styles you'll notice that table's
+            - link "display" [ref=e1644] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/display
+              - code [ref=e1645]: display
+            - text: property has been set to
+            - code [ref=e1646]: block
+            - text: . While this allows scrolling, the table loses some of its integrity, and table cells try to become as small as possible. To mitigate this issue we've set
+            - link "white-space" [ref=e1647] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/white-space
+              - code [ref=e1648]: white-space
+            - text: to
+            - code [ref=e1649]: nowrap
+            - text: on the
+            - link "<tbody>" [ref=e1650] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/tbody
+              - code [ref=e1651]: <tbody>
+            - text: . However, we don't do this for the
+            - link "<thead>" [ref=e1652] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/thead
+              - code [ref=e1653]: <thead>
+            - text: to avoid long titles forcing columns to be wider than they need to be to display the data.
+          - paragraph [ref=e1654]:
+            - text: To keep the table headers on the page while scrolling down we've set
+            - link "position" [ref=e1655] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/position
+              - code [ref=e1656]: position
+            - text: to sticky on the
+            - link "<th>" [ref=e1657] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+              - code [ref=e1658]: <th>
+            - text: elements. Note that we have
+            - strong [ref=e1659]: not
+            - text: set
+            - link "border-collapse" [ref=e1660] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/border-collapse
+              - code [ref=e1661]: border-collapse
+            - text: to
+            - code [ref=e1662]: collapse
+            - text: ", as if we do the header cannot be separated correctly from the rest of the table."
+          - paragraph [ref=e1663]:
+            - text: Given that the
+            - code [ref=e1664]: <table>
+            - text: has a fixed size, the
+            - link "overflow" [ref=e1665] [cursor=pointer]:
+              - /url: /en-US/docs/Web/CSS/Reference/Properties/overflow
+              - code [ref=e1666]: overflow
+            - text: set to
+            - code [ref=e1667]: auto
+            - text: is the important part here, as it makes the table scrollable.
+          - generic [ref=e1669]:
+            - generic [ref=e1670]:
+              - generic [ref=e1671]: css
+              - button "Copy" [ref=e1674] [cursor=pointer]:
+                - generic [ref=e1675]:
+                  - generic: Copy
+              - generic "Run example in MDN Playground (opens in new tab)" [ref=e1676]:
+                - link "Play" [ref=e1677] [cursor=pointer]:
+                  - /url: https://developer.mozilla.org/en-US/play?uuid=e2ae40cc6f05f8dafcaf36ea854651154d9e0186&state=lZjbbuIwEIZfxYq0dyDyO0fciCfhJpCUZBvibGIKVdV3XyUcSnf7u%2FgGyMx4Mp%2BD5E959yqzbzzlZSbfNOVq3QqRmarMi%2BnneNFffk2JFbLh0K2CbDF%2BifLPIW8GlS1M9aVKPlQVPFQVPlQVPVQVP1SV%2FFCVLS6bMsauW5WZjS7evt21YtXro4ASyBam%2BC6RsoRMWCYOWQYyou0Qs1QQBnepG%2BL3LJKxSMYiKYukLJKzSM4iHVkCxhIwloCyBJQl4CwBZwkcWULGEjKWkLKElCXkLCFnCR1ZIsYSMZaIskSUJeIsEWeJHFlixhIzlpiyxJQl5iwxZ4kdWRLGkjCWhLIklCXhLAlnSRxZUsaSMpaUsqSUJeUsKWdJHVmWjGXJWJaUZUlZlpxlyVmWjizw6WHp09PS58elz89L33Jg%2BpYT03dF4uc%2FFwCLAVgUwOYANglwtQBQDQD1AHARADcBWFQAFheAqwyA2gCoDoD7ALgQwGIEsCgBXJ0AVApArQBcC8C9ABYxgMUM4KoGoG4AKgfgdgCuB7D4ASyCAFdDAFUEUEcAlwRwS4BFE2DxBLiKAqgpgKoCuCuAywIstgCLLsDVF0CFAdQYwJUB3BlgkQZYrAGu2gDqDaDiAG4O4OoAizvAIg9wtQdJ7UFSe5DcHiS3B2mxB2mxB8ntIVtcXyRki%2Bs7GW%2FmbYfBU94UmK1bU40fhXgfV2x0X5S9EuhOYtBNXYhNk29fntbtx7pdt9Oac6V%2BLfvnRh%2BVyA9GP42hY12YSgn4%2Fq%2Fpep%2Bf5pdY6PvdaQpWZb2rjBIyvEaKeuia%2FE2JTaOnW40r%2B13dKuF%2FNj9PNh%2B6fFu3OyX820wj4nmmY1WbcioplWj1sc%2B7W9U9ZZcXxdQk6k4C1zkudzC6u07t38eb8tncJy5tLx31UJtat0oMpt6%2BvE0Lje5uPfLty67Xh7ZQ5ymn6GvZm3qbN%2FO8qXetEhttjN5%2F9lZNPpj5tqqbYpr%2B7vr%2Bcc37cUv%2Fn62%2Fr%2F%2F6hOfnW%2F2zxpt5v8e%2FhjfzTFXuS095zdja%2B%2FgL&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                  - generic [ref=e1678]:
+                    - generic: Play
+            - code [ref=e1680]: "table, th, td { border: 1px solid black; } table { overflow: auto; width: 100%; max-width: 400px; height: 240px; display: block; margin: 0 auto; border-spacing: 0; } tbody { white-space: nowrap; } th, td { padding: 5px 10px; border-top-width: 0; border-left-width: 0; } th { position: sticky; top: 0; background: white; vertical-align: bottom; } th:last-child, td:last-child { border-right-width: 0; } tr:last-child td { border-bottom-width: 0; }"
+          - heading "Result" [level=4] [ref=e1681]
+          - generic [ref=e1683]:
+            - generic "Run example in MDN Playground (opens in new tab)" [ref=e1685]:
+              - link "Play" [ref=e1686] [cursor=pointer]:
+                - /url: https://developer.mozilla.org/en-US/play?uuid=e2ae40cc6f05f8dafcaf36ea854651154d9e0186&state=lZjbbuIwEIZfxYq0dyDyO0fciCfhJpCUZBvibGIKVdV3XyUcSnf7u%2FgGyMx4Mp%2BD5E959yqzbzzlZSbfNOVq3QqRmarMi%2BnneNFffk2JFbLh0K2CbDF%2BifLPIW8GlS1M9aVKPlQVPFQVPlQVPVQVP1SV%2FFCVLS6bMsauW5WZjS7evt21YtXro4ASyBam%2BC6RsoRMWCYOWQYyou0Qs1QQBnepG%2BL3LJKxSMYiKYukLJKzSM4iHVkCxhIwloCyBJQl4CwBZwkcWULGEjKWkLKElCXkLCFnCR1ZIsYSMZaIskSUJeIsEWeJHFlixhIzlpiyxJQl5iwxZ4kdWRLGkjCWhLIklCXhLAlnSRxZUsaSMpaUsqSUJeUsKWdJHVmWjGXJWJaUZUlZlpxlyVmWjizw6WHp09PS58elz89L33Jg%2BpYT03dF4uc%2FFwCLAVgUwOYANglwtQBQDQD1AHARADcBWFQAFheAqwyA2gCoDoD7ALgQwGIEsCgBXJ0AVApArQBcC8C9ABYxgMUM4KoGoG4AKgfgdgCuB7D4ASyCAFdDAFUEUEcAlwRwS4BFE2DxBLiKAqgpgKoCuCuAywIstgCLLsDVF0CFAdQYwJUB3BlgkQZYrAGu2gDqDaDiAG4O4OoAizvAIg9wtQdJ7UFSe5DcHiS3B2mxB2mxB8ntIVtcXyRki%2Bs7GW%2FmbYfBU94UmK1bU40fhXgfV2x0X5S9EuhOYtBNXYhNk29fntbtx7pdt9Oac6V%2BLfvnRh%2BVyA9GP42hY12YSgn4%2Fq%2Fpep%2Bf5pdY6PvdaQpWZb2rjBIyvEaKeuia%2FE2JTaOnW40r%2B13dKuF%2FNj9PNh%2B6fFu3OyX820wj4nmmY1WbcioplWj1sc%2B7W9U9ZZcXxdQk6k4C1zkudzC6u07t38eb8tncJy5tLx31UJtat0oMpt6%2BvE0Lje5uPfLty67Xh7ZQ5ymn6GvZm3qbN%2FO8qXetEhttjN5%2F9lZNPpj5tqqbYpr%2B7vr%2Bcc37cUv%2Fn62%2Fr%2F%2F6hOfnW%2F2zxpt5v8e%2FhjfzTFXuS095zdja%2B%2FgL&srcPrefix=%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%2F
+                - generic [ref=e1687]:
+                  - generic: Play
+            - iframe [ref=e1689]:
+              - table [ref=f46e2]:
+                - rowgroup [ref=f46e3]:
+                  - 'row "13 equals: 23 equals: 33 equals: 43 equals: 53 equals: 63 equals: 73 equals:" [ref=f46e4]':
+                    - columnheader "13 equals:" [ref=f46e5]:
+                      - text: "1"
+                      - superscript [ref=f46e6]: "3"
+                      - text: "equals:"
+                    - columnheader "23 equals:" [ref=f46e7]:
+                      - text: "2"
+                      - superscript [ref=f46e8]: "3"
+                      - text: "equals:"
+                    - columnheader "33 equals:" [ref=f46e9]:
+                      - text: "3"
+                      - superscript [ref=f46e10]: "3"
+                      - text: "equals:"
+                    - columnheader "43 equals:" [ref=f46e11]:
+                      - text: "4"
+                      - superscript [ref=f46e12]: "3"
+                      - text: "equals:"
+                    - columnheader "53 equals:" [ref=f46e13]:
+                      - text: "5"
+                      - superscript [ref=f46e14]: "3"
+                      - text: "equals:"
+                    - columnheader "63 equals:" [ref=f46e15]:
+                      - text: "6"
+                      - superscript [ref=f46e16]: "3"
+                      - text: "equals:"
+                    - columnheader "73 equals:" [ref=f46e17]:
+                      - text: "7"
+                      - superscript [ref=f46e18]: "3"
+                      - text: "equals:"
+                - rowgroup [ref=f46e19]:
+                  - 'row "row 1: 1 row 1: 8 row 1: 27 row 1: 64 row 1: 125 row 1: 216 row 1: 343" [ref=f46e20]':
+                    - 'cell "row 1: 1" [ref=f46e21]'
+                    - 'cell "row 1: 8" [ref=f46e22]'
+                    - 'cell "row 1: 27" [ref=f46e23]'
+                    - 'cell "row 1: 64" [ref=f46e24]'
+                    - 'cell "row 1: 125" [ref=f46e25]'
+                    - 'cell "row 1: 216" [ref=f46e26]'
+                    - 'cell "row 1: 343" [ref=f46e27]'
+                  - 'row "row 2: 1 row 2: 8 row 2: 27 row 2: 64 row 2: 125 row 2: 216 row 2: 343" [ref=f46e28]':
+                    - 'cell "row 2: 1" [ref=f46e29]'
+                    - 'cell "row 2: 8" [ref=f46e30]'
+                    - 'cell "row 2: 27" [ref=f46e31]'
+                    - 'cell "row 2: 64" [ref=f46e32]'
+                    - 'cell "row 2: 125" [ref=f46e33]'
+                    - 'cell "row 2: 216" [ref=f46e34]'
+                    - 'cell "row 2: 343" [ref=f46e35]'
+                  - 'row "row 3: 1 row 3: 8 row 3: 27 row 3: 64 row 3: 125 row 3: 216 row 3: 343" [ref=f46e36]':
+                    - 'cell "row 3: 1" [ref=f46e37]'
+                    - 'cell "row 3: 8" [ref=f46e38]'
+                    - 'cell "row 3: 27" [ref=f46e39]'
+                    - 'cell "row 3: 64" [ref=f46e40]'
+                    - 'cell "row 3: 125" [ref=f46e41]'
+                    - 'cell "row 3: 216" [ref=f46e42]'
+                    - 'cell "row 3: 343" [ref=f46e43]'
+                  - 'row "row 4: 1 row 4: 8 row 4: 27 row 4: 64 row 4: 125 row 4: 216 row 4: 343" [ref=f46e44]':
+                    - 'cell "row 4: 1" [ref=f46e45]'
+                    - 'cell "row 4: 8" [ref=f46e46]'
+                    - 'cell "row 4: 27" [ref=f46e47]'
+                    - 'cell "row 4: 64" [ref=f46e48]'
+                    - 'cell "row 4: 125" [ref=f46e49]'
+                    - 'cell "row 4: 216" [ref=f46e50]'
+                    - 'cell "row 4: 343" [ref=f46e51]'
+                  - 'row "row 5: 1 row 5: 8 row 5: 27 row 5: 64 row 5: 125 row 5: 216 row 5: 343" [ref=f46e52]':
+                    - 'cell "row 5: 1" [ref=f46e53]'
+                    - 'cell "row 5: 8" [ref=f46e54]'
+                    - 'cell "row 5: 27" [ref=f46e55]'
+                    - 'cell "row 5: 64" [ref=f46e56]'
+                    - 'cell "row 5: 125" [ref=f46e57]'
+                    - 'cell "row 5: 216" [ref=f46e58]'
+                    - 'cell "row 5: 343" [ref=f46e59]'
+                  - 'row "row 6: 1 row 6: 8 row 6: 27 row 6: 64 row 6: 125 row 6: 216 row 6: 343" [ref=f46e60]':
+                    - 'cell "row 6: 1" [ref=f46e61]'
+                    - 'cell "row 6: 8" [ref=f46e62]'
+                    - 'cell "row 6: 27" [ref=f46e63]'
+                    - 'cell "row 6: 64" [ref=f46e64]'
+                    - 'cell "row 6: 125" [ref=f46e65]'
+                    - 'cell "row 6: 216" [ref=f46e66]'
+                    - 'cell "row 6: 343" [ref=f46e67]'
+                  - 'row "row 7: 1 row 7: 8 row 7: 27 row 7: 64 row 7: 125 row 7: 216 row 7: 343" [ref=f46e68]':
+                    - 'cell "row 7: 1" [ref=f46e69]'
+                    - 'cell "row 7: 8" [ref=f46e70]'
+                    - 'cell "row 7: 27" [ref=f46e71]'
+                    - 'cell "row 7: 64" [ref=f46e72]'
+                    - 'cell "row 7: 125" [ref=f46e73]'
+                    - 'cell "row 7: 216" [ref=f46e74]'
+                    - 'cell "row 7: 343" [ref=f46e75]'
+                  - 'row "row 8: 1 row 8: 8 row 8: 27 row 8: 64 row 8: 125 row 8: 216 row 8: 343" [ref=f46e76]':
+                    - 'cell "row 8: 1" [ref=f46e77]'
+                    - 'cell "row 8: 8" [ref=f46e78]'
+                    - 'cell "row 8: 27" [ref=f46e79]'
+                    - 'cell "row 8: 64" [ref=f46e80]'
+                    - 'cell "row 8: 125" [ref=f46e81]'
+                    - 'cell "row 8: 216" [ref=f46e82]'
+                    - 'cell "row 8: 343" [ref=f46e83]'
+                  - 'row "row 9: 1 row 9: 8 row 9: 27 row 9: 64 row 9: 125 row 9: 216 row 9: 343" [ref=f46e84]':
+                    - 'cell "row 9: 1" [ref=f46e85]'
+                    - 'cell "row 9: 8" [ref=f46e86]'
+                    - 'cell "row 9: 27" [ref=f46e87]'
+                    - 'cell "row 9: 64" [ref=f46e88]'
+                    - 'cell "row 9: 125" [ref=f46e89]'
+                    - 'cell "row 9: 216" [ref=f46e90]'
+                    - 'cell "row 9: 343" [ref=f46e91]'
+                  - 'row "row 10: 1 row 10: 8 row 10: 27 row 10: 64 row 10: 125 row 10: 216 row 10: 343" [ref=f46e92]':
+                    - 'cell "row 10: 1" [ref=f46e93]'
+                    - 'cell "row 10: 8" [ref=f46e94]'
+                    - 'cell "row 10: 27" [ref=f46e95]'
+                    - 'cell "row 10: 64" [ref=f46e96]'
+                    - 'cell "row 10: 125" [ref=f46e97]'
+                    - 'cell "row 10: 216" [ref=f46e98]'
+                    - 'cell "row 10: 343" [ref=f46e99]'
+                  - 'row "row 11: 1 row 11: 8 row 11: 27 row 11: 64 row 11: 125 row 11: 216 row 11: 343" [ref=f46e100]':
+                    - 'cell "row 11: 1" [ref=f46e101]'
+                    - 'cell "row 11: 8" [ref=f46e102]'
+                    - 'cell "row 11: 27" [ref=f46e103]'
+                    - 'cell "row 11: 64" [ref=f46e104]'
+                    - 'cell "row 11: 125" [ref=f46e105]'
+                    - 'cell "row 11: 216" [ref=f46e106]'
+                    - 'cell "row 11: 343" [ref=f46e107]'
+                  - 'row "row 12: 1 row 12: 8 row 12: 27 row 12: 64 row 12: 125 row 12: 216 row 12: 343" [ref=f46e108]':
+                    - 'cell "row 12: 1" [ref=f46e109]'
+                    - 'cell "row 12: 8" [ref=f46e110]'
+                    - 'cell "row 12: 27" [ref=f46e111]'
+                    - 'cell "row 12: 64" [ref=f46e112]'
+                    - 'cell "row 12: 125" [ref=f46e113]'
+                    - 'cell "row 12: 216" [ref=f46e114]'
+                    - 'cell "row 12: 343" [ref=f46e115]'
+                  - 'row "row 13: 1 row 13: 8 row 13: 27 row 13: 64 row 13: 125 row 13: 216 row 13: 343" [ref=f46e116]':
+                    - 'cell "row 13: 1" [ref=f46e117]'
+                    - 'cell "row 13: 8" [ref=f46e118]'
+                    - 'cell "row 13: 27" [ref=f46e119]'
+                    - 'cell "row 13: 64" [ref=f46e120]'
+                    - 'cell "row 13: 125" [ref=f46e121]'
+                    - 'cell "row 13: 216" [ref=f46e122]'
+                    - 'cell "row 13: 343" [ref=f46e123]'
+                  - 'row "row 14: 1 row 14: 8 row 14: 27 row 14: 64 row 14: 125 row 14: 216 row 14: 343" [ref=f46e124]':
+                    - 'cell "row 14: 1" [ref=f46e125]'
+                    - 'cell "row 14: 8" [ref=f46e126]'
+                    - 'cell "row 14: 27" [ref=f46e127]'
+                    - 'cell "row 14: 64" [ref=f46e128]'
+                    - 'cell "row 14: 125" [ref=f46e129]'
+                    - 'cell "row 14: 216" [ref=f46e130]'
+                    - 'cell "row 14: 343" [ref=f46e131]'
+                  - 'row "row 15: 1 row 15: 8 row 15: 27 row 15: 64 row 15: 125 row 15: 216 row 15: 343" [ref=f46e132]':
+                    - 'cell "row 15: 1" [ref=f46e133]'
+                    - 'cell "row 15: 8" [ref=f46e134]'
+                    - 'cell "row 15: 27" [ref=f46e135]'
+                    - 'cell "row 15: 64" [ref=f46e136]'
+                    - 'cell "row 15: 125" [ref=f46e137]'
+                    - 'cell "row 15: 216" [ref=f46e138]'
+                    - 'cell "row 15: 343" [ref=f46e139]'
+                  - 'row "row 16: 1 row 16: 8 row 16: 27 row 16: 64 row 16: 125 row 16: 216 row 16: 343" [ref=f46e140]':
+                    - 'cell "row 16: 1" [ref=f46e141]'
+                    - 'cell "row 16: 8" [ref=f46e142]'
+                    - 'cell "row 16: 27" [ref=f46e143]'
+                    - 'cell "row 16: 64" [ref=f46e144]'
+                    - 'cell "row 16: 125" [ref=f46e145]'
+                    - 'cell "row 16: 216" [ref=f46e146]'
+                    - 'cell "row 16: 343" [ref=f46e147]'
+                  - 'row "row 17: 1 row 17: 8 row 17: 27 row 17: 64 row 17: 125 row 17: 216 row 17: 343" [ref=f46e148]':
+                    - 'cell "row 17: 1" [ref=f46e149]'
+                    - 'cell "row 17: 8" [ref=f46e150]'
+                    - 'cell "row 17: 27" [ref=f46e151]'
+                    - 'cell "row 17: 64" [ref=f46e152]'
+                    - 'cell "row 17: 125" [ref=f46e153]'
+                    - 'cell "row 17: 216" [ref=f46e154]'
+                    - 'cell "row 17: 343" [ref=f46e155]'
+                  - 'row "row 18: 1 row 18: 8 row 18: 27 row 18: 64 row 18: 125 row 18: 216 row 18: 343" [ref=f46e156]':
+                    - 'cell "row 18: 1" [ref=f46e157]'
+                    - 'cell "row 18: 8" [ref=f46e158]'
+                    - 'cell "row 18: 27" [ref=f46e159]'
+                    - 'cell "row 18: 64" [ref=f46e160]'
+                    - 'cell "row 18: 125" [ref=f46e161]'
+                    - 'cell "row 18: 216" [ref=f46e162]'
+                    - 'cell "row 18: 343" [ref=f46e163]'
+                  - 'row "row 19: 1 row 19: 8 row 19: 27 row 19: 64 row 19: 125 row 19: 216 row 19: 343" [ref=f46e164]':
+                    - 'cell "row 19: 1" [ref=f46e165]'
+                    - 'cell "row 19: 8" [ref=f46e166]'
+                    - 'cell "row 19: 27" [ref=f46e167]'
+                    - 'cell "row 19: 64" [ref=f46e168]'
+                    - 'cell "row 19: 125" [ref=f46e169]'
+                    - 'cell "row 19: 216" [ref=f46e170]'
+                    - 'cell "row 19: 343" [ref=f46e171]'
+                  - 'row "row 20: 1 row 20: 8 row 20: 27 row 20: 64 row 20: 125 row 20: 216 row 20: 343" [ref=f46e172]':
+                    - 'cell "row 20: 1" [ref=f46e173]'
+                    - 'cell "row 20: 8" [ref=f46e174]'
+                    - 'cell "row 20: 27" [ref=f46e175]'
+                    - 'cell "row 20: 64" [ref=f46e176]'
+                    - 'cell "row 20: 125" [ref=f46e177]'
+                    - 'cell "row 20: 216" [ref=f46e178]'
+                    - 'cell "row 20: 343" [ref=f46e179]'
+        - region "Technical summary" [ref=e1690]:
+          - heading "Technical summary" [level=2] [ref=e1691]:
+            - link "Technical summary" [ref=e1692] [cursor=pointer]:
+              - /url: "#technical_summary"
+          - figure [ref=e1693]:
+            - table [ref=e1694]:
+              - rowgroup [ref=e1695]:
+                - row "Content categories Flow content" [ref=e1696]:
+                  - rowheader "Content categories" [ref=e1697]:
+                    - link "Content categories" [ref=e1698] [cursor=pointer]:
+                      - /url: /en-US/docs/Web/HTML/Guides/Content_categories
+                  - cell "Flow content" [ref=e1699]:
+                    - link "Flow content" [ref=e1700] [cursor=pointer]:
+                      - /url: /en-US/docs/Web/HTML/Guides/Content_categories#flow_content
+                - 'row "Permitted content In this order: an optional <caption> element, zero or more <colgroup> elements, an optional <thead> element, either one of the following: zero or more <tbody> elements one or more <tr> elements an optional <tfoot> element" [ref=e1701]':
+                  - rowheader "Permitted content" [ref=e1702]
+                  - 'cell "In this order: an optional <caption> element, zero or more <colgroup> elements, an optional <thead> element, either one of the following: zero or more <tbody> elements one or more <tr> elements an optional <tfoot> element" [ref=e1703]':
+                    - text: "In this order:"
+                    - list [ref=e1704]:
+                      - listitem [ref=e1705]:
+                        - text: an optional
+                        - link "<caption>" [ref=e1706] [cursor=pointer]:
+                          - /url: /en-US/docs/Web/HTML/Reference/Elements/caption
+                          - code [ref=e1707]: <caption>
+                        - text: element,
+                      - listitem [ref=e1708]:
+                        - text: zero or more
+                        - link "<colgroup>" [ref=e1709] [cursor=pointer]:
+                          - /url: /en-US/docs/Web/HTML/Reference/Elements/colgroup
+                          - code [ref=e1710]: <colgroup>
+                        - text: elements,
+                      - listitem [ref=e1711]:
+                        - text: an optional
+                        - link "<thead>" [ref=e1712] [cursor=pointer]:
+                          - /url: /en-US/docs/Web/HTML/Reference/Elements/thead
+                          - code [ref=e1713]: <thead>
+                        - text: element,
+                      - listitem [ref=e1714]:
+                        - text: "either one of the following:"
+                        - list [ref=e1715]:
+                          - listitem [ref=e1716]:
+                            - text: zero or more
+                            - link "<tbody>" [ref=e1717] [cursor=pointer]:
+                              - /url: /en-US/docs/Web/HTML/Reference/Elements/tbody
+                              - code [ref=e1718]: <tbody>
+                            - text: elements
+                          - listitem [ref=e1719]:
+                            - text: one or more
+                            - link "<tr>" [ref=e1720] [cursor=pointer]:
+                              - /url: /en-US/docs/Web/HTML/Reference/Elements/tr
+                              - code [ref=e1721]: <tr>
+                            - text: elements
+                      - listitem [ref=e1722]:
+                        - text: an optional
+                        - link "<tfoot>" [ref=e1723] [cursor=pointer]:
+                          - /url: /en-US/docs/Web/HTML/Reference/Elements/tfoot
+                          - code [ref=e1724]: <tfoot>
+                        - text: element
+                - row "Tag omission None, both the starting and ending tag are mandatory." [ref=e1725]:
+                  - rowheader "Tag omission" [ref=e1726]
+                  - cell "None, both the starting and ending tag are mandatory." [ref=e1727]
+                - row "Permitted parents Any element that accepts flow content" [ref=e1728]:
+                  - rowheader "Permitted parents" [ref=e1729]
+                  - cell "Any element that accepts flow content" [ref=e1730]
+                - row "Implicit ARIA role table" [ref=e1731]:
+                  - rowheader "Implicit ARIA role" [ref=e1732]
+                  - cell "table" [ref=e1733]:
+                    - code [ref=e1734]:
+                      - link "table" [ref=e1735] [cursor=pointer]:
+                        - /url: /en-US/docs/Web/Accessibility/ARIA/Reference/Roles/table_role
+                - row "Permitted ARIA roles Any" [ref=e1736]:
+                  - rowheader "Permitted ARIA roles" [ref=e1737]
+                  - cell "Any" [ref=e1738]
+                - row "DOM interface HTMLTableElement" [ref=e1739]:
+                  - rowheader "DOM interface" [ref=e1740]
+                  - cell "HTMLTableElement" [ref=e1741]:
+                    - link "HTMLTableElement" [ref=e1742] [cursor=pointer]:
+                      - /url: /en-US/docs/Web/API/HTMLTableElement
+                      - code [ref=e1743]: HTMLTableElement
+        - region "Specifications" [ref=e1744]:
+          - heading "Specifications" [level=2] [ref=e1745]:
+            - link "Specifications" [ref=e1746] [cursor=pointer]:
+              - /url: "#specifications"
+          - table [ref=e1747]:
+            - rowgroup [ref=e1748]:
+              - row "Specification" [ref=e1749]:
+                - columnheader "Specification" [ref=e1750]
+            - rowgroup [ref=e1751]:
+              - 'row "HTML # the-table-element (external)" [ref=e1752]':
+                - 'cell "HTML # the-table-element (external)" [ref=e1753]':
+                  - 'link "HTML # the-table-element (external)" [ref=e1754] [cursor=pointer]':
+                    - /url: https://html.spec.whatwg.org/multipage/tables.html#the-table-element
+                    - text: HTML
+                    - text: "# the-table-element (external)"
+        - region "Browser compatibility" [ref=e1755]:
+          - heading "Browser compatibility" [level=2] [ref=e1756]:
+            - link "Browser compatibility" [ref=e1757] [cursor=pointer]:
+              - /url: "#browser_compatibility"
+          - generic [ref=e1759]:
+            - figure [ref=e1760]:
+              - figure [ref=e1761]:
+                - generic [ref=e1762]:
+                  - link "Report problems with this compatibility data (external)" [ref=e1763] [cursor=pointer]:
+                    - /url: "#"
+                  - text: •
+                  - link "View data on GitHub (external)" [ref=e1764] [cursor=pointer]:
+                    - /url: https://github.com/mdn/browser-compat-data/tree/main/html/elements/table.json
+                - table [ref=e1765]:
+                  - rowgroup [ref=e1766]:
+                    - row "desktop mobile" [ref=e1767]:
+                      - cell [ref=e1768]
+                      - columnheader "desktop" [ref=e1769]:
+                        - generic [ref=e1771]: desktop
+                      - columnheader "mobile" [ref=e1772]:
+                        - generic [ref=e1774]: mobile
+                    - row "Chrome Edge Firefox Opera Safari Chrome Android Firefox for Android Opera Android Safari on iOS Samsung Internet WebView Android WebView on iOS" [ref=e1775]:
+                      - cell [ref=e1776]
+                      - columnheader "Chrome" [ref=e1777]:
+                        - generic [ref=e1778]: Chrome
+                      - columnheader "Edge" [ref=e1780]:
+                        - generic [ref=e1781]: Edge
+                      - columnheader "Firefox" [ref=e1783]:
+                        - generic [ref=e1784]: Firefox
+                      - columnheader "Opera" [ref=e1786]:
+                        - generic [ref=e1787]: Opera
+                      - columnheader "Safari" [ref=e1789]:
+                        - generic [ref=e1790]: Safari
+                      - columnheader "Chrome Android" [ref=e1792]:
+                        - generic [ref=e1793]: Chrome Android
+                      - columnheader "Firefox for Android" [ref=e1795]:
+                        - generic [ref=e1796]: Firefox for Android
+                      - columnheader "Opera Android" [ref=e1798]:
+                        - generic [ref=e1799]: Opera Android
+                      - columnheader "Safari on iOS" [ref=e1801]:
+                        - generic [ref=e1802]: Safari on iOS
+                      - columnheader "Samsung Internet" [ref=e1804]:
+                        - generic [ref=e1805]: Samsung Internet
+                      - columnheader "WebView Android" [ref=e1807]:
+                        - generic [ref=e1808]: WebView Android
+                      - columnheader "WebView on iOS" [ref=e1810]:
+                        - generic [ref=e1811]: WebView on iOS
+                  - rowgroup [ref=e1813]:
+                    - row "table 1 12 1 12.1 1 18 4 12.1 1 1 4.4 1" [ref=e1814]:
+                      - rowheader "table" [ref=e1815]:
+                        - code [ref=e1817]: table
+                      - cell "1" [ref=e1818]:
+                        - button "1" [ref=e1819] [cursor=pointer]:
+                          - generic [ref=e1820]:
+                            - generic "Chrome – Full support" [ref=e1823]
+                            - 'generic "Chrome 1 – Release date: 2008-12-11" [ref=e1825]': "1"
+                      - cell "12" [ref=e1826]:
+                        - button "12" [ref=e1827] [cursor=pointer]:
+                          - generic [ref=e1828]:
+                            - generic "Edge – Full support" [ref=e1831]
+                            - 'generic "Edge 12 – Release date: 2015-07-29" [ref=e1833]': "12"
+                      - cell "1" [ref=e1834]:
+                        - button "1" [ref=e1835] [cursor=pointer]:
+                          - generic [ref=e1836]:
+                            - generic "Firefox – Full support" [ref=e1839]
+                            - 'generic "Firefox 1 – Release date: 2004-11-09" [ref=e1841]': "1"
+                      - cell "12.1" [ref=e1842]:
+                        - button "12.1" [ref=e1843] [cursor=pointer]:
+                          - generic [ref=e1844]:
+                            - generic "Opera – Full support" [ref=e1847]
+                            - 'generic "Opera ≤12.1 – Release date: 2012-11-20" [ref=e1849]': "12.1"
+                      - cell "1" [ref=e1850]:
+                        - button "1" [ref=e1851] [cursor=pointer]:
+                          - generic [ref=e1852]:
+                            - generic "Safari – Full support" [ref=e1855]
+                            - 'generic "Safari 1 – Release date: 2003-06-23" [ref=e1857]': "1"
+                      - cell "18" [ref=e1858]:
+                        - button "18" [ref=e1859] [cursor=pointer]:
+                          - generic [ref=e1860]:
+                            - generic "Chrome Android – Full support" [ref=e1863]
+                            - 'generic "Chrome Android 18 – Release date: 2012-06-27" [ref=e1865]': "18"
+                      - cell "4" [ref=e1866]:
+                        - button "4" [ref=e1867] [cursor=pointer]:
+                          - generic [ref=e1868]:
+                            - generic "Firefox for Android – Full support" [ref=e1871]
+                            - 'generic "Firefox for Android 4 – Release date: 2011-03-29" [ref=e1873]': "4"
+                      - cell "12.1" [ref=e1874]:
+                        - button "12.1" [ref=e1875] [cursor=pointer]:
+                          - generic [ref=e1876]:
+                            - generic "Opera Android – Full support" [ref=e1879]
+                            - 'generic "Opera Android ≤12.1 – Release date: 2012-10-09" [ref=e1881]': "12.1"
+                      - cell "1" [ref=e1882]:
+                        - button "1" [ref=e1883] [cursor=pointer]:
+                          - generic [ref=e1884]:
+                            - generic "Safari on iOS – Full support" [ref=e1887]
+                            - 'generic "Safari on iOS 1 – Release date: 2007-06-29" [ref=e1889]': "1"
+                      - cell "1" [ref=e1890]:
+                        - button "1" [ref=e1891] [cursor=pointer]:
+                          - generic [ref=e1892]:
+                            - generic "Samsung Internet – Full support" [ref=e1895]
+                            - 'generic "Samsung Internet 1.0 – Release date: 2013-04-27" [ref=e1897]': "1"
+                      - cell "4.4" [ref=e1898]:
+                        - button "4.4" [ref=e1899] [cursor=pointer]:
+                          - generic [ref=e1900]:
+                            - generic "WebView Android – Full support" [ref=e1903]
+                            - 'generic "WebView Android 4.4 – Release date: 2013-12-09" [ref=e1905]': "4.4"
+                      - cell "1" [ref=e1906]:
+                        - button "1" [ref=e1907] [cursor=pointer]:
+                          - generic [ref=e1908]:
+                            - generic "WebView on iOS – Full support" [ref=e1911]
+                            - 'generic "WebView on iOS 1 – Release date: 2007-06-29" [ref=e1913]': "1"
+                    - row "align Deprecated 1 12 1 12.1 1 18 4 12.1 1 1 4.4 1" [ref=e1914]:
+                      - rowheader "align Deprecated" [ref=e1915]:
+                        - generic [ref=e1916]:
+                          - code [ref=e1917]: align
+                          - generic "Deprecated. Not for use in new websites." [ref=e1919]:
+                            - generic [ref=e1920]: Deprecated
+                      - cell "1" [ref=e1921]:
+                        - button "1" [ref=e1922] [cursor=pointer]:
+                          - generic [ref=e1923]:
+                            - generic "Chrome – Full support" [ref=e1926]
+                            - 'generic "Chrome 1 – Release date: 2008-12-11" [ref=e1928]': "1"
+                      - cell "12" [ref=e1929]:
+                        - button "12" [ref=e1930] [cursor=pointer]:
+                          - generic [ref=e1931]:
+                            - generic "Edge – Full support" [ref=e1934]
+                            - 'generic "Edge 12 – Release date: 2015-07-29" [ref=e1936]': "12"
+                      - cell "1" [ref=e1937]:
+                        - button "1" [ref=e1938] [cursor=pointer]:
+                          - generic [ref=e1939]:
+                            - generic "Firefox – Full support" [ref=e1942]
+                            - 'generic "Firefox 1 – Release date: 2004-11-09" [ref=e1944]': "1"
+                      - cell "12.1" [ref=e1945]:
+                        - button "12.1" [ref=e1946] [cursor=pointer]:
+                          - generic [ref=e1947]:
+                            - generic "Opera – Full support" [ref=e1950]
+                            - 'generic "Opera ≤12.1 – Release date: 2012-11-20" [ref=e1952]': "12.1"
+                      - cell "1" [ref=e1953]:
+                        - button "1" [ref=e1954] [cursor=pointer]:
+                          - generic [ref=e1955]:
+                            - generic "Safari – Full support" [ref=e1958]
+                            - 'generic "Safari 1 – Release date: 2003-06-23" [ref=e1960]': "1"
+                      - cell "18" [ref=e1961]:
+                        - button "18" [ref=e1962] [cursor=pointer]:
+                          - generic [ref=e1963]:
+                            - generic "Chrome Android – Full support" [ref=e1966]
+                            - 'generic "Chrome Android 18 – Release date: 2012-06-27" [ref=e1968]': "18"
+                      - cell "4" [ref=e1969]:
+                        - button "4" [ref=e1970] [cursor=pointer]:
+                          - generic [ref=e1971]:
+                            - generic "Firefox for Android – Full support" [ref=e1974]
+                            - 'generic "Firefox for Android 4 – Release date: 2011-03-29" [ref=e1976]': "4"
+                      - cell "12.1" [ref=e1977]:
+                        - button "12.1" [ref=e1978] [cursor=pointer]:
+                          - generic [ref=e1979]:
+                            - generic "Opera Android – Full support" [ref=e1982]
+                            - 'generic "Opera Android ≤12.1 – Release date: 2012-10-09" [ref=e1984]': "12.1"
+                      - cell "1" [ref=e1985]:
+                        - button "1" [ref=e1986] [cursor=pointer]:
+                          - generic [ref=e1987]:
+                            - generic "Safari on iOS – Full support" [ref=e1990]
+                            - 'generic "Safari on iOS 1 – Release date: 2007-06-29" [ref=e1992]': "1"
+                      - cell "1" [ref=e1993]:
+                        - button "1" [ref=e1994] [cursor=pointer]:
+                          - generic [ref=e1995]:
+                            - generic "Samsung Internet – Full support" [ref=e1998]
+                            - 'generic "Samsung Internet 1.0 – Release date: 2013-04-27" [ref=e2000]': "1"
+                      - cell "4.4" [ref=e2001]:
+                        - button "4.4" [ref=e2002] [cursor=pointer]:
+                          - generic [ref=e2003]:
+                            - generic "WebView Android – Full support" [ref=e2006]
+                            - 'generic "WebView Android 4.4 – Release date: 2013-12-09" [ref=e2008]': "4.4"
+                      - cell "1" [ref=e2009]:
+                        - button "1" [ref=e2010] [cursor=pointer]:
+                          - generic [ref=e2011]:
+                            - generic "WebView on iOS – Full support" [ref=e2014]
+                            - 'generic "WebView on iOS 1 – Release date: 2007-06-29" [ref=e2016]': "1"
+                    - row "bgcolor Deprecated 1 12 1 12.1 1 18 4 12.1 1 1 4.4 1" [ref=e2017]:
+                      - rowheader "bgcolor Deprecated" [ref=e2018]:
+                        - generic [ref=e2019]:
+                          - code [ref=e2020]: bgcolor
+                          - generic "Deprecated. Not for use in new websites." [ref=e2022]:
+                            - generic [ref=e2023]: Deprecated
+                      - cell "1" [ref=e2024]:
+                        - button "1" [ref=e2025] [cursor=pointer]:
+                          - generic [ref=e2026]:
+                            - generic "Chrome – Full support" [ref=e2029]
+                            - 'generic "Chrome 1 – Release date: 2008-12-11" [ref=e2031]': "1"
+                      - cell "12" [ref=e2032]:
+                        - button "12" [ref=e2033] [cursor=pointer]:
+                          - generic [ref=e2034]:
+                            - generic "Edge – Full support" [ref=e2037]
+                            - 'generic "Edge 12 – Release date: 2015-07-29" [ref=e2039]': "12"
+                      - cell "1" [ref=e2040]:
+                        - button "1" [ref=e2041] [cursor=pointer]:
+                          - generic [ref=e2042]:
+                            - generic "Firefox – Full support" [ref=e2045]
+                            - 'generic "Firefox 1 – Release date: 2004-11-09" [ref=e2047]': "1"
+                      - cell "12.1" [ref=e2048]:
+                        - button "12.1" [ref=e2049] [cursor=pointer]:
+                          - generic [ref=e2050]:
+                            - generic "Opera – Full support" [ref=e2053]
+                            - 'generic "Opera ≤12.1 – Release date: 2012-11-20" [ref=e2055]': "12.1"
+                      - cell "1" [ref=e2056]:
+                        - button "1" [ref=e2057] [cursor=pointer]:
+                          - generic [ref=e2058]:
+                            - generic "Safari – Full support" [ref=e2061]
+                            - 'generic "Safari 1 – Release date: 2003-06-23" [ref=e2063]': "1"
+                      - cell "18" [ref=e2064]:
+                        - button "18" [ref=e2065] [cursor=pointer]:
+                          - generic [ref=e2066]:
+                            - generic "Chrome Android – Full support" [ref=e2069]
+                            - 'generic "Chrome Android 18 – Release date: 2012-06-27" [ref=e2071]': "18"
+                      - cell "4" [ref=e2072]:
+                        - button "4" [ref=e2073] [cursor=pointer]:
+                          - generic [ref=e2074]:
+                            - generic "Firefox for Android – Full support" [ref=e2077]
+                            - 'generic "Firefox for Android 4 – Release date: 2011-03-29" [ref=e2079]': "4"
+                      - cell "12.1" [ref=e2080]:
+                        - button "12.1" [ref=e2081] [cursor=pointer]:
+                          - generic [ref=e2082]:
+                            - generic "Opera Android – Full support" [ref=e2085]
+                            - 'generic "Opera Android ≤12.1 – Release date: 2012-10-09" [ref=e2087]': "12.1"
+                      - cell "1" [ref=e2088]:
+                        - button "1" [ref=e2089] [cursor=pointer]:
+                          - generic [ref=e2090]:
+                            - generic "Safari on iOS – Full support" [ref=e2093]
+                            - 'generic "Safari on iOS 1 – Release date: 2007-06-29" [ref=e2095]': "1"
+                      - cell "1" [ref=e2096]:
+                        - button "1" [ref=e2097] [cursor=pointer]:
+                          - generic [ref=e2098]:
+                            - generic "Samsung Internet – Full support" [ref=e2101]
+                            - 'generic "Samsung Internet 1.0 – Release date: 2013-04-27" [ref=e2103]': "1"
+                      - cell "4.4" [ref=e2104]:
+                        - button "4.4" [ref=e2105] [cursor=pointer]:
+                          - generic [ref=e2106]:
+                            - generic "WebView Android – Full support" [ref=e2109]
+                            - 'generic "WebView Android 4.4 – Release date: 2013-12-09" [ref=e2111]': "4.4"
+                      - cell "1" [ref=e2112]:
+                        - button "1" [ref=e2113] [cursor=pointer]:
+                          - generic [ref=e2114]:
+                            - generic "WebView on iOS – Full support" [ref=e2117]
+                            - 'generic "WebView on iOS 1 – Release date: 2007-06-29" [ref=e2119]': "1"
+                    - row "border Deprecated 1 12 1 12.1 1 18 4 12.1 1 1 4.4 1" [ref=e2120]:
+                      - rowheader "border Deprecated" [ref=e2121]:
+                        - generic [ref=e2122]:
+                          - code [ref=e2123]: border
+                          - generic "Deprecated. Not for use in new websites." [ref=e2125]:
+                            - generic [ref=e2126]: Deprecated
+                      - cell "1" [ref=e2127]:
+                        - button "1" [ref=e2128] [cursor=pointer]:
+                          - generic [ref=e2129]:
+                            - generic "Chrome – Full support" [ref=e2132]
+                            - 'generic "Chrome 1 – Release date: 2008-12-11" [ref=e2134]': "1"
+                      - cell "12" [ref=e2135]:
+                        - button "12" [ref=e2136] [cursor=pointer]:
+                          - generic [ref=e2137]:
+                            - generic "Edge – Full support" [ref=e2140]
+                            - 'generic "Edge 12 – Release date: 2015-07-29" [ref=e2142]': "12"
+                      - cell "1" [ref=e2143]:
+                        - button "1" [ref=e2144] [cursor=pointer]:
+                          - generic [ref=e2145]:
+                            - generic "Firefox – Full support" [ref=e2148]
+                            - 'generic "Firefox 1 – Release date: 2004-11-09" [ref=e2150]': "1"
+                      - cell "12.1" [ref=e2151]:
+                        - button "12.1" [ref=e2152] [cursor=pointer]:
+                          - generic [ref=e2153]:
+                            - generic "Opera – Full support" [ref=e2156]
+                            - 'generic "Opera ≤12.1 – Release date: 2012-11-20" [ref=e2158]': "12.1"
+                      - cell "1" [ref=e2159]:
+                        - button "1" [ref=e2160] [cursor=pointer]:
+                          - generic [ref=e2161]:
+                            - generic "Safari – Full support" [ref=e2164]
+                            - 'generic "Safari 1 – Release date: 2003-06-23" [ref=e2166]': "1"
+                      - cell "18" [ref=e2167]:
+                        - button "18" [ref=e2168] [cursor=pointer]:
+                          - generic [ref=e2169]:
+                            - generic "Chrome Android – Full support" [ref=e2172]
+                            - 'generic "Chrome Android 18 – Release date: 2012-06-27" [ref=e2174]': "18"
+                      - cell "4" [ref=e2175]:
+                        - button "4" [ref=e2176] [cursor=pointer]:
+                          - generic [ref=e2177]:
+                            - generic "Firefox for Android – Full support" [ref=e2180]
+                            - 'generic "Firefox for Android 4 – Release date: 2011-03-29" [ref=e2182]': "4"
+                      - cell "12.1" [ref=e2183]:
+                        - button "12.1" [ref=e2184] [cursor=pointer]:
+                          - generic [ref=e2185]:
+                            - generic "Opera Android – Full support" [ref=e2188]
+                            - 'generic "Opera Android ≤12.1 – Release date: 2012-10-09" [ref=e2190]': "12.1"
+                      - cell "1" [ref=e2191]:
+                        - button "1" [ref=e2192] [cursor=pointer]:
+                          - generic [ref=e2193]:
+                            - generic "Safari on iOS – Full support" [ref=e2196]
+                            - 'generic "Safari on iOS 1 – Release date: 2007-06-29" [ref=e2198]': "1"
+                      - cell "1" [ref=e2199]:
+                        - button "1" [ref=e2200] [cursor=pointer]:
+                          - generic [ref=e2201]:
+                            - generic "Samsung Internet – Full support" [ref=e2204]
+                            - 'generic "Samsung Internet 1.0 – Release date: 2013-04-27" [ref=e2206]': "1"
+                      - cell "4.4" [ref=e2207]:
+                        - button "4.4" [ref=e2208] [cursor=pointer]:
+                          - generic [ref=e2209]:
+                            - generic "WebView Android – Full support" [ref=e2212]
+                            - 'generic "WebView Android 4.4 – Release date: 2013-12-09" [ref=e2214]': "4.4"
+                      - cell "1" [ref=e2215]:
+                        - button "1" [ref=e2216] [cursor=pointer]:
+                          - generic [ref=e2217]:
+                            - generic "WebView on iOS – Full support" [ref=e2220]
+                            - 'generic "WebView on iOS 1 – Release date: 2007-06-29" [ref=e2222]': "1"
+                    - row "cellpadding Deprecated 1 12 1 12.1 1 18 4 12.1 1 1 4.4 1" [ref=e2223]:
+                      - rowheader "cellpadding Deprecated" [ref=e2224]:
+                        - generic [ref=e2225]:
+                          - code [ref=e2226]: cellpadding
+                          - generic "Deprecated. Not for use in new websites." [ref=e2228]:
+                            - generic [ref=e2229]: Deprecated
+                      - cell "1" [ref=e2230]:
+                        - button "1" [ref=e2231] [cursor=pointer]:
+                          - generic [ref=e2232]:
+                            - generic "Chrome – Full support" [ref=e2235]
+                            - 'generic "Chrome 1 – Release date: 2008-12-11" [ref=e2237]': "1"
+                      - cell "12" [ref=e2238]:
+                        - button "12" [ref=e2239] [cursor=pointer]:
+                          - generic [ref=e2240]:
+                            - generic "Edge – Full support" [ref=e2243]
+                            - 'generic "Edge 12 – Release date: 2015-07-29" [ref=e2245]': "12"
+                      - cell "1" [ref=e2246]:
+                        - button "1" [ref=e2247] [cursor=pointer]:
+                          - generic [ref=e2248]:
+                            - generic "Firefox – Full support" [ref=e2251]
+                            - 'generic "Firefox 1 – Release date: 2004-11-09" [ref=e2253]': "1"
+                      - cell "12.1" [ref=e2254]:
+                        - button "12.1" [ref=e2255] [cursor=pointer]:
+                          - generic [ref=e2256]:
+                            - generic "Opera – Full support" [ref=e2259]
+                            - 'generic "Opera ≤12.1 – Release date: 2012-11-20" [ref=e2261]': "12.1"
+                      - cell "1" [ref=e2262]:
+                        - button "1" [ref=e2263] [cursor=pointer]:
+                          - generic [ref=e2264]:
+                            - generic "Safari – Full support" [ref=e2267]
+                            - 'generic "Safari 1 – Release date: 2003-06-23" [ref=e2269]': "1"
+                      - cell "18" [ref=e2270]:
+                        - button "18" [ref=e2271] [cursor=pointer]:
+                          - generic [ref=e2272]:
+                            - generic "Chrome Android – Full support" [ref=e2275]
+                            - 'generic "Chrome Android 18 – Release date: 2012-06-27" [ref=e2277]': "18"
+                      - cell "4" [ref=e2278]:
+                        - button "4" [ref=e2279] [cursor=pointer]:
+                          - generic [ref=e2280]:
+                            - generic "Firefox for Android – Full support" [ref=e2283]
+                            - 'generic "Firefox for Android 4 – Release date: 2011-03-29" [ref=e2285]': "4"
+                      - cell "12.1" [ref=e2286]:
+                        - button "12.1" [ref=e2287] [cursor=pointer]:
+                          - generic [ref=e2288]:
+                            - generic "Opera Android – Full support" [ref=e2291]
+                            - 'generic "Opera Android ≤12.1 – Release date: 2012-10-09" [ref=e2293]': "12.1"
+                      - cell "1" [ref=e2294]:
+                        - button "1" [ref=e2295] [cursor=pointer]:
+                          - generic [ref=e2296]:
+                            - generic "Safari on iOS – Full support" [ref=e2299]
+                            - 'generic "Safari on iOS 1 – Release date: 2007-06-29" [ref=e2301]': "1"
+                      - cell "1" [ref=e2302]:
+                        - button "1" [ref=e2303] [cursor=pointer]:
+                          - generic [ref=e2304]:
+                            - generic "Samsung Internet – Full support" [ref=e2307]
+                            - 'generic "Samsung Internet 1.0 – Release date: 2013-04-27" [ref=e2309]': "1"
+                      - cell "4.4" [ref=e2310]:
+                        - button "4.4" [ref=e2311] [cursor=pointer]:
+                          - generic [ref=e2312]:
+                            - generic "WebView Android – Full support" [ref=e2315]
+                            - 'generic "WebView Android 4.4 – Release date: 2013-12-09" [ref=e2317]': "4.4"
+                      - cell "1" [ref=e2318]:
+                        - button "1" [ref=e2319] [cursor=pointer]:
+                          - generic [ref=e2320]:
+                            - generic "WebView on iOS – Full support" [ref=e2323]
+                            - 'generic "WebView on iOS 1 – Release date: 2007-06-29" [ref=e2325]': "1"
+                    - row "cellspacing Deprecated 1 12 1 12.1 1 18 4 12.1 1 1 4.4 1" [ref=e2326]:
+                      - rowheader "cellspacing Deprecated" [ref=e2327]:
+                        - generic [ref=e2328]:
+                          - code [ref=e2329]: cellspacing
+                          - generic "Deprecated. Not for use in new websites." [ref=e2331]:
+                            - generic [ref=e2332]: Deprecated
+                      - cell "1" [ref=e2333]:
+                        - button "1" [ref=e2334] [cursor=pointer]:
+                          - generic [ref=e2335]:
+                            - generic "Chrome – Full support" [ref=e2338]
+                            - 'generic "Chrome 1 – Release date: 2008-12-11" [ref=e2340]': "1"
+                      - cell "12" [ref=e2341]:
+                        - button "12" [ref=e2342] [cursor=pointer]:
+                          - generic [ref=e2343]:
+                            - generic "Edge – Full support" [ref=e2346]
+                            - 'generic "Edge 12 – Release date: 2015-07-29" [ref=e2348]': "12"
+                      - cell "1" [ref=e2349]:
+                        - button "1" [ref=e2350] [cursor=pointer]:
+                          - generic [ref=e2351]:
+                            - generic "Firefox – Full support" [ref=e2354]
+                            - 'generic "Firefox 1 – Release date: 2004-11-09" [ref=e2356]': "1"
+                      - cell "12.1" [ref=e2357]:
+                        - button "12.1" [ref=e2358] [cursor=pointer]:
+                          - generic [ref=e2359]:
+                            - generic "Opera – Full support" [ref=e2362]
+                            - 'generic "Opera ≤12.1 – Release date: 2012-11-20" [ref=e2364]': "12.1"
+                      - cell "1" [ref=e2365]:
+                        - button "1" [ref=e2366] [cursor=pointer]:
+                          - generic [ref=e2367]:
+                            - generic "Safari – Full support" [ref=e2370]
+                            - 'generic "Safari 1 – Release date: 2003-06-23" [ref=e2372]': "1"
+                      - cell "18" [ref=e2373]:
+                        - button "18" [ref=e2374] [cursor=pointer]:
+                          - generic [ref=e2375]:
+                            - generic "Chrome Android – Full support" [ref=e2378]
+                            - 'generic "Chrome Android 18 – Release date: 2012-06-27" [ref=e2380]': "18"
+                      - cell "4" [ref=e2381]:
+                        - button "4" [ref=e2382] [cursor=pointer]:
+                          - generic [ref=e2383]:
+                            - generic "Firefox for Android – Full support" [ref=e2386]
+                            - 'generic "Firefox for Android 4 – Release date: 2011-03-29" [ref=e2388]': "4"
+                      - cell "12.1" [ref=e2389]:
+                        - button "12.1" [ref=e2390] [cursor=pointer]:
+                          - generic [ref=e2391]:
+                            - generic "Opera Android – Full support" [ref=e2394]
+                            - 'generic "Opera Android ≤12.1 – Release date: 2012-10-09" [ref=e2396]': "12.1"
+                      - cell "1" [ref=e2397]:
+                        - button "1" [ref=e2398] [cursor=pointer]:
+                          - generic [ref=e2399]:
+                            - generic "Safari on iOS – Full support" [ref=e2402]
+                            - 'generic "Safari on iOS 1 – Release date: 2007-06-29" [ref=e2404]': "1"
+                      - cell "1" [ref=e2405]:
+                        - button "1" [ref=e2406] [cursor=pointer]:
+                          - generic [ref=e2407]:
+                            - generic "Samsung Internet – Full support" [ref=e2410]
+                            - 'generic "Samsung Internet 1.0 – Release date: 2013-04-27" [ref=e2412]': "1"
+                      - cell "4.4" [ref=e2413]:
+                        - button "4.4" [ref=e2414] [cursor=pointer]:
+                          - generic [ref=e2415]:
+                            - generic "WebView Android – Full support" [ref=e2418]
+                            - 'generic "WebView Android 4.4 – Release date: 2013-12-09" [ref=e2420]': "4.4"
+                      - cell "1" [ref=e2421]:
+                        - button "1" [ref=e2422] [cursor=pointer]:
+                          - generic [ref=e2423]:
+                            - generic "WebView on iOS – Full support" [ref=e2426]
+                            - 'generic "WebView on iOS 1 – Release date: 2007-06-29" [ref=e2428]': "1"
+                    - row "frame Deprecated 1 12 1 12.1 1 18 4 12.1 1 1 4.4 1" [ref=e2429]:
+                      - rowheader "frame Deprecated" [ref=e2430]:
+                        - generic [ref=e2431]:
+                          - code [ref=e2432]: frame
+                          - generic "Deprecated. Not for use in new websites." [ref=e2434]:
+                            - generic [ref=e2435]: Deprecated
+                      - cell "1" [ref=e2436]:
+                        - button "1" [ref=e2437] [cursor=pointer]:
+                          - generic [ref=e2438]:
+                            - generic "Chrome – Full support" [ref=e2441]
+                            - 'generic "Chrome 1 – Release date: 2008-12-11" [ref=e2443]': "1"
+                      - cell "12" [ref=e2444]:
+                        - button "12" [ref=e2445] [cursor=pointer]:
+                          - generic [ref=e2446]:
+                            - generic "Edge – Full support" [ref=e2449]
+                            - 'generic "Edge 12 – Release date: 2015-07-29" [ref=e2451]': "12"
+                      - cell "1" [ref=e2452]:
+                        - button "1" [ref=e2453] [cursor=pointer]:
+                          - generic [ref=e2454]:
+                            - generic "Firefox – Full support" [ref=e2457]
+                            - 'generic "Firefox 1 – Release date: 2004-11-09" [ref=e2459]': "1"
+                      - cell "12.1" [ref=e2460]:
+                        - button "12.1" [ref=e2461] [cursor=pointer]:
+                          - generic [ref=e2462]:
+                            - generic "Opera – Full support" [ref=e2465]
+                            - 'generic "Opera ≤12.1 – Release date: 2012-11-20" [ref=e2467]': "12.1"
+                      - cell "1" [ref=e2468]:
+                        - button "1" [ref=e2469] [cursor=pointer]:
+                          - generic [ref=e2470]:
+                            - generic "Safari – Full support" [ref=e2473]
+                            - 'generic "Safari 1 – Release date: 2003-06-23" [ref=e2475]': "1"
+                      - cell "18" [ref=e2476]:
+                        - button "18" [ref=e2477] [cursor=pointer]:
+                          - generic [ref=e2478]:
+                            - generic "Chrome Android – Full support" [ref=e2481]
+                            - 'generic "Chrome Android 18 – Release date: 2012-06-27" [ref=e2483]': "18"
+                      - cell "4" [ref=e2484]:
+                        - button "4" [ref=e2485] [cursor=pointer]:
+                          - generic [ref=e2486]:
+                            - generic "Firefox for Android – Full support" [ref=e2489]
+                            - 'generic "Firefox for Android 4 – Release date: 2011-03-29" [ref=e2491]': "4"
+                      - cell "12.1" [ref=e2492]:
+                        - button "12.1" [ref=e2493] [cursor=pointer]:
+                          - generic [ref=e2494]:
+                            - generic "Opera Android – Full support" [ref=e2497]
+                            - 'generic "Opera Android ≤12.1 – Release date: 2012-10-09" [ref=e2499]': "12.1"
+                      - cell "1" [ref=e2500]:
+                        - button "1" [ref=e2501] [cursor=pointer]:
+                          - generic [ref=e2502]:
+                            - generic "Safari on iOS – Full support" [ref=e2505]
+                            - 'generic "Safari on iOS 1 – Release date: 2007-06-29" [ref=e2507]': "1"
+                      - cell "1" [ref=e2508]:
+                        - button "1" [ref=e2509] [cursor=pointer]:
+                          - generic [ref=e2510]:
+                            - generic "Samsung Internet – Full support" [ref=e2513]
+                            - 'generic "Samsung Internet 1.0 – Release date: 2013-04-27" [ref=e2515]': "1"
+                      - cell "4.4" [ref=e2516]:
+                        - button "4.4" [ref=e2517] [cursor=pointer]:
+                          - generic [ref=e2518]:
+                            - generic "WebView Android – Full support" [ref=e2521]
+                            - 'generic "WebView Android 4.4 – Release date: 2013-12-09" [ref=e2523]': "4.4"
+                      - cell "1" [ref=e2524]:
+                        - button "1" [ref=e2525] [cursor=pointer]:
+                          - generic [ref=e2526]:
+                            - generic "WebView on iOS – Full support" [ref=e2529]
+                            - 'generic "WebView on iOS 1 – Release date: 2007-06-29" [ref=e2531]': "1"
+                    - row "rules Deprecated 1 12 1 12.1 1 18 4 12.1 1 1 4.4 1" [ref=e2532]:
+                      - rowheader "rules Deprecated" [ref=e2533]:
+                        - generic [ref=e2534]:
+                          - code [ref=e2535]: rules
+                          - generic "Deprecated. Not for use in new websites." [ref=e2537]:
+                            - generic [ref=e2538]: Deprecated
+                      - cell "1" [ref=e2539]:
+                        - button "1" [ref=e2540] [cursor=pointer]:
+                          - generic [ref=e2541]:
+                            - generic "Chrome – Full support" [ref=e2544]
+                            - 'generic "Chrome 1 – Release date: 2008-12-11" [ref=e2546]': "1"
+                      - cell "12" [ref=e2547]:
+                        - button "12" [ref=e2548] [cursor=pointer]:
+                          - generic [ref=e2549]:
+                            - generic "Edge – Full support" [ref=e2552]
+                            - 'generic "Edge 12 – Release date: 2015-07-29" [ref=e2554]': "12"
+                      - cell "1" [ref=e2555]:
+                        - button "1" [ref=e2556] [cursor=pointer]:
+                          - generic [ref=e2557]:
+                            - generic "Firefox – Full support" [ref=e2560]
+                            - 'generic "Firefox 1 – Release date: 2004-11-09" [ref=e2562]': "1"
+                      - cell "12.1" [ref=e2563]:
+                        - button "12.1" [ref=e2564] [cursor=pointer]:
+                          - generic [ref=e2565]:
+                            - generic "Opera – Full support" [ref=e2568]
+                            - 'generic "Opera ≤12.1 – Release date: 2012-11-20" [ref=e2570]': "12.1"
+                      - cell "1" [ref=e2571]:
+                        - button "1" [ref=e2572] [cursor=pointer]:
+                          - generic [ref=e2573]:
+                            - generic "Safari – Full support" [ref=e2576]
+                            - 'generic "Safari 1 – Release date: 2003-06-23" [ref=e2578]': "1"
+                      - cell "18" [ref=e2579]:
+                        - button "18" [ref=e2580] [cursor=pointer]:
+                          - generic [ref=e2581]:
+                            - generic "Chrome Android – Full support" [ref=e2584]
+                            - 'generic "Chrome Android 18 – Release date: 2012-06-27" [ref=e2586]': "18"
+                      - cell "4" [ref=e2587]:
+                        - button "4" [ref=e2588] [cursor=pointer]:
+                          - generic [ref=e2589]:
+                            - generic "Firefox for Android – Full support" [ref=e2592]
+                            - 'generic "Firefox for Android 4 – Release date: 2011-03-29" [ref=e2594]': "4"
+                      - cell "12.1" [ref=e2595]:
+                        - button "12.1" [ref=e2596] [cursor=pointer]:
+                          - generic [ref=e2597]:
+                            - generic "Opera Android – Full support" [ref=e2600]
+                            - 'generic "Opera Android ≤12.1 – Release date: 2012-10-09" [ref=e2602]': "12.1"
+                      - cell "1" [ref=e2603]:
+                        - button "1" [ref=e2604] [cursor=pointer]:
+                          - generic [ref=e2605]:
+                            - generic "Safari on iOS – Full support" [ref=e2608]
+                            - 'generic "Safari on iOS 1 – Release date: 2007-06-29" [ref=e2610]': "1"
+                      - cell "1" [ref=e2611]:
+                        - button "1" [ref=e2612] [cursor=pointer]:
+                          - generic [ref=e2613]:
+                            - generic "Samsung Internet – Full support" [ref=e2616]
+                            - 'generic "Samsung Internet 1.0 – Release date: 2013-04-27" [ref=e2618]': "1"
+                      - cell "4.4" [ref=e2619]:
+                        - button "4.4" [ref=e2620] [cursor=pointer]:
+                          - generic [ref=e2621]:
+                            - generic "WebView Android – Full support" [ref=e2624]
+                            - 'generic "WebView Android 4.4 – Release date: 2013-12-09" [ref=e2626]': "4.4"
+                      - cell "1" [ref=e2627]:
+                        - button "1" [ref=e2628] [cursor=pointer]:
+                          - generic [ref=e2629]:
+                            - generic "WebView on iOS – Full support" [ref=e2632]
+                            - 'generic "WebView on iOS 1 – Release date: 2007-06-29" [ref=e2634]': "1"
+                    - row "summary Deprecated 1 12 1 12.1 1 18 4 12.1 1 1 4.4 1" [ref=e2635]:
+                      - rowheader "summary Deprecated" [ref=e2636]:
+                        - generic [ref=e2637]:
+                          - code [ref=e2638]: summary
+                          - generic "Deprecated. Not for use in new websites." [ref=e2640]:
+                            - generic [ref=e2641]: Deprecated
+                      - cell "1" [ref=e2642]:
+                        - button "1" [ref=e2643] [cursor=pointer]:
+                          - generic [ref=e2644]:
+                            - generic "Chrome – Full support" [ref=e2647]
+                            - 'generic "Chrome 1 – Release date: 2008-12-11" [ref=e2649]': "1"
+                      - cell "12" [ref=e2650]:
+                        - button "12" [ref=e2651] [cursor=pointer]:
+                          - generic [ref=e2652]:
+                            - generic "Edge – Full support" [ref=e2655]
+                            - 'generic "Edge 12 – Release date: 2015-07-29" [ref=e2657]': "12"
+                      - cell "1" [ref=e2658]:
+                        - button "1" [ref=e2659] [cursor=pointer]:
+                          - generic [ref=e2660]:
+                            - generic "Firefox – Full support" [ref=e2663]
+                            - 'generic "Firefox 1 – Release date: 2004-11-09" [ref=e2665]': "1"
+                      - cell "12.1" [ref=e2666]:
+                        - button "12.1" [ref=e2667] [cursor=pointer]:
+                          - generic [ref=e2668]:
+                            - generic "Opera – Full support" [ref=e2671]
+                            - 'generic "Opera ≤12.1 – Release date: 2012-11-20" [ref=e2673]': "12.1"
+                      - cell "1" [ref=e2674]:
+                        - button "1" [ref=e2675] [cursor=pointer]:
+                          - generic [ref=e2676]:
+                            - generic "Safari – Full support" [ref=e2679]
+                            - 'generic "Safari 1 – Release date: 2003-06-23" [ref=e2681]': "1"
+                      - cell "18" [ref=e2682]:
+                        - button "18" [ref=e2683] [cursor=pointer]:
+                          - generic [ref=e2684]:
+                            - generic "Chrome Android – Full support" [ref=e2687]
+                            - 'generic "Chrome Android 18 – Release date: 2012-06-27" [ref=e2689]': "18"
+                      - cell "4" [ref=e2690]:
+                        - button "4" [ref=e2691] [cursor=pointer]:
+                          - generic [ref=e2692]:
+                            - generic "Firefox for Android – Full support" [ref=e2695]
+                            - 'generic "Firefox for Android 4 – Release date: 2011-03-29" [ref=e2697]': "4"
+                      - cell "12.1" [ref=e2698]:
+                        - button "12.1" [ref=e2699] [cursor=pointer]:
+                          - generic [ref=e2700]:
+                            - generic "Opera Android – Full support" [ref=e2703]
+                            - 'generic "Opera Android ≤12.1 – Release date: 2012-10-09" [ref=e2705]': "12.1"
+                      - cell "1" [ref=e2706]:
+                        - button "1" [ref=e2707] [cursor=pointer]:
+                          - generic [ref=e2708]:
+                            - generic "Safari on iOS – Full support" [ref=e2711]
+                            - 'generic "Safari on iOS 1 – Release date: 2007-06-29" [ref=e2713]': "1"
+                      - cell "1" [ref=e2714]:
+                        - button "1" [ref=e2715] [cursor=pointer]:
+                          - generic [ref=e2716]:
+                            - generic "Samsung Internet – Full support" [ref=e2719]
+                            - 'generic "Samsung Internet 1.0 – Release date: 2013-04-27" [ref=e2721]': "1"
+                      - cell "4.4" [ref=e2722]:
+                        - button "4.4" [ref=e2723] [cursor=pointer]:
+                          - generic [ref=e2724]:
+                            - generic "WebView Android – Full support" [ref=e2727]
+                            - 'generic "WebView Android 4.4 – Release date: 2013-12-09" [ref=e2729]': "4.4"
+                      - cell "1" [ref=e2730]:
+                        - button "1" [ref=e2731] [cursor=pointer]:
+                          - generic [ref=e2732]:
+                            - generic "WebView on iOS – Full support" [ref=e2735]
+                            - 'generic "WebView on iOS 1 – Release date: 2007-06-29" [ref=e2737]': "1"
+                    - row "width Deprecated 1 12 1 12.1 1 18 4 12.1 1 1 4.4 1" [ref=e2738]:
+                      - rowheader "width Deprecated" [ref=e2739]:
+                        - generic [ref=e2740]:
+                          - code [ref=e2741]: width
+                          - generic "Deprecated. Not for use in new websites." [ref=e2743]:
+                            - generic [ref=e2744]: Deprecated
+                      - cell "1" [ref=e2745]:
+                        - button "1" [ref=e2746] [cursor=pointer]:
+                          - generic [ref=e2747]:
+                            - generic "Chrome – Full support" [ref=e2750]
+                            - 'generic "Chrome 1 – Release date: 2008-12-11" [ref=e2752]': "1"
+                      - cell "12" [ref=e2753]:
+                        - button "12" [ref=e2754] [cursor=pointer]:
+                          - generic [ref=e2755]:
+                            - generic "Edge – Full support" [ref=e2758]
+                            - 'generic "Edge 12 – Release date: 2015-07-29" [ref=e2760]': "12"
+                      - cell "1" [ref=e2761]:
+                        - button "1" [ref=e2762] [cursor=pointer]:
+                          - generic [ref=e2763]:
+                            - generic "Firefox – Full support" [ref=e2766]
+                            - 'generic "Firefox 1 – Release date: 2004-11-09" [ref=e2768]': "1"
+                      - cell "12.1" [ref=e2769]:
+                        - button "12.1" [ref=e2770] [cursor=pointer]:
+                          - generic [ref=e2771]:
+                            - generic "Opera – Full support" [ref=e2774]
+                            - 'generic "Opera ≤12.1 – Release date: 2012-11-20" [ref=e2776]': "12.1"
+                      - cell "1" [ref=e2777]:
+                        - button "1" [ref=e2778] [cursor=pointer]:
+                          - generic [ref=e2779]:
+                            - generic "Safari – Full support" [ref=e2782]
+                            - 'generic "Safari 1 – Release date: 2003-06-23" [ref=e2784]': "1"
+                      - cell "18" [ref=e2785]:
+                        - button "18" [ref=e2786] [cursor=pointer]:
+                          - generic [ref=e2787]:
+                            - generic "Chrome Android – Full support" [ref=e2790]
+                            - 'generic "Chrome Android 18 – Release date: 2012-06-27" [ref=e2792]': "18"
+                      - cell "4" [ref=e2793]:
+                        - button "4" [ref=e2794] [cursor=pointer]:
+                          - generic [ref=e2795]:
+                            - generic "Firefox for Android – Full support" [ref=e2798]
+                            - 'generic "Firefox for Android 4 – Release date: 2011-03-29" [ref=e2800]': "4"
+                      - cell "12.1" [ref=e2801]:
+                        - button "12.1" [ref=e2802] [cursor=pointer]:
+                          - generic [ref=e2803]:
+                            - generic "Opera Android – Full support" [ref=e2806]
+                            - 'generic "Opera Android ≤12.1 – Release date: 2012-10-09" [ref=e2808]': "12.1"
+                      - cell "1" [ref=e2809]:
+                        - button "1" [ref=e2810] [cursor=pointer]:
+                          - generic [ref=e2811]:
+                            - generic "Safari on iOS – Full support" [ref=e2814]
+                            - 'generic "Safari on iOS 1 – Release date: 2007-06-29" [ref=e2816]': "1"
+                      - cell "1" [ref=e2817]:
+                        - button "1" [ref=e2818] [cursor=pointer]:
+                          - generic [ref=e2819]:
+                            - generic "Samsung Internet – Full support" [ref=e2822]
+                            - 'generic "Samsung Internet 1.0 – Release date: 2013-04-27" [ref=e2824]': "1"
+                      - cell "4.4" [ref=e2825]:
+                        - button "4.4" [ref=e2826] [cursor=pointer]:
+                          - generic [ref=e2827]:
+                            - generic "WebView Android – Full support" [ref=e2830]
+                            - 'generic "WebView Android 4.4 – Release date: 2013-12-09" [ref=e2832]': "4.4"
+                      - cell "1" [ref=e2833]:
+                        - button "1" [ref=e2834] [cursor=pointer]:
+                          - generic [ref=e2835]:
+                            - generic "WebView on iOS – Full support" [ref=e2838]
+                            - 'generic "WebView on iOS 1 – Release date: 2007-06-29" [ref=e2840]': "1"
+            - generic [ref=e2841]:
+              - heading "Legend" [level=3] [ref=e2842]
+              - paragraph [ref=e2843]: "Tip: you can click/tap on a cell for more information."
+              - generic [ref=e2844]:
+                - generic [ref=e2845]:
+                  - term [ref=e2846]:
+                    - generic "Full support" [ref=e2848]:
+                      - generic [ref=e2849]: Full support
+                  - definition [ref=e2850]: Full support
+                - generic [ref=e2851]:
+                  - term [ref=e2852]:
+                    - generic "Deprecated. Not for use in new websites." [ref=e2853]
+                  - definition [ref=e2854]: Deprecated. Not for use in new websites.
+        - region "See also" [ref=e2855]:
+          - heading "See also" [level=2] [ref=e2856]:
+            - link "See also" [ref=e2857] [cursor=pointer]:
+              - /url: "#see_also"
+          - list [ref=e2858]:
+            - listitem [ref=e2859]:
+              - 'link "Learn: HTML table basics" [ref=e2860] [cursor=pointer]':
+                - /url: /en-US/docs/Learn_web_development/Core/Structuring_content/HTML_table_basics
+            - listitem [ref=e2861]:
+              - link "<caption>" [ref=e2862] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/caption
+                - code [ref=e2863]: <caption>
+              - text: ","
+              - link "<col>" [ref=e2864] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/col
+                - code [ref=e2865]: <col>
+              - text: ","
+              - link "<colgroup>" [ref=e2866] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/colgroup
+                - code [ref=e2867]: <colgroup>
+              - text: ","
+              - link "<tbody>" [ref=e2868] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/tbody
+                - code [ref=e2869]: <tbody>
+              - text: ","
+              - link "<td>" [ref=e2870] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/td
+                - code [ref=e2871]: <td>
+              - text: ","
+              - link "<tfoot>" [ref=e2872] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/tfoot
+                - code [ref=e2873]: <tfoot>
+              - text: ","
+              - link "<th>" [ref=e2874] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+                - code [ref=e2875]: <th>
+              - text: ","
+              - link "<thead>" [ref=e2876] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/thead
+                - code [ref=e2877]: <thead>
+              - text: ","
+              - link "<tr>" [ref=e2878] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/tr
+                - code [ref=e2879]: <tr>
+              - text: ": Other table-related elements"
+            - listitem [ref=e2880]:
+              - link "background-color" [ref=e2881] [cursor=pointer]:
+                - /url: /en-US/docs/Web/CSS/Reference/Properties/background-color
+                - code [ref=e2882]: background-color
+              - text: ": CSS property to set the background color of the table"
+            - listitem [ref=e2883]:
+              - link "border" [ref=e2884] [cursor=pointer]:
+                - /url: /en-US/docs/Web/CSS/Reference/Properties/border
+                - code [ref=e2885]: border
+              - text: ","
+              - link "border-collapse" [ref=e2886] [cursor=pointer]:
+                - /url: /en-US/docs/Web/CSS/Reference/Properties/border-collapse
+                - code [ref=e2887]: border-collapse
+              - text: ","
+              - link "border-spacing" [ref=e2888] [cursor=pointer]:
+                - /url: /en-US/docs/Web/CSS/Reference/Properties/border-spacing
+                - code [ref=e2889]: border-spacing
+              - text: ": CSS properties to control the aspect of cell borders, rules, and frame"
+            - listitem [ref=e2890]:
+              - link "margin" [ref=e2891] [cursor=pointer]:
+                - /url: /en-US/docs/Web/CSS/Reference/Properties/margin
+                - code [ref=e2892]: margin
+              - text: ","
+              - link "padding" [ref=e2893] [cursor=pointer]:
+                - /url: /en-US/docs/Web/CSS/Reference/Properties/padding
+                - code [ref=e2894]: padding
+              - text: ": CSS properties to align the table and set spacing on cell content"
+            - listitem [ref=e2895]:
+              - link "text-align" [ref=e2896] [cursor=pointer]:
+                - /url: /en-US/docs/Web/CSS/Reference/Properties/text-align
+                - code [ref=e2897]: text-align
+              - text: ": CSS property to horizontally align table cell content"
+            - listitem [ref=e2898]:
+              - link "vertical-align" [ref=e2899] [cursor=pointer]:
+                - /url: /en-US/docs/Web/CSS/Reference/Properties/vertical-align
+                - code [ref=e2900]: vertical-align
+              - text: ": CSS property to vertically align table cell content"
+            - listitem [ref=e2901]:
+              - link "width" [ref=e2902] [cursor=pointer]:
+                - /url: /en-US/docs/Web/CSS/Reference/Properties/width
+                - code [ref=e2903]: width
+              - text: ": CSS property to control the width of the table"
+        - region "Help improve MDN" [ref=e2904]:
+          - generic [ref=e2905]:
+            - img [ref=e2906]
+            - heading "Help improve MDN" [level=2] [ref=e2913]
+            - group [ref=e2915]:
+              - generic [ref=e2916]: Was this page helpful to you?
+              - generic [ref=e2917]:
+                - button "Yes" [ref=e2919] [cursor=pointer]:
+                  - img [ref=e2921]
+                  - generic [ref=e2923]:
+                    - generic: "Yes"
+                - button "No" [ref=e2925] [cursor=pointer]:
+                  - img [ref=e2927]
+                  - generic [ref=e2929]:
+                    - generic: "No"
+            - link "Learn how to contribute" [ref=e2930] [cursor=pointer]:
+              - /url: /en-US/docs/MDN/Community/Getting_started
+            - paragraph [ref=e2931]:
+              - text: This page was last modified on
+              - time [ref=e2932]: Dec 17, 2025
+              - text: by
+              - link "MDN contributors" [ref=e2933] [cursor=pointer]:
+                - /url: /en-US/docs/Web/HTML/Reference/Elements/table/contributors.txt
+              - text: .
+            - generic [ref=e2934]:
+              - link "View this page on GitHub (external)" [ref=e2935] [cursor=pointer]:
+                - /url: https://github.com/mdn/content/blob/main/files/en-us/web/html/reference/elements/table/index.md?plain=1
+              - text: •
+              - link "Report a problem with this content (external)" [ref=e2936] [cursor=pointer]:
+                - /url: https://github.com/mdn/content/issues/new?template=page-report.yml&mdn-url=https%3A%2F%2Fdeveloper.mozilla.org%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable&metadata=%3C%21--+Do+not+make+changes+below+this+line+--%3E%0A%3Cdetails%3E%0A%3Csummary%3EPage+report+details%3C%2Fsummary%3E%0A%0A*+Folder%3A+%60en-us%2Fweb%2Fhtml%2Freference%2Felements%2Ftable%60%0A*+MDN+URL%3A+https%3A%2F%2Fdeveloper.mozilla.org%2Fen-US%2Fdocs%2FWeb%2FHTML%2FReference%2FElements%2Ftable%0A*+GitHub+URL%3A+https%3A%2F%2Fgithub.com%2Fmdn%2Fcontent%2Fblob%2Fmain%2Ffiles%2Fen-us%2Fweb%2Fhtml%2Freference%2Felements%2Ftable%2Findex.md%0A*+Last+commit%3A+https%3A%2F%2Fgithub.com%2Fmdn%2Fcontent%2Fcommit%2F7c28cd21b705e7b7664d53b4d7822469ea8e6e15%0A*+Document+last+modified%3A+2025-12-17T14%3A40%3A43.000Z%0A%0A%3C%2Fdetails%3E
+    - complementary [ref=e2937]:
+      - navigation [ref=e2938]:
+        - generic [ref=e2940]:
+          - generic [ref=e2942]: Filter sidebar
+          - textbox "Filter sidebar" [ref=e2943]:
+            - /placeholder: Filter
+        - list [ref=e2945]:
+          - listitem [ref=e2946]:
+            - link "HTML" [ref=e2947] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML
+          - listitem [ref=e2948]:
+            - group [ref=e2949]:
+              - generic "Guides" [ref=e2950] [cursor=pointer]:
+                - link "Guides" [ref=e2951]:
+                  - /url: /en-US/docs/Web/HTML/Guides
+          - listitem [ref=e2952]:
+            - link "How to" [ref=e2953] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/How_to
+          - listitem [ref=e2954]:
+            - link "Define terms with HTML" [ref=e2955] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/How_to/Define_terms_with_HTML
+          - listitem [ref=e2956]:
+            - link "Use data attributes" [ref=e2957] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/How_to/Use_data_attributes
+          - listitem [ref=e2958]:
+            - link "Use cross-origin images" [ref=e2959] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/How_to/CORS_enabled_image
+          - listitem [ref=e2960]:
+            - link "Add a hitmap on top of an image" [ref=e2961] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/How_to/Add_a_hit_map_on_top_of_an_image
+          - listitem [ref=e2962]:
+            - link "Author fast-loading HTML pages" [ref=e2963] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/How_to/Author_fast-loading_HTML_pages
+          - listitem [ref=e2964]:
+            - link "Add JavaScript" [ref=e2965] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/How_to/Add_JavaScript_to_your_web_page
+          - listitem [ref=e2966]:
+            - link "Reference" [ref=e2967] [cursor=pointer]:
+              - /url: /en-US/docs/Web/HTML/Reference
+          - listitem [ref=e2968]:
+            - group [ref=e2969]:
+              - generic "Elements" [ref=e2970] [cursor=pointer]:
+                - link "Elements" [ref=e2971]:
+                  - /url: /en-US/docs/Web/HTML/Reference/Elements
+              - list [ref=e2972]:
+                - listitem [ref=e2973]:
+                  - link "<a>" [ref=e2974] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/a
+                    - code [ref=e2975]: <a>
+                - listitem [ref=e2976]:
+                  - link "<abbr>" [ref=e2977] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/abbr
+                    - code [ref=e2978]: <abbr>
+                - listitem [ref=e2979]:
+                  - link "<acronym>" [ref=e2980] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/acronym
+                    - code [ref=e2981]: <acronym>
+                  - generic "Deprecated. Not for use in new websites." [ref=e2982]:
+                    - generic [ref=e2983]: Deprecated
+                - listitem [ref=e2984]:
+                  - link "<address>" [ref=e2985] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/address
+                    - code [ref=e2986]: <address>
+                - listitem [ref=e2987]:
+                  - link "<area>" [ref=e2988] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/area
+                    - code [ref=e2989]: <area>
+                - listitem [ref=e2990]:
+                  - link "<article>" [ref=e2991] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/article
+                    - code [ref=e2992]: <article>
+                - listitem [ref=e2993]:
+                  - link "<aside>" [ref=e2994] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/aside
+                    - code [ref=e2995]: <aside>
+                - listitem [ref=e2996]:
+                  - link "<audio>" [ref=e2997] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/audio
+                    - code [ref=e2998]: <audio>
+                - listitem [ref=e2999]:
+                  - link "<b>" [ref=e3000] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/b
+                    - code [ref=e3001]: <b>
+                - listitem [ref=e3002]:
+                  - link "<base>" [ref=e3003] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/base
+                    - code [ref=e3004]: <base>
+                - listitem [ref=e3005]:
+                  - link "<bdi>" [ref=e3006] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/bdi
+                    - code [ref=e3007]: <bdi>
+                - listitem [ref=e3008]:
+                  - link "<bdo>" [ref=e3009] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/bdo
+                    - code [ref=e3010]: <bdo>
+                - listitem [ref=e3011]:
+                  - link "<big>" [ref=e3012] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/big
+                    - code [ref=e3013]: <big>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3014]:
+                    - generic [ref=e3015]: Deprecated
+                - listitem [ref=e3016]:
+                  - link "<blockquote>" [ref=e3017] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/blockquote
+                    - code [ref=e3018]: <blockquote>
+                - listitem [ref=e3019]:
+                  - link "<body>" [ref=e3020] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/body
+                    - code [ref=e3021]: <body>
+                - listitem [ref=e3022]:
+                  - link "<br>" [ref=e3023] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/br
+                    - code [ref=e3024]: <br>
+                - listitem [ref=e3025]:
+                  - link "<button>" [ref=e3026] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/button
+                    - code [ref=e3027]: <button>
+                - listitem [ref=e3028]:
+                  - link "<canvas>" [ref=e3029] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/canvas
+                    - code [ref=e3030]: <canvas>
+                - listitem [ref=e3031]:
+                  - link "<caption>" [ref=e3032] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/caption
+                    - code [ref=e3033]: <caption>
+                - listitem [ref=e3034]:
+                  - link "<center>" [ref=e3035] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/center
+                    - code [ref=e3036]: <center>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3037]:
+                    - generic [ref=e3038]: Deprecated
+                - listitem [ref=e3039]:
+                  - link "<cite>" [ref=e3040] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/cite
+                    - code [ref=e3041]: <cite>
+                - listitem [ref=e3042]:
+                  - link "<code>" [ref=e3043] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/code
+                    - code [ref=e3044]: <code>
+                - listitem [ref=e3045]:
+                  - link "<col>" [ref=e3046] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/col
+                    - code [ref=e3047]: <col>
+                - listitem [ref=e3048]:
+                  - link "<colgroup>" [ref=e3049] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/colgroup
+                    - code [ref=e3050]: <colgroup>
+                - listitem [ref=e3051]:
+                  - link "<data>" [ref=e3052] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/data
+                    - code [ref=e3053]: <data>
+                - listitem [ref=e3054]:
+                  - link "<datalist>" [ref=e3055] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/datalist
+                    - code [ref=e3056]: <datalist>
+                - listitem [ref=e3057]:
+                  - link "<dd>" [ref=e3058] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/dd
+                    - code [ref=e3059]: <dd>
+                - listitem [ref=e3060]:
+                  - link "<del>" [ref=e3061] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/del
+                    - code [ref=e3062]: <del>
+                - listitem [ref=e3063]:
+                  - link "<details>" [ref=e3064] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/details
+                    - code [ref=e3065]: <details>
+                - listitem [ref=e3066]:
+                  - link "<dfn>" [ref=e3067] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/dfn
+                    - code [ref=e3068]: <dfn>
+                - listitem [ref=e3069]:
+                  - link "<dialog>" [ref=e3070] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/dialog
+                    - code [ref=e3071]: <dialog>
+                - listitem [ref=e3072]:
+                  - link "<dir>" [ref=e3073] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/dir
+                    - code [ref=e3074]: <dir>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3075]:
+                    - generic [ref=e3076]: Deprecated
+                - listitem [ref=e3077]:
+                  - link "<div>" [ref=e3078] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/div
+                    - code [ref=e3079]: <div>
+                - listitem [ref=e3080]:
+                  - link "<dl>" [ref=e3081] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/dl
+                    - code [ref=e3082]: <dl>
+                - listitem [ref=e3083]:
+                  - link "<dt>" [ref=e3084] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/dt
+                    - code [ref=e3085]: <dt>
+                - listitem [ref=e3086]:
+                  - link "<em>" [ref=e3087] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/em
+                    - code [ref=e3088]: <em>
+                - listitem [ref=e3089]:
+                  - link "<embed>" [ref=e3090] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/embed
+                    - code [ref=e3091]: <embed>
+                - listitem [ref=e3092]:
+                  - link "<fencedframe>" [ref=e3093] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/fencedframe
+                    - code [ref=e3094]: <fencedframe>
+                  - generic "Experimental. Expect behavior to change in the future." [ref=e3095]:
+                    - generic [ref=e3096]: Experimental
+                - listitem [ref=e3097]:
+                  - link "<fieldset>" [ref=e3098] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/fieldset
+                    - code [ref=e3099]: <fieldset>
+                - listitem [ref=e3100]:
+                  - link "<figcaption>" [ref=e3101] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/figcaption
+                    - code [ref=e3102]: <figcaption>
+                - listitem [ref=e3103]:
+                  - link "<figure>" [ref=e3104] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/figure
+                    - code [ref=e3105]: <figure>
+                - listitem [ref=e3106]:
+                  - link "<font>" [ref=e3107] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/font
+                    - code [ref=e3108]: <font>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3109]:
+                    - generic [ref=e3110]: Deprecated
+                - listitem [ref=e3111]:
+                  - link "<footer>" [ref=e3112] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/footer
+                    - code [ref=e3113]: <footer>
+                - listitem [ref=e3114]:
+                  - link "<form>" [ref=e3115] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/form
+                    - code [ref=e3116]: <form>
+                - listitem [ref=e3117]:
+                  - link "<frame>" [ref=e3118] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/frame
+                    - code [ref=e3119]: <frame>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3120]:
+                    - generic [ref=e3121]: Deprecated
+                - listitem [ref=e3122]:
+                  - link "<frameset>" [ref=e3123] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/frameset
+                    - code [ref=e3124]: <frameset>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3125]:
+                    - generic [ref=e3126]: Deprecated
+                - listitem [ref=e3127]:
+                  - link "<geolocation>" [ref=e3128] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/geolocation
+                    - code [ref=e3129]: <geolocation>
+                - listitem [ref=e3130]:
+                  - link "<h1>" [ref=e3131] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/Heading_Elements
+                    - code [ref=e3132]: <h1>
+                - listitem [ref=e3133]:
+                  - link "<head>" [ref=e3134] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/head
+                    - code [ref=e3135]: <head>
+                - listitem [ref=e3136]:
+                  - link "<header>" [ref=e3137] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/header
+                    - code [ref=e3138]: <header>
+                - listitem [ref=e3139]:
+                  - link "<hgroup>" [ref=e3140] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/hgroup
+                    - code [ref=e3141]: <hgroup>
+                - listitem [ref=e3142]:
+                  - link "<hr>" [ref=e3143] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/hr
+                    - code [ref=e3144]: <hr>
+                - listitem [ref=e3145]:
+                  - link "<html>" [ref=e3146] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/html
+                    - code [ref=e3147]: <html>
+                - listitem [ref=e3148]:
+                  - link "<i>" [ref=e3149] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/i
+                    - code [ref=e3150]: <i>
+                - listitem [ref=e3151]:
+                  - link "<iframe>" [ref=e3152] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/iframe
+                    - code [ref=e3153]: <iframe>
+                - listitem [ref=e3154]:
+                  - link "<img>" [ref=e3155] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/img
+                    - code [ref=e3156]: <img>
+                - listitem [ref=e3157]:
+                  - link "<input>" [ref=e3158] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/input
+                    - code [ref=e3159]: <input>
+                - listitem [ref=e3160]:
+                  - link "<ins>" [ref=e3161] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/ins
+                    - code [ref=e3162]: <ins>
+                - listitem [ref=e3163]:
+                  - link "<kbd>" [ref=e3164] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/kbd
+                    - code [ref=e3165]: <kbd>
+                - listitem [ref=e3166]:
+                  - link "<label>" [ref=e3167] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/label
+                    - code [ref=e3168]: <label>
+                - listitem [ref=e3169]:
+                  - link "<legend>" [ref=e3170] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/legend
+                    - code [ref=e3171]: <legend>
+                - listitem [ref=e3172]:
+                  - link "<li>" [ref=e3173] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/li
+                    - code [ref=e3174]: <li>
+                - listitem [ref=e3175]:
+                  - link "<link>" [ref=e3176] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/link
+                    - code [ref=e3177]: <link>
+                - listitem [ref=e3178]:
+                  - link "<main>" [ref=e3179] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/main
+                    - code [ref=e3180]: <main>
+                - listitem [ref=e3181]:
+                  - link "<map>" [ref=e3182] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/map
+                    - code [ref=e3183]: <map>
+                - listitem [ref=e3184]:
+                  - link "<mark>" [ref=e3185] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/mark
+                    - code [ref=e3186]: <mark>
+                - listitem [ref=e3187]:
+                  - link "<marquee>" [ref=e3188] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/marquee
+                    - code [ref=e3189]: <marquee>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3190]:
+                    - generic [ref=e3191]: Deprecated
+                - listitem [ref=e3192]:
+                  - link "<menu>" [ref=e3193] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/menu
+                    - code [ref=e3194]: <menu>
+                - listitem [ref=e3195]:
+                  - link "<meta>" [ref=e3196] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/meta
+                    - code [ref=e3197]: <meta>
+                - listitem [ref=e3198]:
+                  - link "<meter>" [ref=e3199] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/meter
+                    - code [ref=e3200]: <meter>
+                - listitem [ref=e3201]:
+                  - link "<nav>" [ref=e3202] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/nav
+                    - code [ref=e3203]: <nav>
+                - listitem [ref=e3204]:
+                  - link "<nobr>" [ref=e3205] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/nobr
+                    - code [ref=e3206]: <nobr>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3207]:
+                    - generic [ref=e3208]: Deprecated
+                - listitem [ref=e3209]:
+                  - link "<noembed>" [ref=e3210] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/noembed
+                    - code [ref=e3211]: <noembed>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3212]:
+                    - generic [ref=e3213]: Deprecated
+                - listitem [ref=e3214]:
+                  - link "<noframes>" [ref=e3215] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/noframes
+                    - code [ref=e3216]: <noframes>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3217]:
+                    - generic [ref=e3218]: Deprecated
+                - listitem [ref=e3219]:
+                  - link "<noscript>" [ref=e3220] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/noscript
+                    - code [ref=e3221]: <noscript>
+                - listitem [ref=e3222]:
+                  - link "<object>" [ref=e3223] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/object
+                    - code [ref=e3224]: <object>
+                - listitem [ref=e3225]:
+                  - link "<ol>" [ref=e3226] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/ol
+                    - code [ref=e3227]: <ol>
+                - listitem [ref=e3228]:
+                  - link "<optgroup>" [ref=e3229] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/optgroup
+                    - code [ref=e3230]: <optgroup>
+                - listitem [ref=e3231]:
+                  - link "<option>" [ref=e3232] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/option
+                    - code [ref=e3233]: <option>
+                - listitem [ref=e3234]:
+                  - link "<output>" [ref=e3235] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/output
+                    - code [ref=e3236]: <output>
+                - listitem [ref=e3237]:
+                  - link "<p>" [ref=e3238] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/p
+                    - code [ref=e3239]: <p>
+                - listitem [ref=e3240]:
+                  - link "<param>" [ref=e3241] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/param
+                    - code [ref=e3242]: <param>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3243]:
+                    - generic [ref=e3244]: Deprecated
+                - listitem [ref=e3245]:
+                  - link "<picture>" [ref=e3246] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/picture
+                    - code [ref=e3247]: <picture>
+                - listitem [ref=e3248]:
+                  - link "<plaintext>" [ref=e3249] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/plaintext
+                    - code [ref=e3250]: <plaintext>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3251]:
+                    - generic [ref=e3252]: Deprecated
+                - listitem [ref=e3253]:
+                  - link "<pre>" [ref=e3254] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/pre
+                    - code [ref=e3255]: <pre>
+                - listitem [ref=e3256]:
+                  - link "<progress>" [ref=e3257] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/progress
+                    - code [ref=e3258]: <progress>
+                - listitem [ref=e3259]:
+                  - link "<q>" [ref=e3260] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/q
+                    - code [ref=e3261]: <q>
+                - listitem [ref=e3262]:
+                  - link "<rb>" [ref=e3263] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/rb
+                    - code [ref=e3264]: <rb>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3265]:
+                    - generic [ref=e3266]: Deprecated
+                - listitem [ref=e3267]:
+                  - link "<rp>" [ref=e3268] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/rp
+                    - code [ref=e3269]: <rp>
+                - listitem [ref=e3270]:
+                  - link "<rt>" [ref=e3271] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/rt
+                    - code [ref=e3272]: <rt>
+                - listitem [ref=e3273]:
+                  - link "<rtc>" [ref=e3274] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/rtc
+                    - code [ref=e3275]: <rtc>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3276]:
+                    - generic [ref=e3277]: Deprecated
+                - listitem [ref=e3278]:
+                  - link "<ruby>" [ref=e3279] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/ruby
+                    - code [ref=e3280]: <ruby>
+                - listitem [ref=e3281]:
+                  - link "<s>" [ref=e3282] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/s
+                    - code [ref=e3283]: <s>
+                - listitem [ref=e3284]:
+                  - link "<samp>" [ref=e3285] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/samp
+                    - code [ref=e3286]: <samp>
+                - listitem [ref=e3287]:
+                  - link "<script>" [ref=e3288] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/script
+                    - code [ref=e3289]: <script>
+                - listitem [ref=e3290]:
+                  - link "<search>" [ref=e3291] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/search
+                    - code [ref=e3292]: <search>
+                - listitem [ref=e3293]:
+                  - link "<section>" [ref=e3294] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/section
+                    - code [ref=e3295]: <section>
+                - listitem [ref=e3296]:
+                  - link "<select>" [ref=e3297] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/select
+                    - code [ref=e3298]: <select>
+                - listitem [ref=e3299]:
+                  - link "<selectedcontent>" [ref=e3300] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/selectedcontent
+                    - code [ref=e3301]: <selectedcontent>
+                  - generic "Experimental. Expect behavior to change in the future." [ref=e3302]:
+                    - generic [ref=e3303]: Experimental
+                - listitem [ref=e3304]:
+                  - link "<slot>" [ref=e3305] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/slot
+                    - code [ref=e3306]: <slot>
+                - listitem [ref=e3307]:
+                  - link "<small>" [ref=e3308] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/small
+                    - code [ref=e3309]: <small>
+                - listitem [ref=e3310]:
+                  - link "<source>" [ref=e3311] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/source
+                    - code [ref=e3312]: <source>
+                - listitem [ref=e3313]:
+                  - link "<span>" [ref=e3314] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/span
+                    - code [ref=e3315]: <span>
+                - listitem [ref=e3316]:
+                  - link "<strike>" [ref=e3317] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/strike
+                    - code [ref=e3318]: <strike>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3319]:
+                    - generic [ref=e3320]: Deprecated
+                - listitem [ref=e3321]:
+                  - link "<strong>" [ref=e3322] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/strong
+                    - code [ref=e3323]: <strong>
+                - listitem [ref=e3324]:
+                  - link "<style>" [ref=e3325] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/style
+                    - code [ref=e3326]: <style>
+                - listitem [ref=e3327]:
+                  - link "<sub>" [ref=e3328] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/sub
+                    - code [ref=e3329]: <sub>
+                - listitem [ref=e3330]:
+                  - link "<summary>" [ref=e3331] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/summary
+                    - code [ref=e3332]: <summary>
+                - listitem [ref=e3333]:
+                  - link "<sup>" [ref=e3334] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/sup
+                    - code [ref=e3335]: <sup>
+                - listitem [ref=e3336]:
+                  - emphasis [ref=e3337]:
+                    - link "<table>" [ref=e3338] [cursor=pointer]:
+                      - /url: /en-US/docs/Web/HTML/Reference/Elements/table
+                      - code [ref=e3339]: <table>
+                - listitem [ref=e3340]:
+                  - link "<tbody>" [ref=e3341] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/tbody
+                    - code [ref=e3342]: <tbody>
+                - listitem [ref=e3343]:
+                  - link "<td>" [ref=e3344] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/td
+                    - code [ref=e3345]: <td>
+                - listitem [ref=e3346]:
+                  - link "<template>" [ref=e3347] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/template
+                    - code [ref=e3348]: <template>
+                - listitem [ref=e3349]:
+                  - link "<textarea>" [ref=e3350] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/textarea
+                    - code [ref=e3351]: <textarea>
+                - listitem [ref=e3352]:
+                  - link "<tfoot>" [ref=e3353] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/tfoot
+                    - code [ref=e3354]: <tfoot>
+                - listitem [ref=e3355]:
+                  - link "<th>" [ref=e3356] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/th
+                    - code [ref=e3357]: <th>
+                - listitem [ref=e3358]:
+                  - link "<thead>" [ref=e3359] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/thead
+                    - code [ref=e3360]: <thead>
+                - listitem [ref=e3361]:
+                  - link "<time>" [ref=e3362] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/time
+                    - code [ref=e3363]: <time>
+                - listitem [ref=e3364]:
+                  - link "<title>" [ref=e3365] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/title
+                    - code [ref=e3366]: <title>
+                - listitem [ref=e3367]:
+                  - link "<tr>" [ref=e3368] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/tr
+                    - code [ref=e3369]: <tr>
+                - listitem [ref=e3370]:
+                  - link "<track>" [ref=e3371] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/track
+                    - code [ref=e3372]: <track>
+                - listitem [ref=e3373]:
+                  - link "<tt>" [ref=e3374] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/tt
+                    - code [ref=e3375]: <tt>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3376]:
+                    - generic [ref=e3377]: Deprecated
+                - listitem [ref=e3378]:
+                  - link "<u>" [ref=e3379] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/u
+                    - code [ref=e3380]: <u>
+                - listitem [ref=e3381]:
+                  - link "<ul>" [ref=e3382] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/ul
+                    - code [ref=e3383]: <ul>
+                - listitem [ref=e3384]:
+                  - link "<var>" [ref=e3385] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/var
+                    - code [ref=e3386]: <var>
+                - listitem [ref=e3387]:
+                  - link "<video>" [ref=e3388] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/video
+                    - code [ref=e3389]: <video>
+                - listitem [ref=e3390]:
+                  - link "<wbr>" [ref=e3391] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/wbr
+                    - code [ref=e3392]: <wbr>
+                - listitem [ref=e3393]:
+                  - link "<xmp>" [ref=e3394] [cursor=pointer]:
+                    - /url: /en-US/docs/Web/HTML/Reference/Elements/xmp
+                    - code [ref=e3395]: <xmp>
+                  - generic "Deprecated. Not for use in new websites." [ref=e3396]:
+                    - generic [ref=e3397]: Deprecated
+          - listitem [ref=e3398]:
+            - group [ref=e3399]:
+              - generic "Attributes" [ref=e3400] [cursor=pointer]:
+                - link "Attributes" [ref=e3401]:
+                  - /url: /en-US/docs/Web/HTML/Reference/Attributes
+          - listitem [ref=e3402]:
+            - group [ref=e3403]:
+              - generic "Global attributes" [ref=e3404] [cursor=pointer]:
+                - link "Global attributes" [ref=e3405]:
+                  - /url: /en-US/docs/Web/HTML/Reference/Global_attributes
+          - listitem [ref=e3406]:
+            - group [ref=e3407]:
+              - generic "Attributes by element" [ref=e3408] [cursor=pointer]:
+                - generic [ref=e3409]: Attributes by element
+          - listitem [ref=e3410]:
+            - group [ref=e3411]:
+              - generic "Attribute values" [ref=e3412] [cursor=pointer]:
+                - generic [ref=e3413]: Attribute values
+  - contentinfo [ref=e3415]:
+    - generic [ref=e3416]:
+      - generic [ref=e3417]:
+        - link "MDN logo" [ref=e3418] [cursor=pointer]:
+          - /url: /
+          - img [ref=e3419]
+        - paragraph [ref=e3421]: Your blueprint for a better internet.
+      - list [ref=e3422]:
+        - listitem [ref=e3423]:
+          - link "MDN on GitHub" [ref=e3424] [cursor=pointer]:
+            - /url: https://github.com/mdn/
+        - listitem [ref=e3425]:
+          - link "MDN on Bluesky" [ref=e3426] [cursor=pointer]:
+            - /url: https://bsky.app/profile/developer.mozilla.org
+        - listitem [ref=e3427]:
+          - link "MDN on X" [ref=e3428] [cursor=pointer]:
+            - /url: https://x.com/mozdevnet
+        - listitem [ref=e3429]:
+          - link "MDN on Mastodon" [ref=e3430] [cursor=pointer]:
+            - /url: https://mastodon.social/@mdn
+        - listitem [ref=e3431]:
+          - link "MDN blog RSS feed" [ref=e3432] [cursor=pointer]:
+            - /url: /en-US/blog/rss.xml
+      - generic [ref=e3433]:
+        - term [ref=e3434]: MDN
+        - definition [ref=e3435]:
+          - list [ref=e3436]:
+            - listitem [ref=e3437]:
+              - link "About" [ref=e3438] [cursor=pointer]:
+                - /url: /en-US/about
+            - listitem [ref=e3439]:
+              - link "Blog" [ref=e3440] [cursor=pointer]:
+                - /url: /en-US/blog/
+            - listitem [ref=e3441]:
+              - link "Mozilla careers (external)" [ref=e3442] [cursor=pointer]:
+                - /url: https://www.mozilla.org/en-US/careers/listings/
+            - listitem [ref=e3443]:
+              - link "Advertise with us" [ref=e3444] [cursor=pointer]:
+                - /url: /en-US/advertising
+            - listitem [ref=e3445]:
+              - link "MDN Plus" [ref=e3446] [cursor=pointer]:
+                - /url: /en-US/plus
+            - listitem [ref=e3447]:
+              - link "Product help (external)" [ref=e3448] [cursor=pointer]:
+                - /url: https://support.mozilla.org/products/mdn-plus
+      - generic [ref=e3449]:
+        - term [ref=e3450]: Contribute
+        - definition [ref=e3451]:
+          - list [ref=e3452]:
+            - listitem [ref=e3453]:
+              - link "MDN Community" [ref=e3454] [cursor=pointer]:
+                - /url: /en-US/community
+            - listitem [ref=e3455]:
+              - link "Community resources" [ref=e3456] [cursor=pointer]:
+                - /url: /en-US/docs/MDN/Community
+            - listitem [ref=e3457]:
+              - link "Writing guidelines" [ref=e3458] [cursor=pointer]:
+                - /url: /en-US/docs/MDN/Writing_guidelines
+            - listitem [ref=e3459]:
+              - link "MDN Discord (external)" [ref=e3460] [cursor=pointer]:
+                - /url: /discord
+            - listitem [ref=e3461]:
+              - link "MDN on GitHub (external)" [ref=e3462] [cursor=pointer]:
+                - /url: https://github.com/mdn
+      - generic [ref=e3463]:
+        - term [ref=e3464]: Developers
+        - definition [ref=e3465]:
+          - list [ref=e3466]:
+            - listitem [ref=e3467]:
+              - link "Web technologies" [ref=e3468] [cursor=pointer]:
+                - /url: /en-US/docs/Web
+            - listitem [ref=e3469]:
+              - link "Learn web development" [ref=e3470] [cursor=pointer]:
+                - /url: /en-US/docs/Learn_web_development
+            - listitem [ref=e3471]:
+              - link "Guides" [ref=e3472] [cursor=pointer]:
+                - /url: /en-US/docs/MDN/Guides
+            - listitem [ref=e3473]:
+              - link "Tutorials" [ref=e3474] [cursor=pointer]:
+                - /url: /en-US/docs/MDN/Tutorials
+            - listitem [ref=e3475]:
+              - link "Glossary" [ref=e3476] [cursor=pointer]:
+                - /url: /en-US/docs/Glossary
+            - listitem [ref=e3477]:
+              - link "Hacks blog (external)" [ref=e3478] [cursor=pointer]:
+                - /url: https://hacks.mozilla.org/
+    - generic [ref=e3479]:
+      - link "Mozilla logo" [ref=e3480] [cursor=pointer]:
+        - /url: https://www.mozilla.org/
+        - img [ref=e3481]
+      - list [ref=e3483]:
+        - listitem [ref=e3484]:
+          - link "Website Privacy Notice (external)" [ref=e3485] [cursor=pointer]:
+            - /url: https://www.mozilla.org/privacy/websites/
+        - listitem [ref=e3486]:
+          - link "Telemetry Settings (external)" [ref=e3487] [cursor=pointer]:
+            - /url: https://www.mozilla.org/en-US/privacy/websites/data-preferences/
+        - listitem [ref=e3488]:
+          - link "Legal (external)" [ref=e3489] [cursor=pointer]:
+            - /url: https://www.mozilla.org/about/legal/terms/mozilla
+        - listitem [ref=e3490]:
+          - link "Community Participation Guidelines (external)" [ref=e3491] [cursor=pointer]:
+            - /url: https://www.mozilla.org/about/governance/policies/participation/
+      - paragraph [ref=e3492]:
+        - text: Visit
+        - link "Mozilla Corporation’s" [ref=e3493] [cursor=pointer]:
+          - /url: https://www.mozilla.org/
+        - text: not-for-profit parent, the
+        - link "Mozilla Foundation" [ref=e3494] [cursor=pointer]:
+          - /url: https://foundation.mozilla.org/
+        - text: .
+        - text: Portions of this content are ©1998–2026 by individual mozilla.org contributors. Content available under
+        - link "a Creative Commons license" [ref=e3495] [cursor=pointer]:
+          - /url: /docs/MDN/Writing_guidelines/Attrib_copyright_license
+        - text: .

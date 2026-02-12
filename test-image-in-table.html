@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test: Image Inside Table</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    h1 {
+      color: #333;
+      border-bottom: 3px solid #4285f4;
+      padding-bottom: 10px;
+    }
+
+    .test-section {
+      background: white;
+      padding: 30px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #4285f4;
+      margin-top: 0;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 20px 0;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #4285f4;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    img {
+      max-width: 150px;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+    }
+
+    .instructions {
+      background: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 15px;
+      margin: 20px 0;
+    }
+
+    .instructions strong {
+      color: #1976d2;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧪 Test: Image Inside Table Cell</h1>
+
+  <div class="instructions">
+    <strong>Test Instructions:</strong>
+    <ol>
+      <li>Hover over any <strong>image inside a table cell</strong> for 1 second</li>
+      <li>You should see a popover with three options:
+        <ul>
+          <li><strong>Image</strong> - Save only the image</li>
+          <li><strong>Table</strong> - Save the entire table</li>
+          <li><strong>All</strong> - Save all as separate items</li>
+        </ul>
+      </li>
+      <li>Hover over <strong>table cells without images</strong> to save just the table</li>
+    </ol>
+  </div>
+
+  <!-- Test Case 1: Product Catalog -->
+  <div class="test-section">
+    <h2>Test Case 1: Product Catalog</h2>
+    <p>Hover over product images in the table below:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Image</th>
+          <th>Price</th>
+          <th>Stock</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Laptop Pro 15"</td>
+          <td>
+            <img src="https://via.placeholder.com/150/0000FF/FFFFFF?text=Laptop" alt="Laptop">
+          </td>
+          <td>$1,299</td>
+          <td>In Stock</td>
+        </tr>
+        <tr>
+          <td>Wireless Mouse</td>
+          <td>
+            <img src="https://via.placeholder.com/150/FF0000/FFFFFF?text=Mouse" alt="Mouse">
+          </td>
+          <td>$29.99</td>
+          <td>In Stock</td>
+        </tr>
+        <tr>
+          <td>USB-C Cable</td>
+          <td>
+            <img src="https://via.placeholder.com/150/00FF00/000000?text=Cable" alt="Cable">
+          </td>
+          <td>$19.99</td>
+          <td>Low Stock</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Test Case 2: Team Directory -->
+  <div class="test-section">
+    <h2>Test Case 2: Team Directory</h2>
+    <p>Hover over profile images:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Photo</th>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <img src="https://via.placeholder.com/150/FF6B6B/FFFFFF?text=Alice" alt="Alice">
+          </td>
+          <td>Alice Johnson</td>
+          <td>Product Manager</td>
+          <td>alice@example.com</td>
+        </tr>
+        <tr>
+          <td>
+            <img src="https://via.placeholder.com/150/4ECDC4/FFFFFF?text=Bob" alt="Bob">
+          </td>
+          <td>Bob Smith</td>
+          <td>Developer</td>
+          <td>bob@example.com</td>
+        </tr>
+        <tr>
+          <td>
+            <img src="https://via.placeholder.com/150/FFE66D/000000?text=Carol" alt="Carol">
+          </td>
+          <td>Carol Davis</td>
+          <td>Designer</td>
+          <td>carol@example.com</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Test Case 3: Mixed Content -->
+  <div class="test-section">
+    <h2>Test Case 3: Mixed Content Table</h2>
+    <p>This table has both cells with images and cells without:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Item</th>
+          <th>Visual</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Electronics</td>
+          <td>Smartphone</td>
+          <td>
+            <img src="https://via.placeholder.com/150/9B59B6/FFFFFF?text=Phone" alt="Phone">
+          </td>
+          <td>Latest model with 5G support and triple camera</td>
+        </tr>
+        <tr>
+          <td>Accessories</td>
+          <td>Headphones</td>
+          <td>No image available</td>
+          <td>Noise-cancelling over-ear headphones</td>
+        </tr>
+        <tr>
+          <td>Wearables</td>
+          <td>Smart Watch</td>
+          <td>
+            <img src="https://via.placeholder.com/150/E74C3C/FFFFFF?text=Watch" alt="Watch">
+          </td>
+          <td>Fitness tracking and notifications</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Test Case 4: Multiple Images in One Cell -->
+  <div class="test-section">
+    <h2>Test Case 4: Multiple Images in Single Cell</h2>
+    <p>Hover over different images in the same cell:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Gallery</th>
+          <th>Rating</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Camera Bundle</td>
+          <td>
+            <img src="https://via.placeholder.com/100/3498DB/FFFFFF?text=View+1" alt="View 1" style="display: inline-block; margin: 5px;">
+            <img src="https://via.placeholder.com/100/2ECC71/FFFFFF?text=View+2" alt="View 2" style="display: inline-block; margin: 5px;">
+            <img src="https://via.placeholder.com/100/F39C12/FFFFFF?text=View+3" alt="View 3" style="display: inline-block; margin: 5px;">
+          </td>
+          <td>⭐⭐⭐⭐⭐</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="instructions" style="background: #f1f8e9; border-color: #8bc34a;">
+    <strong>✅ Expected Behavior:</strong>
+    <ul>
+      <li>When hovering an <strong>image in a table</strong>, you should see options to save: Image, Table, or All</li>
+      <li>When hovering <strong>text in a table</strong> (non-image cell), you should only see the option to save the Table</li>
+      <li>Each option should work independently and save the correct content</li>
+    </ul>
+  </div>
+</body>
+</html>

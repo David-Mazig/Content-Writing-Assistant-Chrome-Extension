@@ -14,6 +14,7 @@ let hoveredTable = null;
 let hoveredLink = null;
 let prewarmSent = false;
 let extensionContextValid = true;
+let savedSelectionRange = null; // Store selection range for restoration
 
 // Track multiple detected elements for nested scenarios (e.g., image inside link)
 let detectedElements = {
@@ -125,12 +126,17 @@ function handleImageHover(event) {
   const hasValidParentLink = parentLink && parentLink.href &&
     !parentLink.href.startsWith('javascript:') && parentLink.href !== '#';
 
+  // Check if image is inside a table
+  const parentTable = img.closest('table');
+  const hasValidParentTable = parentTable &&
+    parentTable.querySelectorAll('tr').length >= 2;
+
   // Wait 1 second before showing popover
   hoverTimer = setTimeout(() => {
     // Track detected elements BEFORE showPopover (it calls hidePopover which clears state)
     detectedElements.image = img;
     detectedElements.link = hasValidParentLink ? parentLink : null;
-    detectedElements.table = null;
+    detectedElements.table = hasValidParentTable ? parentTable : null;
 
     const rect = img.getBoundingClientRect();
     showPopover(rect.right - 10, rect.top + 10);
@@ -155,6 +161,9 @@ function handleImageHoverEnd(event) {
  * Handle table hover event
  */
 function handleTableHover(event) {
+  // Don't trigger if hovering an image inside the table (handleImageHover will handle it)
+  if (event.target.tagName === 'IMG') return;
+
   // Check if element is a table or inside a table
   const table = event.target.tagName === 'TABLE' ? event.target : event.target.closest('table');
   if (!table) return;
@@ -297,11 +306,16 @@ function showPopover(x, y) {
   }
 
   // Check if multiple elements are detected (for multi-save UI)
-  const hasMultipleElements = detectedElements.image && detectedElements.link;
+  const hasImageAndLink = detectedElements.image && detectedElements.link;
+  const hasImageAndTable = detectedElements.image && detectedElements.table;
+  const hasMultipleElements = hasImageAndLink || hasImageAndTable;
 
   // Build preview content for multi-element case
-  if (hasMultipleElements) {
+  if (hasImageAndLink) {
     previewContent = 'Image + Link';
+    contentType = 'multi';
+  } else if (hasImageAndTable) {
+    previewContent = 'Image + Table';
     contentType = 'multi';
   }
 
@@ -326,31 +340,54 @@ function showPopover(x, y) {
   // Build action buttons HTML
   let actionsHTML;
   if (hasMultipleElements) {
-    // Multi-element UI: show separate buttons for each element type + "Both" option
+    // Multi-element UI: show separate buttons for each element type + "All" option
+    const imageButton = `
+      <button class="cwa-save-btn cwa-save-image-btn" data-save-type="image" title="Save Image only">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <path d="M21 15l-5-5L5 21"/>
+        </svg>
+        <span>Image</span>
+      </button>
+    `;
+
+    const linkButton = `
+      <button class="cwa-save-btn cwa-save-link-btn" data-save-type="link" title="Save Link only">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+        </svg>
+        <span>Link</span>
+      </button>
+    `;
+
+    const tableButton = `
+      <button class="cwa-save-btn cwa-save-table-btn" data-save-type="table" title="Save Table only">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M3 9h18M3 15h18M9 3v18M15 3v18"/>
+        </svg>
+        <span>Table</span>
+      </button>
+    `;
+
+    const bothButton = `
+      <button class="cwa-save-btn cwa-save-both-btn" data-save-type="both" title="Save all as separate items">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <path d="M12 2H4C3.46957 2 2.96086 2.21071 2.58579 2.58579C2.21071 2.96086 2 3.46957 2 4V14L5 12L8 14L11 12L14 14V4C14 3.46957 13.7893 2.96086 13.4142 2.58579C13.0391 2.21071 12.5304 2 12 2Z" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>All</span>
+      </button>
+    `;
+
     actionsHTML = `
       <input type="text" class="cwa-note-input" placeholder="Add a note (optional)..." />
       <div class="cwa-multi-save-buttons">
-        <button class="cwa-save-btn cwa-save-image-btn" data-save-type="image" title="Save Image only">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="18" height="18" rx="2"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <path d="M21 15l-5-5L5 21"/>
-          </svg>
-          <span>Image</span>
-        </button>
-        <button class="cwa-save-btn cwa-save-link-btn" data-save-type="link" title="Save Link only">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-          </svg>
-          <span>Link</span>
-        </button>
-        <button class="cwa-save-btn cwa-save-both-btn" data-save-type="both" title="Save both as separate items">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-            <path d="M12 2H4C3.46957 2 2.96086 2.21071 2.58579 2.58579C2.21071 2.96086 2 3.46957 2 4V14L5 12L8 14L11 12L14 14V4C14 3.46957 13.7893 2.96086 13.4142 2.58579C13.0391 2.21071 12.5304 2 12 2Z" stroke="currentColor" stroke-width="1.5"/>
-          </svg>
-          <span>Both</span>
-        </button>
+        ${imageButton}
+        ${hasImageAndLink ? linkButton : ''}
+        ${hasImageAndTable ? tableButton : ''}
+        ${bothButton}
       </div>
     `;
   } else {
@@ -421,29 +458,30 @@ function showPopover(x, y) {
   // Add event listeners for save buttons
   if (hasMultipleElements) {
     // Multi-element: attach handlers to each button
-    popover.querySelector('.cwa-save-image-btn').addEventListener('click', (e) => handleSaveElement(e, 'image'));
-    popover.querySelector('.cwa-save-link-btn').addEventListener('click', (e) => handleSaveElement(e, 'link'));
-    popover.querySelector('.cwa-save-both-btn').addEventListener('click', (e) => handleSaveElement(e, 'both'));
+    const imageBtn = popover.querySelector('.cwa-save-image-btn');
+    const linkBtn = popover.querySelector('.cwa-save-link-btn');
+    const tableBtn = popover.querySelector('.cwa-save-table-btn');
+    const bothBtn = popover.querySelector('.cwa-save-both-btn');
+
+    if (imageBtn) imageBtn.addEventListener('click', (e) => handleSaveElement(e, 'image'));
+    if (linkBtn) linkBtn.addEventListener('click', (e) => handleSaveElement(e, 'link'));
+    if (tableBtn) tableBtn.addEventListener('click', (e) => handleSaveElement(e, 'table'));
+    if (bothBtn) bothBtn.addEventListener('click', (e) => handleSaveElement(e, 'both'));
   } else {
     // Single element: standard save handler
     popover.querySelector('.cwa-save-btn').addEventListener('click', handleSave);
   }
 
-  // Save selection before focusing input (focusing clears browser selection)
+  // Save selection for potential restoration (e.g., when pressing ESC)
   const selection = window.getSelection();
-  const savedRange = selection.rangeCount > 0 ? selection.getRangeAt(0).cloneRange() : null;
+  savedSelectionRange = selection.rangeCount > 0 ? selection.getRangeAt(0).cloneRange() : null;
 
   // Auto-focus the note input field after a brief delay
   // (browser blocks focus during active selection events)
   const noteInput = popover.querySelector('.cwa-note-input');
   if (noteInput) {
-    // Restore selection first, then focus input
-    if (savedRange) {
-      selection.removeAllRanges();
-      selection.addRange(savedRange);
-    }
-
     // Use requestAnimationFrame + setTimeout to ensure focus happens after browser settles
+    // Note: focusing will clear the selection, but we've saved it for ESC restoration
     requestAnimationFrame(() => {
       setTimeout(() => {
         noteInput.focus();
@@ -479,6 +517,7 @@ function hidePopover() {
   hoveredTable = null;
   selectedLink = null;
   hoveredLink = null;
+  savedSelectionRange = null;
   if (hoverTimer) {
     clearTimeout(hoverTimer);
     hoverTimer = null;
@@ -505,7 +544,7 @@ function handlePopoverKeydown(event) {
     // Check if multi-element mode (multiple buttons)
     const bothBtn = popover.querySelector('.cwa-save-both-btn');
     if (bothBtn) {
-      // Multi-element mode: Enter saves both
+      // Multi-element mode: Enter saves all
       handleSaveElement(event, 'both');
     } else {
       // Single element mode: standard save
@@ -513,7 +552,12 @@ function handlePopoverKeydown(event) {
     }
   } else if (event.key === 'Escape') {
     event.preventDefault();
-    window.getSelection().removeAllRanges(); // Deselect text
+    // Restore text selection if it was saved (before hidePopover clears it)
+    if (savedSelectionRange && selectedText) {
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(savedSelectionRange);
+    }
     hidePopover();
   }
 }
@@ -714,7 +758,7 @@ async function fetchImageData(img) {
 /**
  * Handle save for a specific element type (used in multi-element UI)
  * @param {Event} event - Click event
- * @param {string} saveType - 'image', 'link', or 'both'
+ * @param {string} saveType - 'image', 'link', 'table', or 'both'
  */
 async function handleSaveElement(event, saveType) {
   event.stopPropagation();
@@ -738,13 +782,22 @@ async function handleSaveElement(event, saveType) {
     }
 
     if (saveType === 'both') {
-      // Save both elements sequentially
-      await saveImageElement(detectedElements.image, noteText);
-      await saveLinkElement(detectedElements.link, noteText);
+      // Save all detected elements sequentially
+      if (detectedElements.image) {
+        await saveImageElement(detectedElements.image, noteText);
+      }
+      if (detectedElements.link) {
+        await saveLinkElement(detectedElements.link, noteText);
+      }
+      if (detectedElements.table) {
+        await saveTableElement(detectedElements.table, noteText);
+      }
     } else if (saveType === 'image') {
       await saveImageElement(detectedElements.image, noteText);
     } else if (saveType === 'link') {
       await saveLinkElement(detectedElements.link, noteText);
+    } else if (saveType === 'table') {
+      await saveTableElement(detectedElements.table, noteText);
     }
 
     // Hide popover instantly
@@ -827,6 +880,52 @@ async function saveLinkElement(link, noteText) {
 
   if (!response.success) {
     throw new Error(response.error || 'Failed to save link');
+  }
+
+  return response;
+}
+
+/**
+ * Save a table element
+ */
+async function saveTableElement(table, noteText) {
+  const tableData = extractTableData(table);
+
+  // Fetch all images embedded in the table
+  const imageDataArray = [];
+  if (tableData.images && tableData.images.length > 0) {
+    for (let i = 0; i < tableData.images.length; i++) {
+      const img = tableData.images[i];
+      try {
+        const imageData = await fetchImageData(img.element);
+        imageDataArray.push(imageData);
+      } catch (error) {
+        console.warn(`Failed to fetch image ${i + 1}:`, error);
+        // Continue with other images even if one fails
+      }
+    }
+  }
+
+  // Remove images array from tableData before sending (we've extracted them)
+  const cleanTableData = {
+    headers: tableData.headers,
+    rows: tableData.rows
+  };
+
+  const response = await chrome.runtime.sendMessage({
+    action: 'saveSelection',
+    data: {
+      type: 'table',
+      tableData: cleanTableData,
+      tableImages: imageDataArray,
+      note: noteText,
+      url: window.location.href,
+      title: document.title
+    }
+  });
+
+  if (!response.success) {
+    throw new Error(response.error || 'Failed to save table');
   }
 
   return response;
