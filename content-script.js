@@ -262,6 +262,49 @@ function handleLinkHoverEnd(event) {
 }
 
 /**
+ * Load projects and populate dropdown
+ */
+async function loadProjectsToDropdown() {
+  try {
+    const response = await chrome.runtime.sendMessage({ action: 'getProjects' });
+
+    if (!response.success) {
+      console.error('Failed to load projects:', response.error);
+      return;
+    }
+
+    const projectSelect = document.getElementById('cwa-project-select');
+    if (!projectSelect) return;
+
+    const { projects, activeProjectId } = response;
+
+    // Clear existing options
+    projectSelect.innerHTML = '';
+
+    // Add project options
+    projects.forEach(project => {
+      const option = document.createElement('option');
+      option.value = project.key;
+      option.textContent = project.name;
+      if (project.key === activeProjectId) {
+        option.selected = true;
+      }
+      projectSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error loading projects:', error);
+  }
+}
+
+/**
+ * Get selected project ID from dropdown
+ */
+function getSelectedProjectId() {
+  const projectSelect = document.getElementById('cwa-project-select');
+  return projectSelect ? projectSelect.value : null;
+}
+
+/**
  * Create and show the popover with preview
  */
 function showPopover(x, y) {
@@ -382,6 +425,9 @@ function showPopover(x, y) {
     `;
 
     actionsHTML = `
+      <select class="cwa-project-select" id="cwa-project-select">
+        <option value="">Loading projects...</option>
+      </select>
       <input type="text" class="cwa-note-input" placeholder="Add a note (optional)..." />
       <div class="cwa-multi-save-buttons">
         ${imageButton}
@@ -393,6 +439,9 @@ function showPopover(x, y) {
   } else {
     // Single element UI: standard save button
     actionsHTML = `
+      <select class="cwa-project-select" id="cwa-project-select">
+        <option value="">Loading projects...</option>
+      </select>
       <input type="text" class="cwa-note-input" placeholder="Add a note (optional)..." />
       <button class="cwa-save-btn" title="Save to Content Assistant">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
@@ -454,6 +503,9 @@ function showPopover(x, y) {
 
   popover.style.left = `${left}px`;
   popover.style.top = `${top}px`;
+
+  // Load projects and populate dropdown
+  loadProjectsToDropdown();
 
   // Add event listeners for save buttons
   if (hasMultipleElements) {
@@ -805,6 +857,9 @@ async function handleSaveElement(event, saveType) {
   const noteInput = popover.querySelector('.cwa-note-input');
   const noteText = noteInput ? noteInput.value.trim() : '';
 
+  // Get selected project ID
+  const projectId = getSelectedProjectId();
+
   // Disable all buttons during save
   const allButtons = popover.querySelectorAll('.cwa-save-btn');
   allButtons.forEach(b => b.disabled = true);
@@ -819,20 +874,20 @@ async function handleSaveElement(event, saveType) {
     if (saveType === 'both') {
       // Save all detected elements sequentially
       if (detectedElements.image) {
-        await saveImageElement(detectedElements.image, noteText);
+        await saveImageElement(detectedElements.image, noteText, projectId);
       }
       if (detectedElements.link) {
-        await saveLinkElement(detectedElements.link, noteText);
+        await saveLinkElement(detectedElements.link, noteText, projectId);
       }
       if (detectedElements.table) {
-        await saveTableElement(detectedElements.table, noteText);
+        await saveTableElement(detectedElements.table, noteText, projectId);
       }
     } else if (saveType === 'image') {
-      await saveImageElement(detectedElements.image, noteText);
+      await saveImageElement(detectedElements.image, noteText, projectId);
     } else if (saveType === 'link') {
-      await saveLinkElement(detectedElements.link, noteText);
+      await saveLinkElement(detectedElements.link, noteText, projectId);
     } else if (saveType === 'table') {
-      await saveTableElement(detectedElements.table, noteText);
+      await saveTableElement(detectedElements.table, noteText, projectId);
     }
 
     // Hide popover instantly
@@ -865,7 +920,7 @@ async function handleSaveElement(event, saveType) {
 /**
  * Save an image element
  */
-async function saveImageElement(img, noteText) {
+async function saveImageElement(img, noteText, projectId) {
   const imageData = await fetchImageData(img);
 
   const response = await chrome.runtime.sendMessage({
@@ -879,7 +934,8 @@ async function saveImageElement(img, noteText) {
       },
       note: noteText,
       url: window.location.href,
-      title: document.title
+      title: document.title,
+      projectId: projectId
     }
   });
 
@@ -893,7 +949,7 @@ async function saveImageElement(img, noteText) {
 /**
  * Save a link element
  */
-async function saveLinkElement(link, noteText) {
+async function saveLinkElement(link, noteText, projectId) {
   const linkText = link.textContent.trim();
   const linkHref = link.href;
 
@@ -909,7 +965,8 @@ async function saveLinkElement(link, noteText) {
       text: textToSave,
       linkUrl: linkHref,
       url: window.location.href,
-      title: document.title
+      title: document.title,
+      projectId: projectId
     }
   });
 
@@ -923,7 +980,7 @@ async function saveLinkElement(link, noteText) {
 /**
  * Save a table element
  */
-async function saveTableElement(table, noteText) {
+async function saveTableElement(table, noteText, projectId) {
   const tableData = extractTableData(table);
 
   // Fetch all images embedded in the table
@@ -955,7 +1012,8 @@ async function saveTableElement(table, noteText) {
       tableImages: imageDataArray,
       note: noteText,
       url: window.location.href,
-      title: document.title
+      title: document.title,
+      projectId: projectId
     }
   });
 
@@ -994,6 +1052,9 @@ async function handleSave(event) {
     // Read note from the input field
     const noteInput = popover.querySelector('.cwa-note-input');
     const noteText = noteInput ? noteInput.value.trim() : '';
+
+    // Get selected project ID
+    const projectId = getSelectedProjectId();
 
     let response;
 
@@ -1038,7 +1099,8 @@ async function handleSave(event) {
           tableImages: imageDataArray,  // Send fetched image data separately
           note: noteText,
           url: window.location.href,
-          title: document.title
+          title: document.title,
+          projectId: projectId
         }
       });
     } else if (selectedImage) {
@@ -1056,7 +1118,8 @@ async function handleSave(event) {
           },
           note: noteText,
           url: window.location.href,
-          title: document.title
+          title: document.title,
+          projectId: projectId
         }
       });
     } else if (selectedLink) {
@@ -1076,7 +1139,8 @@ async function handleSave(event) {
           text: textToSave,
           linkUrl: linkHref,
           url: window.location.href,
-          title: document.title
+          title: document.title,
+          projectId: projectId
         }
       });
     } else {
@@ -1092,7 +1156,8 @@ async function handleSave(event) {
           type: 'text',
           text: textToSave,
           url: window.location.href,
-          title: document.title
+          title: document.title,
+          projectId: projectId
         }
       });
     }

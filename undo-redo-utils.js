@@ -95,44 +95,105 @@ const UndoRedoUtils = {
   },
 
   /**
-   * Load current undo/redo state from chrome.storage.session
+   * Load all project states from chrome.storage.session
    */
-  async loadState() {
+  async loadAllStates() {
     try {
       const result = await chrome.storage.session.get(this.UNDO_REDO_KEY);
-      if (result[this.UNDO_REDO_KEY]) {
+      return result[this.UNDO_REDO_KEY] || {};
+    } catch (error) {
+      console.error('Error loading all undo/redo states:', error);
+      return {};
+    }
+  },
+
+  /**
+   * Load undo/redo state for a specific project
+   * @param {string} projectId - Project ID
+   * @returns {Promise<{undoStack: Array, redoStack: Array}>}
+   */
+  async loadState(projectId) {
+    try {
+      if (!projectId) {
+        console.warn('loadState called without projectId');
+        return { undoStack: [], redoStack: [] };
+      }
+
+      const allStates = await this.loadAllStates();
+      if (allStates[projectId]) {
         return {
-          undoStack: result[this.UNDO_REDO_KEY].undoStack || [],
-          redoStack: result[this.UNDO_REDO_KEY].redoStack || []
+          undoStack: allStates[projectId].undoStack || [],
+          redoStack: allStates[projectId].redoStack || []
         };
       }
       return { undoStack: [], redoStack: [] };
     } catch (error) {
-      console.error('Error loading undo/redo state:', error);
+      console.error('Error loading undo/redo state for project:', projectId, error);
       return { undoStack: [], redoStack: [] };
     }
   },
 
   /**
-   * Save undo/redo state to chrome.storage.session
+   * Save undo/redo state for a specific project
+   * @param {string} projectId - Project ID
+   * @param {Array} undoStack - Undo stack
+   * @param {Array} redoStack - Redo stack
    */
-  async saveState(undoStack, redoStack) {
+  async saveState(projectId, undoStack, redoStack) {
     try {
+      if (!projectId) {
+        console.warn('saveState called without projectId');
+        return;
+      }
+
+      const allStates = await this.loadAllStates();
+      allStates[projectId] = { undoStack, redoStack };
+
       await chrome.storage.session.set({
-        [this.UNDO_REDO_KEY]: { undoStack, redoStack }
+        [this.UNDO_REDO_KEY]: allStates
       });
     } catch (error) {
-      console.error('Error saving undo/redo state:', error);
+      console.error('Error saving undo/redo state for project:', projectId, error);
+    }
+  },
+
+  /**
+   * Clear undo/redo history for a specific project
+   * @param {string} projectId - Project ID to clear
+   */
+  async clearProjectHistory(projectId) {
+    try {
+      if (!projectId) return;
+
+      const allStates = await this.loadAllStates();
+      delete allStates[projectId];
+
+      await chrome.storage.session.set({
+        [this.UNDO_REDO_KEY]: allStates
+      });
+    } catch (error) {
+      console.error('Error clearing project history:', projectId, error);
     }
   },
 
   /**
    * Record a new undo action (atomic operation)
    * This is the key function that background.js uses
+   * @param {string} projectId - Project ID
+   * @param {string} type - Action type (create, update, delete)
+   * @param {string} contentId - Content ID
+   * @param {object} beforeSnapshot - State before action
+   * @param {object} afterSnapshot - State after action
+   * @returns {Promise<string>} Action ID
    */
-  async recordAction(type, contentId, beforeSnapshot, afterSnapshot) {
-    // Load current state
-    const state = await this.loadState();
+  async recordAction(projectId, type, contentId, beforeSnapshot, afterSnapshot) {
+    if (!projectId) {
+      console.warn('recordAction called without projectId');
+      return null;
+    }
+
+    // Load current state for this project
+    const state = await this.loadState(projectId);
 
     // Serialize snapshots
     const action = {
@@ -155,20 +216,26 @@ const UndoRedoUtils = {
     // Clear redo stack on new action
     state.redoStack = [];
 
-    // Save state
-    await this.saveState(state.undoStack, state.redoStack);
+    // Save state for this project
+    await this.saveState(projectId, state.undoStack, state.redoStack);
 
     return action.id;
   },
 
   /**
    * Record a reorder action for undo/redo
+   * @param {string} projectId - Project ID
    * @param {Array<{key: string, order: number}>} beforeOrder - Order before drag
    * @param {Array<{key: string, order: number}>} afterOrder - Order after drag
    * @returns {Promise<string>} Action ID
    */
-  async recordReorderAction(beforeOrder, afterOrder) {
-    const state = await this.loadState();
+  async recordReorderAction(projectId, beforeOrder, afterOrder) {
+    if (!projectId) {
+      console.warn('recordReorderAction called without projectId');
+      return null;
+    }
+
+    const state = await this.loadState(projectId);
     const action = {
       id: this.generateActionId(),
       type: 'reorder',
@@ -181,7 +248,7 @@ const UndoRedoUtils = {
       state.undoStack.shift();
     }
     state.redoStack = [];
-    await this.saveState(state.undoStack, state.redoStack);
+    await this.saveState(projectId, state.undoStack, state.redoStack);
     return action.id;
   }
 };

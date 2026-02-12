@@ -30,8 +30,9 @@
 
 const DBUtils = {
   DB_NAME: 'ContentWritingAssistant',
-  DB_VERSION: 2,
+  DB_VERSION: 3,
   STORE_NAME: 'items',
+  DEFAULT_PROJECT_ID: 'project:default',
 
   // Connection pool properties
   _dbConnection: null,              // Cached database connection
@@ -97,6 +98,7 @@ const DBUtils = {
       request.onupgradeneeded = (event) => {
         const db = event.target.result;
         const oldVersion = event.oldVersion;
+        const transaction = event.target.transaction;
 
         // Migration from version 1 (media store) to version 2 (items store)
         if (oldVersion < 2) {
@@ -114,6 +116,50 @@ const DBUtils = {
           objectStore.createIndex('type', 'type', { unique: false });
           objectStore.createIndex('created', 'created', { unique: false });
           objectStore.createIndex('modified', 'modified', { unique: false });
+        }
+
+        // Migration from version 2 to version 3 (add projects support)
+        if (oldVersion < 3) {
+          const objectStore = transaction.objectStore(this.STORE_NAME);
+
+          // Add projectId index for efficient project-based filtering
+          if (!objectStore.indexNames.contains('projectId')) {
+            objectStore.createIndex('projectId', 'projectId', { unique: false });
+          }
+
+          // Create default project
+          const defaultProject = {
+            key: this.DEFAULT_PROJECT_ID,
+            type: 'project',
+            name: 'Untitled',
+            created: Date.now(),
+            modified: Date.now(),
+            isDefault: true,
+            itemCount: 0
+          };
+
+          try {
+            objectStore.add(defaultProject);
+          } catch (error) {
+            console.warn('Default project may already exist:', error);
+          }
+
+          // Migrate all existing content items to default project
+          const contentIndex = objectStore.index('type');
+          const contentRequest = contentIndex.openCursor(IDBKeyRange.only('content'));
+
+          contentRequest.onsuccess = (e) => {
+            const cursor = e.target.result;
+            if (cursor) {
+              const content = cursor.value;
+              // Add projectId if it doesn't exist
+              if (!content.projectId) {
+                content.projectId = this.DEFAULT_PROJECT_ID;
+                cursor.update(content);
+              }
+              cursor.continue();
+            }
+          };
         }
       };
     });
@@ -294,6 +340,8 @@ const DBUtils = {
         media: processedMedia,
         created: data.created || Date.now(),
         modified: Date.now(),
+        // Project association (defaults to default project if not specified)
+        projectId: data.projectId || this.DEFAULT_PROJECT_ID,
         // Preserve order if specified (for drag-drop reordering)
         ...(data.order !== undefined && { order: data.order }),
         // Preserve contentType if specified (e.g., 'link' for saved links)
@@ -517,6 +565,312 @@ const DBUtils = {
    */
   revokeObjectURL(url) {
     URL.revokeObjectURL(url);
+  },
+
+  // ============================================
+  // Project Management Functions
+  // ============================================
+
+  /**
+   * Generate unique project ID
+   * @returns {string} Unique project ID
+   */
+  generateProjectId() {
+    return `project:${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  },
+
+  /**
+   * Save project (create or update)
+   * @param {string} id - Project ID (optional, will generate if not provided)
+   * @param {Object} data - Project data
+   * @param {string} data.name - Project name
+   * @param {boolean} [data.isDefault] - Whether this is the default project
+   * @returns {Promise<string>} Project ID
+   */
+  async saveProject(id, data) {
+    try {
+      const projectId = id || this.generateProjectId();
+      const db = await this.getConnection();
+
+      // Prevent modifying the default project's isDefault flag
+      if (id === this.DEFAULT_PROJECT_ID && data.isDefault === false) {
+        throw new Error('Cannot modify default project flag');
+      }
+
+      // Get existing project for created timestamp
+      let existingProject = null;
+      if (id) {
+        try {
+          existingProject = await this.getProject(id);
+        } catch (error) {
+          // Project doesn't exist, that's ok
+        }
+      }
+
+      const projectObject = {
+        key: projectId,
+        type: 'project',
+        name: data.name || 'Untitled',
+        created: existingProject?.created || data.created || Date.now(),
+        modified: Date.now(),
+        isDefault: data.isDefault || false,
+        itemCount: data.itemCount !== undefined ? data.itemCount : (existingProject?.itemCount || 0)
+      };
+
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction([this.STORE_NAME], 'readwrite');
+        const objectStore = transaction.objectStore(this.STORE_NAME);
+        const request = objectStore.put(projectObject);
+
+        request.onsuccess = () => {
+          resolve(projectId);
+        };
+
+        request.onerror = () => {
+          console.error('[DB] Failed to save project:', request.error);
+          reject(new Error('Failed to save project'));
+        };
+      });
+    } catch (error) {
+      console.error('Error saving project:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get project by ID
+   * @param {string} id - Project ID
+   * @returns {Promise<Object|null>} Project object or null
+   */
+  async getProject(id) {
+    try {
+      const db = await this.getConnection();
+
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction([this.STORE_NAME], 'readonly');
+        const objectStore = transaction.objectStore(this.STORE_NAME);
+        const request = objectStore.get(id);
+
+        request.onsuccess = () => {
+          resolve(request.result || null);
+        };
+
+        request.onerror = () => {
+          reject(new Error('Failed to get project'));
+        };
+      });
+    } catch (error) {
+      console.error('Error getting project:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get all projects
+   * @returns {Promise<Object[]>} Array of project objects
+   */
+  async getAllProjects() {
+    try {
+      const db = await this.getConnection();
+
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction([this.STORE_NAME], 'readonly');
+        const objectStore = transaction.objectStore(this.STORE_NAME);
+        const index = objectStore.index('type');
+        const request = index.getAll('project');
+
+        request.onsuccess = () => {
+          const projects = request.result || [];
+          // Sort: default project first, then by name
+          resolve(projects.sort((a, b) => {
+            if (a.isDefault) return -1;
+            if (b.isDefault) return 1;
+            return a.name.localeCompare(b.name);
+          }));
+        };
+
+        request.onerror = () => {
+          reject(new Error('Failed to get all projects'));
+        };
+      });
+    } catch (error) {
+      console.error('Error getting all projects:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get default project
+   * @returns {Promise<Object>} Default project object
+   */
+  async getDefaultProject() {
+    try {
+      const project = await this.getProject(this.DEFAULT_PROJECT_ID);
+      if (!project) {
+        throw new Error('Default project not found - database may be corrupted');
+      }
+      return project;
+    } catch (error) {
+      console.error('Error getting default project:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Delete project by ID
+   * @param {string} id - Project ID
+   * @returns {Promise<void>}
+   */
+  async deleteProject(id) {
+    try {
+      if (id === this.DEFAULT_PROJECT_ID) {
+        throw new Error('Cannot delete default project');
+      }
+
+      const db = await this.getConnection();
+
+      return new Promise(async (resolve, reject) => {
+        const transaction = db.transaction([this.STORE_NAME], 'readwrite');
+        const objectStore = transaction.objectStore(this.STORE_NAME);
+
+        // Delete all content items in this project
+        const projectIndex = objectStore.index('projectId');
+        const contentRequest = projectIndex.openCursor(IDBKeyRange.only(id));
+
+        contentRequest.onsuccess = (e) => {
+          const cursor = e.target.result;
+          if (cursor) {
+            cursor.delete();
+            cursor.continue();
+          } else {
+            // Then delete the project itself
+            const deleteRequest = objectStore.delete(id);
+            deleteRequest.onsuccess = () => resolve();
+            deleteRequest.onerror = () => reject(new Error('Failed to delete project'));
+          }
+        };
+
+        contentRequest.onerror = () => {
+          reject(new Error('Failed to delete project content'));
+        };
+      });
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get all content for a specific project
+   * @param {string} projectId - Project ID
+   * @returns {Promise<Object[]>} Array of content objects
+   */
+  async getContentByProject(projectId) {
+    try {
+      const db = await this.getConnection();
+
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction([this.STORE_NAME], 'readonly');
+        const objectStore = transaction.objectStore(this.STORE_NAME);
+        const index = objectStore.index('projectId');
+        const request = index.getAll(projectId);
+
+        request.onsuccess = () => {
+          const content = (request.result || []).filter(item => item.type === 'content');
+          // Sort by order field (ascending), then by modified date (descending)
+          resolve(content.sort((a, b) => {
+            if (a.order !== undefined && b.order !== undefined) {
+              return a.order - b.order;
+            }
+            if (a.order !== undefined) return -1;
+            if (b.order !== undefined) return 1;
+            return b.modified - a.modified;
+          }));
+        };
+
+        request.onerror = () => {
+          reject(new Error('Failed to get content by project'));
+        };
+      });
+    } catch (error) {
+      console.error('Error getting content by project:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get count of content items in a project
+   * @param {string} projectId - Project ID
+   * @returns {Promise<number>} Count of content items
+   */
+  async getProjectContentCount(projectId) {
+    try {
+      const db = await this.getConnection();
+
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction([this.STORE_NAME], 'readonly');
+        const objectStore = transaction.objectStore(this.STORE_NAME);
+        const index = objectStore.index('projectId');
+        const request = index.count(projectId);
+
+        request.onsuccess = () => {
+          resolve(request.result || 0);
+        };
+
+        request.onerror = () => {
+          reject(new Error('Failed to count project content'));
+        };
+      });
+    } catch (error) {
+      console.error('Error counting project content:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Move content item to a different project
+   * @param {string} contentId - Content ID
+   * @param {string} targetProjectId - Target project ID
+   * @returns {Promise<void>}
+   */
+  async moveContentToProject(contentId, targetProjectId) {
+    try {
+      const db = await this.getConnection();
+
+      // Validate target project exists
+      const project = await this.getProject(targetProjectId);
+      if (!project) {
+        throw new Error('Target project not found');
+      }
+
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction([this.STORE_NAME], 'readwrite');
+        const objectStore = transaction.objectStore(this.STORE_NAME);
+        const getRequest = objectStore.get(contentId);
+
+        getRequest.onsuccess = () => {
+          const content = getRequest.result;
+          if (!content || content.type !== 'content') {
+            reject(new Error('Content not found'));
+            return;
+          }
+
+          content.projectId = targetProjectId;
+          content.modified = Date.now();
+
+          const putRequest = objectStore.put(content);
+          putRequest.onsuccess = () => resolve();
+          putRequest.onerror = () => reject(new Error('Failed to move content'));
+        };
+
+        getRequest.onerror = () => {
+          reject(new Error('Failed to get content'));
+        };
+      });
+    } catch (error) {
+      console.error('Error moving content to project:', error);
+      throw error;
+    }
   }
 };
 

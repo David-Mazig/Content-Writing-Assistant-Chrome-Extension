@@ -52,6 +52,25 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     // Return true to indicate async response
     return true;
   }
+
+  if (request.action === 'getProjects') {
+    // Get all projects and active project ID
+    Promise.all([
+      DBUtils.getAllProjects(),
+      chrome.storage.local.get('activeProjectId')
+    ])
+      .then(([projects, result]) => {
+        const activeProjectId = result.activeProjectId || (projects.length > 0 ? projects[0].key : DBUtils.DEFAULT_PROJECT_ID);
+        sendResponse({ success: true, projects, activeProjectId });
+      })
+      .catch(error => {
+        console.error('Get projects failed:', error);
+        sendResponse({ success: false, error: error.message });
+      });
+
+    // Return true to indicate async response
+    return true;
+  }
 });
 
 /**
@@ -76,7 +95,7 @@ function generateUniqueImageName(mediaArray) {
  */
 async function handleSaveSelection(data, sender) {
   try {
-    const { type, url, title } = data;
+    const { type, url, title, projectId } = data;
 
     let contentId;
 
@@ -141,7 +160,8 @@ async function handleSaveSelection(data, sender) {
       contentId = await DBUtils.saveContent(null, {
         text: tableText,
         links: url ? [url] : [],
-        media: mediaArray
+        media: mediaArray,
+        projectId: projectId
       });
 
     } else if (type === 'image') {
@@ -175,7 +195,8 @@ async function handleSaveSelection(data, sender) {
             blob: blob,
             name: imageData.name
           }
-        ]
+        ],
+        projectId: projectId
       });
 
     } else if (type === 'imagelink') {
@@ -210,7 +231,8 @@ async function handleSaveSelection(data, sender) {
             name: imageData.name
           }
         ],
-        contentType: 'imagelink'
+        contentType: 'imagelink',
+        projectId: projectId
       });
 
     } else if (type === 'link') {
@@ -228,7 +250,8 @@ async function handleSaveSelection(data, sender) {
         text: formattedText,
         links: linkUrl ? [linkUrl, url].filter(Boolean) : (url ? [url] : []),
         media: [],
-        contentType: 'link'  // Mark as link item
+        contentType: 'link',  // Mark as link item
+        projectId: projectId
       });
 
     } else {
@@ -244,7 +267,8 @@ async function handleSaveSelection(data, sender) {
       contentId = await DBUtils.saveContent(null, {
         text: formattedText,
         links: url ? [url] : [],
-        media: []
+        media: [],
+        projectId: projectId
       });
 
     }
@@ -252,7 +276,9 @@ async function handleSaveSelection(data, sender) {
     // Record undo action for popover saves
     try {
       const createdContent = await DBUtils.getContent(contentId);
-      await UndoRedoUtils.recordAction('create', contentId, null, createdContent);
+      // Use the projectId from the created content
+      const projectId = createdContent.projectId || DBUtils.DEFAULT_PROJECT_ID;
+      await UndoRedoUtils.recordAction(projectId, 'create', contentId, null, createdContent);
     } catch (undoError) {
       // Log but don't fail the save if undo recording fails
       console.warn('Failed to record undo action:', undoError);

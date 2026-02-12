@@ -18,9 +18,14 @@ let orderBeforeDrag = [];
 let undoStack = [];
 let redoStack = [];
 
+// Project state
+let currentProjectId = null;
+let projectsCache = null;
+
 // Initialize popup
 document.addEventListener('DOMContentLoaded', async () => {
   await initializeStorage();
+  await initializeProjects();  // Initialize projects before rendering
   await initUndoRedo();
   await renderContentList();
   initializeEventListeners();
@@ -93,13 +98,53 @@ function initializeEventListeners() {
     }
   });
 
+  // Project dropdown
+  document.getElementById('project-dropdown-btn').addEventListener('click', toggleProjectDropdown);
+  document.getElementById('btn-new-project').addEventListener('click', handleNewProject);
+
+  // Close project dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.project-selector')) {
+      closeProjectDropdown();
+    }
+  });
+
+  // Context menu for content items (right-click)
+  document.getElementById('content-list').addEventListener('contextmenu', async (e) => {
+    const contentItem = e.target.closest('.content-item');
+    if (contentItem) {
+      e.preventDefault();
+      await showContextMenu(e.pageX, e.pageY, contentItem.dataset.contentId);
+    }
+  });
+
+  // Close context menu when clicking anywhere
+  document.addEventListener('click', () => {
+    closeContextMenu();
+  });
+
+  // Prevent context menu from closing when clicking inside it
+  document.getElementById('context-menu').addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+
+  // Migration dialog buttons
+  document.getElementById('btn-migrate-move').addEventListener('click', handleMigrationMove);
+  document.getElementById('btn-migrate-copy').addEventListener('click', handleMigrationCopy);
+  document.getElementById('btn-migrate-skip').addEventListener('click', handleMigrationSkip);
+
   // Keyboard shortcuts
   document.addEventListener('keydown', (e) => {
-    // Escape to close modal
+    // Escape to close modals
     if (e.key === 'Escape') {
       const modal = document.getElementById('new-content-form');
+      const migrationDialog = document.getElementById('migration-dialog');
+
       if (!modal.classList.contains('hidden')) {
         closeModal();
+      } else if (!migrationDialog.classList.contains('hidden')) {
+        // Escape on migration dialog = skip migration
+        handleMigrationSkip();
       }
     }
 
@@ -107,6 +152,16 @@ function initializeEventListeners() {
     if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
       e.preventDefault();
       document.getElementById('search-input').focus();
+    }
+
+    // Alt + P to toggle project dropdown (only when not in input/textarea)
+    if (e.altKey && e.key === 'p') {
+      const activeEl = document.activeElement;
+      const isInput = activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA';
+      if (!isInput) {
+        e.preventDefault();
+        toggleProjectDropdown();
+      }
     }
 
     // Ctrl/Cmd + Z for undo (only when not in input/textarea)
@@ -149,11 +204,12 @@ function initializeEventListeners() {
 // ============================================
 
 /**
- * Initialize undo/redo from chrome.storage.session
+ * Initialize undo/redo from chrome.storage.session for current project
  */
 async function initUndoRedo() {
   try {
-    const state = await UndoRedoUtils.loadState();
+    const projectId = await getActiveProjectId();
+    const state = await UndoRedoUtils.loadState(projectId);
     undoStack = state.undoStack;
     redoStack = state.redoStack;
     updateUndoRedoButtons();
@@ -165,10 +221,27 @@ async function initUndoRedo() {
 }
 
 /**
- * Save undo/redo state to chrome.storage.session
+ * Load undo/redo state for a specific project
+ */
+async function loadProjectUndoRedo(projectId) {
+  try {
+    const state = await UndoRedoUtils.loadState(projectId);
+    undoStack = state.undoStack;
+    redoStack = state.redoStack;
+    updateUndoRedoButtons();
+  } catch (error) {
+    console.error('Error loading undo/redo for project:', error);
+    undoStack = [];
+    redoStack = [];
+  }
+}
+
+/**
+ * Save undo/redo state to chrome.storage.session for current project
  */
 async function saveUndoRedoState() {
-  await UndoRedoUtils.saveState(undoStack, redoStack);
+  const projectId = await getActiveProjectId();
+  await UndoRedoUtils.saveState(projectId, undoStack, redoStack);
 }
 
 /**
@@ -336,6 +409,747 @@ async function redo() {
 // ============================================
 
 // ============================================
+// Project Management System
+// ============================================
+
+/**
+ * Initialize projects system
+ * Creates default project if none exist and loads active project
+ */
+async function initializeProjects() {
+  try {
+    const projects = await DBUtils.getAllProjects();
+
+    if (projects.length === 0) {
+      // First time - default project should have been created by DB migration
+      // But if not, we need to handle it
+      console.log('No projects found, initializing default project');
+      currentProjectId = DBUtils.DEFAULT_PROJECT_ID;
+      await updateProjectUI();
+      return currentProjectId;
+    }
+
+    // Load active project from chrome.storage.local
+    const result = await chrome.storage.local.get('activeProjectId');
+    currentProjectId = result.activeProjectId || projects[0].key;
+
+    // Validate that the active project still exists
+    const activeProjectExists = projects.some(p => p.key === currentProjectId);
+    if (!activeProjectExists) {
+      currentProjectId = projects[0].key;
+      await chrome.storage.local.set({ activeProjectId: currentProjectId });
+    }
+
+    // Update UI with active project
+    await updateProjectUI();
+
+    return currentProjectId;
+  } catch (error) {
+    console.error('Error initializing projects:', error);
+    // Fallback to default project
+    currentProjectId = DBUtils.DEFAULT_PROJECT_ID;
+    await updateProjectUI();
+    return currentProjectId;
+  }
+}
+
+/**
+ * Get active project ID
+ */
+async function getActiveProjectId() {
+  if (!currentProjectId) {
+    await initializeProjects();
+  }
+  return currentProjectId;
+}
+
+/**
+ * Set active project ID
+ */
+async function setActiveProjectId(projectId) {
+  currentProjectId = projectId;
+  await chrome.storage.local.set({ activeProjectId: projectId });
+}
+
+/**
+ * Validate project name
+ * @param {string} name - Project name to validate
+ * @returns {string|null} Error message or null if valid
+ */
+function validateProjectName(name) {
+  if (!name || name.trim().length === 0) {
+    return 'Project name cannot be empty';
+  }
+
+  if (name.trim().length < 2) {
+    return 'Project name must be at least 2 characters';
+  }
+
+  if (name.trim().length > 50) {
+    return 'Project name cannot exceed 50 characters';
+  }
+
+  const invalidChars = /[<>:"/\\|?*]/;
+  if (invalidChars.test(name)) {
+    return 'Project name contains invalid characters';
+  }
+
+  return null;
+}
+
+/**
+ * Create new project
+ */
+async function createProject(name) {
+  try {
+    const validationError = validateProjectName(name);
+    if (validationError) {
+      throw new Error(validationError);
+    }
+
+    const projects = await DBUtils.getAllProjects();
+    if (projects.some(p => p.name.toLowerCase() === name.toLowerCase())) {
+      throw new Error('A project with this name already exists');
+    }
+
+    const projectId = await DBUtils.saveProject(null, {
+      name: name.trim(),
+      itemCount: 0
+    });
+
+    projectsCache = null; // Invalidate cache
+
+    return projectId;
+  } catch (error) {
+    console.error('Error creating project:', error);
+    throw error;
+  }
+}
+
+/**
+ * Rename project
+ */
+async function renameProject(projectId, newName) {
+  try {
+    const validationError = validateProjectName(newName);
+    if (validationError) {
+      throw new Error(validationError);
+    }
+
+    const project = await DBUtils.getProject(projectId);
+    if (!project) {
+      throw new Error('Project not found');
+    }
+
+    const projects = await DBUtils.getAllProjects();
+    if (projects.some(p => p.key !== projectId && p.name.toLowerCase() === newName.toLowerCase())) {
+      throw new Error('A project with this name already exists');
+    }
+
+    await DBUtils.saveProject(projectId, {
+      ...project,
+      name: newName.trim()
+    });
+
+    projectsCache = null; // Invalidate cache
+
+    return project;
+  } catch (error) {
+    console.error('Error renaming project:', error);
+    throw error;
+  }
+}
+
+/**
+ * Delete project
+ */
+async function deleteProject(projectId) {
+  try {
+    if (projectId === DBUtils.DEFAULT_PROJECT_ID) {
+      throw new Error('Cannot delete default project');
+    }
+
+    const projects = await DBUtils.getAllProjects();
+    if (projects.length === 1) {
+      throw new Error('Cannot delete the last project');
+    }
+
+    const project = await DBUtils.getProject(projectId);
+    if (!project) {
+      throw new Error('Project not found');
+    }
+
+    const projectContent = await DBUtils.getContentByProject(projectId);
+
+    const confirmMessage = `Delete project "${project.name}"?\n\nThis will permanently delete ${projectContent.length} item${projectContent.length !== 1 ? 's' : ''}.\n\nThis action can be undone.`;
+
+    if (!confirm(confirmMessage)) {
+      return null;
+    }
+
+    await DBUtils.deleteProject(projectId);
+
+    // Clear undo/redo history for the deleted project
+    await UndoRedoUtils.clearProjectHistory(projectId);
+
+    if (currentProjectId === projectId) {
+      const remainingProjects = projects.filter(p => p.key !== projectId);
+      await switchProject(remainingProjects[0].key);
+    }
+
+    projectsCache = null; // Invalidate cache
+
+    return project;
+  } catch (error) {
+    console.error('Error deleting project:', error);
+    throw error;
+  }
+}
+
+/**
+ * Switch to a different project
+ */
+async function switchProject(projectId) {
+  try {
+    const project = await DBUtils.getProject(projectId);
+    if (!project) {
+      throw new Error('Project not found');
+    }
+
+    await setActiveProjectId(projectId);
+
+    // Load undo/redo state for the new project
+    await loadProjectUndoRedo(projectId);
+
+    await renderContentList();
+    await updateProjectUI();
+
+    return project;
+  } catch (error) {
+    console.error('Error switching project:', error);
+    throw error;
+  }
+}
+
+/**
+ * Get all projects with caching
+ */
+async function getAllProjectsCached() {
+  if (!projectsCache) {
+    projectsCache = await DBUtils.getAllProjects();
+  }
+  return projectsCache;
+}
+
+/**
+ * Update project UI display (name + item count)
+ */
+async function updateProjectUI() {
+  try {
+    const activeProjectId = await getActiveProjectId();
+    const project = await DBUtils.getProject(activeProjectId);
+
+    if (!project) {
+      console.warn('Active project not found:', activeProjectId);
+      return;
+    }
+
+    // Get current item count for the project
+    const projectContent = await DBUtils.getContentByProject(activeProjectId);
+    const itemCount = projectContent.length;
+
+    // Update UI elements
+    document.getElementById('project-name').textContent = project.name;
+    document.getElementById('project-count').textContent = `${itemCount} item${itemCount !== 1 ? 's' : ''}`;
+  } catch (error) {
+    console.error('Error updating project UI:', error);
+  }
+}
+
+/**
+ * Toggle project dropdown visibility
+ */
+function toggleProjectDropdown(e) {
+  e.stopPropagation();
+  const dropdown = document.getElementById('project-dropdown-menu');
+  const btn = document.getElementById('project-dropdown-btn');
+
+  if (dropdown.classList.contains('show')) {
+    closeProjectDropdown();
+  } else {
+    renderProjectDropdown();
+    dropdown.classList.add('show');
+    btn.classList.add('open');
+  }
+}
+
+/**
+ * Close project dropdown
+ */
+function closeProjectDropdown() {
+  const dropdown = document.getElementById('project-dropdown-menu');
+  const btn = document.getElementById('project-dropdown-btn');
+  dropdown.classList.remove('show');
+  btn.classList.remove('open');
+}
+
+/**
+ * Render project dropdown list
+ */
+async function renderProjectDropdown() {
+  try {
+    const projects = await getAllProjectsCached();
+    const activeProjectId = await getActiveProjectId();
+    const container = document.getElementById('project-list');
+
+    container.innerHTML = '';
+
+    const isLastProject = projects.length === 1;
+
+    for (const project of projects) {
+      const isActive = project.key === activeProjectId;
+      const isDefault = project.key === DBUtils.DEFAULT_PROJECT_ID;
+
+      // Get item count for this project
+      const projectContent = await DBUtils.getContentByProject(project.key);
+      const itemCount = projectContent.length;
+
+      const projectItem = document.createElement('button');
+      projectItem.className = `project-list-item${isActive ? ' active' : ''}`;
+      projectItem.dataset.projectId = project.key;
+
+      // Add default badge if this is the default project
+      const defaultBadge = isDefault ? '<span class="project-default-badge" title="Default workspace">Default</span>' : '';
+
+      // Hide delete button for default project OR if it's the last project
+      const hideDelete = isDefault || isLastProject;
+
+      projectItem.innerHTML = `
+        <div class="project-list-info" title="${escapeHtml(project.name)}">
+          <div class="project-list-name">
+            ${escapeHtml(project.name)}
+            ${defaultBadge}
+          </div>
+          <div class="project-list-count">${itemCount} item${itemCount !== 1 ? 's' : ''}</div>
+        </div>
+        <div class="project-list-actions">
+          <button class="project-action-btn rename" data-project-id="${project.key}" title="Rename project" aria-label="Rename project">
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11.333 2A1.886 1.886 0 0 1 14 4.667l-9 9-3.667.667.667-3.667 9-9Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="project-action-btn delete" data-project-id="${project.key}" title="${hideDelete ? 'Cannot delete last/default project' : 'Delete project'}" aria-label="Delete project" ${hideDelete ? 'style="display:none"' : ''}>
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 4h12M5.333 4V2.667a1.333 1.333 0 0 1 1.334-1.334h2.666a1.333 1.333 0 0 1 1.334 1.334V4m2 0v9.333a1.333 1.333 0 0 1-1.334 1.334H4.667a1.333 1.333 0 0 1-1.334-1.334V4h9.334Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      `;
+
+      // Click on item to switch project (not on action buttons)
+      projectItem.addEventListener('click', async (e) => {
+        if (!e.target.closest('.project-action-btn')) {
+          await handleProjectSelect(project.key);
+        }
+      });
+
+      // Rename button
+      const renameBtn = projectItem.querySelector('.rename');
+      renameBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        handleRenameProject(project.key, project.name);
+      });
+
+      // Delete button
+      const deleteBtn = projectItem.querySelector('.delete');
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          handleDeleteProject(project.key);
+        });
+      }
+
+      container.appendChild(projectItem);
+    }
+  } catch (error) {
+    console.error('Error rendering project dropdown:', error);
+  }
+}
+
+/**
+ * Handle project selection
+ */
+async function handleProjectSelect(projectId) {
+  try {
+    if (projectId === currentProjectId) {
+      closeProjectDropdown();
+      return;
+    }
+
+    await switchProject(projectId);
+    closeProjectDropdown();
+  } catch (error) {
+    console.error('Error selecting project:', error);
+    alert('Failed to switch project: ' + error.message);
+  }
+}
+
+/**
+ * Handle new project creation
+ */
+async function handleNewProject(e) {
+  e.stopPropagation();
+
+  const name = prompt('Enter project name:');
+  if (!name) return;
+
+  try {
+    // Check if this is the first project being created
+    const projects = await getAllProjectsCached();
+    const isFirstProject = projects.length === 1 && projects[0].key === DBUtils.DEFAULT_PROJECT_ID;
+
+    // If first project, check if default project has content
+    if (isFirstProject) {
+      const defaultContent = await DBUtils.getContentByProject(DBUtils.DEFAULT_PROJECT_ID);
+
+      if (defaultContent.length > 0) {
+        // Show migration dialog instead of immediately switching
+        const projectId = await createProject(name);
+        await showMigrationDialog(name, projectId, defaultContent.length);
+        return; // Don't close dropdown yet, migration dialog will handle it
+      }
+    }
+
+    // Normal flow: create and switch to project
+    const projectId = await createProject(name);
+    await switchProject(projectId);
+    closeProjectDropdown();
+    showCopyFeedback(`Created project "${name}"`);
+  } catch (error) {
+    console.error('Error creating project:', error);
+    showCopyFeedback(error.message || 'Failed to create project', true);
+  }
+}
+
+/**
+ * Handle project rename
+ */
+async function handleRenameProject(projectId, currentName) {
+  const newName = prompt('Enter new project name:', currentName);
+  if (!newName || newName === currentName) return;
+
+  try {
+    await renameProject(projectId, newName);
+    await updateProjectUI();
+    renderProjectDropdown();
+    showCopyFeedback(`Renamed to "${newName}"`);
+  } catch (error) {
+    console.error('Error renaming project:', error);
+    showCopyFeedback(error.message || 'Failed to rename project', true);
+  }
+}
+
+/**
+ * Handle project deletion
+ */
+async function handleDeleteProject(projectId) {
+  try {
+    const deletedProject = await deleteProject(projectId);
+    if (deletedProject) {
+      renderProjectDropdown();
+      showCopyFeedback(`Deleted project "${deletedProject.name}"`);
+    }
+  } catch (error) {
+    console.error('Error deleting project:', error);
+    if (error.message !== 'User cancelled') {
+      showCopyFeedback(error.message || 'Failed to delete project', true);
+    }
+  }
+}
+
+/**
+ * Show migration dialog for first project creation
+ * @param {string} projectName - Name of the new project
+ * @param {string} projectId - ID of the new project
+ * @param {number} itemCount - Number of items in default project
+ */
+async function showMigrationDialog(projectName, projectId, itemCount) {
+  const dialog = document.getElementById('migration-dialog');
+  const projectNameEl = document.getElementById('migration-project-name');
+  const countEl = document.getElementById('migration-count');
+
+  // Update dialog content
+  projectNameEl.textContent = projectName;
+  countEl.textContent = `${itemCount} item${itemCount !== 1 ? 's' : ''}`;
+
+  // Store projectId for later use
+  dialog.dataset.projectId = projectId;
+  dialog.dataset.projectName = projectName;
+
+  // Show dialog
+  dialog.classList.remove('hidden');
+}
+
+/**
+ * Hide migration dialog
+ */
+function hideMigrationDialog() {
+  const dialog = document.getElementById('migration-dialog');
+  dialog.classList.add('hidden');
+  delete dialog.dataset.projectId;
+  delete dialog.dataset.projectName;
+}
+
+/**
+ * Handle migration: Move all content to new project
+ */
+async function handleMigrationMove() {
+  const dialog = document.getElementById('migration-dialog');
+  const toProjectId = dialog.dataset.projectId;
+
+  try {
+    // Get all content from default project
+    const defaultContent = await DBUtils.getContentByProject(DBUtils.DEFAULT_PROJECT_ID);
+
+    // Move each content item to new project
+    for (const content of defaultContent) {
+      await DBUtils.saveContent(content.key, {
+        ...content,
+        projectId: toProjectId
+      });
+    }
+
+    // Switch to new project
+    await switchProject(toProjectId);
+
+    // Update UI
+    await renderContentList();
+    await updateProjectUI();
+    renderProjectDropdown();
+
+    // Close dialogs
+    hideMigrationDialog();
+    closeProjectDropdown();
+
+    showCopyFeedback(`Moved ${defaultContent.length} item${defaultContent.length !== 1 ? 's' : ''} to new project`);
+  } catch (error) {
+    console.error('Error migrating content:', error);
+    showCopyFeedback('Failed to migrate content', true);
+  }
+}
+
+/**
+ * Handle migration: Copy all content to new project
+ */
+async function handleMigrationCopy() {
+  const dialog = document.getElementById('migration-dialog');
+  const toProjectId = dialog.dataset.projectId;
+
+  try {
+    // Get all content from default project
+    const defaultContent = await DBUtils.getContentByProject(DBUtils.DEFAULT_PROJECT_ID);
+
+    // Copy each content item to new project (create duplicates)
+    for (const content of defaultContent) {
+      // Remove key to create new content
+      const contentCopy = { ...content };
+      delete contentCopy.key;
+      contentCopy.projectId = toProjectId;
+
+      await DBUtils.saveContent(null, contentCopy);
+    }
+
+    // Switch to new project
+    await switchProject(toProjectId);
+
+    // Update UI
+    await renderContentList();
+    await updateProjectUI();
+    renderProjectDropdown();
+
+    // Close dialogs
+    hideMigrationDialog();
+    closeProjectDropdown();
+
+    showCopyFeedback(`Copied ${defaultContent.length} item${defaultContent.length !== 1 ? 's' : ''} to new project`);
+  } catch (error) {
+    console.error('Error copying content:', error);
+    showCopyFeedback('Failed to copy content', true);
+  }
+}
+
+/**
+ * Handle migration: Skip migration and just switch to new project
+ */
+async function handleMigrationSkip() {
+  const dialog = document.getElementById('migration-dialog');
+  const projectId = dialog.dataset.projectId;
+  const projectName = dialog.dataset.projectName;
+
+  try {
+    // Switch to new project
+    await switchProject(projectId);
+
+    // Update UI
+    await renderContentList();
+    await updateProjectUI();
+    renderProjectDropdown();
+
+    // Close dialogs
+    hideMigrationDialog();
+    closeProjectDropdown();
+
+    showCopyFeedback(`Switched to "${projectName}"`);
+  } catch (error) {
+    console.error('Error switching project:', error);
+    showCopyFeedback('Failed to switch project', true);
+  }
+}
+
+/**
+ * Update project item count
+ */
+async function updateProjectItemCount(projectId) {
+  try {
+    const count = await DBUtils.getProjectContentCount(projectId);
+    const project = await DBUtils.getProject(projectId);
+
+    if (project) {
+      await DBUtils.saveProject(projectId, {
+        ...project,
+        itemCount: count
+      });
+
+      projectsCache = null; // Invalidate cache
+    }
+  } catch (error) {
+    console.error('Error updating project item count:', error);
+  }
+}
+
+/**
+ * Show context menu for moving content between projects
+ */
+async function showContextMenu(x, y, contentId) {
+  try {
+    const contextMenu = document.getElementById('context-menu');
+    const projects = await getAllProjectsCached();
+    const activeProjectId = await getActiveProjectId();
+
+    // Build context menu HTML
+    let menuHtml = '<div class="context-menu-header">Move to Project</div>';
+
+    for (const project of projects) {
+      const isActive = project.key === activeProjectId;
+      const iconSvg = isActive
+        ? '<svg class="context-menu-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.333 4L6 11.333 2.667 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        : '<svg class="context-menu-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 4.667v8A1.333 1.333 0 0 1 12.667 14H3.333A1.333 1.333 0 0 1 2 12.667v-8A1.333 1.333 0 0 1 3.333 3.333h9.334A1.333 1.333 0 0 1 14 4.667Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+      menuHtml += `
+        <button class="context-menu-item ${isActive ? 'active' : ''}"
+                data-project-id="${project.key}"
+                data-content-id="${contentId}"
+                ${isActive ? 'disabled' : ''}>
+          ${iconSvg}
+          ${escapeHtml(project.name)}
+        </button>
+      `;
+    }
+
+    contextMenu.innerHTML = menuHtml;
+
+    // Position context menu at mouse coordinates
+    // Adjust if it would go off-screen
+    const menuWidth = 180;
+    const menuHeight = projects.length * 36 + 30; // Approximate
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    let posX = x;
+    let posY = y;
+
+    if (x + menuWidth > viewportWidth) {
+      posX = viewportWidth - menuWidth - 10;
+    }
+
+    if (y + menuHeight > viewportHeight) {
+      posY = viewportHeight - menuHeight - 10;
+    }
+
+    contextMenu.style.left = posX + 'px';
+    contextMenu.style.top = posY + 'px';
+    contextMenu.classList.add('show');
+
+    // Add click handlers to menu items
+    contextMenu.querySelectorAll('.context-menu-item:not(.active)').forEach(item => {
+      item.addEventListener('click', async () => {
+        const projectId = item.dataset.projectId;
+        const contentId = item.dataset.contentId;
+        await handleMoveToProject(contentId, projectId);
+        closeContextMenu();
+      });
+    });
+  } catch (error) {
+    console.error('Error showing context menu:', error);
+  }
+}
+
+/**
+ * Close context menu
+ */
+function closeContextMenu() {
+  const contextMenu = document.getElementById('context-menu');
+  contextMenu.classList.remove('show');
+}
+
+/**
+ * Move content item to a different project
+ */
+async function handleMoveToProject(contentId, targetProjectId) {
+  try {
+    // Get the content item before moving
+    const content = await DBUtils.getContent(contentId);
+    if (!content) {
+      throw new Error('Content not found');
+    }
+
+    const sourceProjectId = content.projectId;
+    if (sourceProjectId === targetProjectId) {
+      return; // Already in target project
+    }
+
+    // Record state before move for undo
+    const beforeState = { ...content };
+
+    // Move the content to the new project
+    await DBUtils.moveContentToProject(contentId, targetProjectId);
+
+    // Get the content after moving
+    const afterState = await DBUtils.getContent(contentId);
+
+    // Record undo action to the SOURCE project (where item came from)
+    await UndoRedoUtils.recordAction(sourceProjectId, 'update', contentId, beforeState, afterState);
+
+    // Update UI
+    await renderContentList();
+    await updateProjectUI();
+
+    // Get project name for toast message
+    const targetProject = await DBUtils.getProject(targetProjectId);
+
+    // Show success toast
+    showCopyFeedback(`Moved to "${targetProject.name}"`);
+  } catch (error) {
+    console.error('Error moving content to project:', error);
+    alert('Failed to move item: ' + error.message);
+  }
+}
+
+// ============================================
+// End Project Management System
+// ============================================
+
+// ============================================
 // Drag and Drop / Reordering System
 // ============================================
 
@@ -479,8 +1293,9 @@ async function handleDragEnd(evt) {
     // Update cache
     updateCacheOrder(newOrder);
 
-    // Record undo action
-    await UndoRedoUtils.recordReorderAction(orderBeforeDrag, newOrder);
+    // Record undo action for current project
+    const projectId = await getActiveProjectId();
+    await UndoRedoUtils.recordReorderAction(projectId, orderBeforeDrag, newOrder);
     await initUndoRedo(); // Reload undo/redo state
 
     // Show success animation
@@ -873,11 +1688,13 @@ async function createContent(text, links = [], mediaFiles = []) {
       }
     }
 
-    // Save content with embedded media
+    // Save content with embedded media to active project
+    const activeProjectId = await getActiveProjectId();
     const contentId = await DBUtils.saveContent(null, {
       text,
       links,
-      media
+      media,
+      projectId: activeProjectId
     });
 
     // Record undo action (create: beforeSnapshot is null, afterSnapshot is created content)
@@ -976,16 +1793,20 @@ async function renderContentList(searchQuery = '') {
     activeObjectURLs.forEach(url => URL.revokeObjectURL(url));
     activeObjectURLs = [];
 
-    const contentList = await DBUtils.getAllContent();
-    allContentCache = contentList;
+    // Get content filtered by current project
+    const activeProjectId = await getActiveProjectId();
+    const projectContent = await DBUtils.getContentByProject(activeProjectId);
+
+    // Update cache with project-filtered content (important for Copy All)
+    allContentCache = projectContent;
 
     // Filter based on search
     const filtered = searchQuery
-      ? contentList.filter(c =>
+      ? projectContent.filter(c =>
           c.text.toLowerCase().includes(searchQuery.toLowerCase()) ||
           c.links.some(l => l.toLowerCase().includes(searchQuery.toLowerCase()))
         )
-      : contentList;
+      : projectContent;
 
     container.innerHTML = '';
 
@@ -1005,6 +1826,9 @@ async function renderContentList(searchQuery = '') {
 
     // Reinitialize sortable after DOM updates
     initializeSortable();
+
+    // Update project UI
+    await updateProjectUI();
 
     // Update button states after rendering
     updateUndoRedoButtons();

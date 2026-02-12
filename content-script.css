@@ -121,7 +121,30 @@
 .cwa-popover-actions {
   padding: 8px;
   display: flex;
+  flex-direction: column;
   gap: 6px;
+}
+
+/* Project selector dropdown */
+.cwa-project-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.cwa-project-select:hover {
+  border-color: #bbb;
+}
+
+.cwa-project-select:focus {
+  outline: none;
+  border-color: #D97706;
 }
 
 .cwa-note-input {

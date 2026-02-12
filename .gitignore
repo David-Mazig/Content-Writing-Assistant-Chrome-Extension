@@ -1,8 +1,22 @@
-# Local Claude settings
-.claude/settings.local.json
-
-# Playwright test artifacts
+# Development tools
+.claude/
 .playwright-mcp/
+
+# Documentation (keep only README.md and CLAUDE.md)
+ARCHITECTURE_DECISIONS.md
+DEVELOPMENT.md
+STORAGE.md
+FEATURES.md
+TABLE_IMAGE_FEATURE.md
+PROJECTS_FEATURE_SUMMARY.md
+PROJECTS_TESTING_GUIDE.md
+PROJECTS_USER_GUIDE.md
+features.json
+CLAUDE.md
+
+# Test files
+test-*.html
+mdn-table-page.md
 
 # Screenshots from testing
 *.png

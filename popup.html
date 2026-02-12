@@ -70,6 +70,29 @@
       </div>
     </div>
 
+    <!-- Project Selector -->
+    <div class="project-selector">
+      <button id="project-dropdown-btn" class="project-dropdown-btn" aria-label="Select project">
+        <span class="project-icon">📁</span>
+        <span class="project-info">
+          <span id="project-name" class="project-name">Loading...</span>
+          <span id="project-count" class="project-count">0 items</span>
+        </span>
+        <svg class="dropdown-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="project-dropdown-menu" id="project-dropdown-menu">
+        <div class="project-dropdown-header">
+          <span class="project-dropdown-title">Projects</span>
+          <button id="btn-new-project" class="btn-new-project" aria-label="Create new project" title="New Project">+</button>
+        </div>
+        <div id="project-list" class="project-list">
+          <!-- Projects rendered here -->
+        </div>
+      </div>
+    </div>
+
     <!-- Search -->
     <div class="search-container">
       <input type="search" id="search-input" placeholder="Search content..." aria-label="Search content items" />
@@ -81,6 +104,11 @@
     <!-- Content List -->
     <div id="content-list" class="content-list">
       <div class="empty-state">Loading...</div>
+    </div>
+
+    <!-- Context Menu -->
+    <div id="context-menu" class="context-menu">
+      <!-- Rendered dynamically -->
     </div>
 
     <!-- New Content Form (hidden by default) -->
@@ -117,6 +145,47 @@
             <button id="btn-save-content" class="btn-primary">Save</button>
             <button id="btn-cancel" class="btn-secondary">Cancel</button>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Migration Dialog (shown when creating first project with existing content) -->
+  <div id="migration-dialog" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="migration-title">
+    <div class="modal-content migration-dialog-content">
+      <div class="modal-header">
+        <h2 id="migration-title">Migrate Existing Content?</h2>
+      </div>
+      <div class="modal-body">
+        <p class="migration-message">
+          You have <strong id="migration-count">0 items</strong> in your current workspace.
+          Would you like to move them to your new project "<strong id="migration-project-name"></strong>"?
+        </p>
+
+        <div class="migration-options">
+          <button id="btn-migrate-move" class="migration-option-btn">
+            <div class="migration-option-icon">📦</div>
+            <div class="migration-option-text">
+              <div class="migration-option-title">Move All</div>
+              <div class="migration-option-desc">Move all items to new project</div>
+            </div>
+          </button>
+
+          <button id="btn-migrate-copy" class="migration-option-btn">
+            <div class="migration-option-icon">📋</div>
+            <div class="migration-option-text">
+              <div class="migration-option-title">Copy All</div>
+              <div class="migration-option-desc">Keep items in both projects</div>
+            </div>
+          </button>
+
+          <button id="btn-migrate-skip" class="migration-option-btn secondary">
+            <div class="migration-option-icon">⏭️</div>
+            <div class="migration-option-text">
+              <div class="migration-option-title">Keep Separate</div>
+              <div class="migration-option-desc">Leave items in current workspace</div>
+            </div>
+          </button>
         </div>
       </div>
     </div>
