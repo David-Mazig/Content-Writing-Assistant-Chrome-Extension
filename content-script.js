@@ -618,6 +618,41 @@ function extractTableData(table) {
         }
       });
 
+      // Check for CSS background-image in this cell
+      const computedStyle = window.getComputedStyle(cell);
+      const backgroundImage = computedStyle.backgroundImage;
+
+      if (backgroundImage && backgroundImage !== 'none') {
+        // Extract all URLs from background-image (can contain multiple images)
+        const urlMatches = backgroundImage.matchAll(/url\(['"]?([^'"()]+)['"]?\)/g);
+        for (const match of urlMatches) {
+          const bgUrl = match[1];
+
+          try {
+            // Resolve relative URLs to absolute URLs
+            const absoluteUrl = new URL(bgUrl, window.location.href).href;
+
+            // Create a temporary img element for this background image
+            const tempImg = document.createElement('img');
+            tempImg.src = absoluteUrl;
+
+            // Add placeholder for this background image
+            cellContent += `{{img:${imageIndex}}}`;
+
+            // Store image with position metadata
+            images.push({
+              element: tempImg,
+              rowIndex: rowIdx,
+              colIndex: colIdx,
+              index: imageIndex
+            });
+            imageIndex++;
+          } catch (error) {
+            console.warn('[CWA] Failed to process background image URL:', bgUrl, error);
+          }
+        }
+      }
+
       rowData.push(cellContent);
     });
     if (rowData.length > 0) {

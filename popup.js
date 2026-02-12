@@ -1411,6 +1411,50 @@ function tableToTSV(tableData) {
 }
 
 /**
+ * Convert table data to markdown format for AI chatbots
+ */
+function tableToMarkdown(tableData) {
+  const { headers, rows } = tableData;
+  const lines = [];
+
+  if (!headers && !rows) {
+    return '[Empty table]';
+  }
+
+  // Helper to escape pipes and replace newlines
+  const escapeCell = (cell) => {
+    if (cell === null || cell === undefined) return '';
+    let str = String(cell);
+    // Replace image placeholders with [img]
+    str = str.replace(/\{\{img:\d+\}\}/g, '[img]');
+    // Replace newlines with space
+    str = str.replace(/\n/g, ' ');
+    // Escape pipes
+    str = str.replace(/\|/g, '\\|');
+    return str;
+  };
+
+  // Add headers
+  if (headers && headers.length > 0) {
+    const headerRow = headers.map(escapeCell).join(' | ');
+    lines.push(`| ${headerRow} |`);
+    // Add separator row
+    const separator = headers.map(() => '----------').join(' | ');
+    lines.push(`| ${separator} |`);
+  }
+
+  // Add data rows
+  if (rows && rows.length > 0) {
+    rows.forEach(row => {
+      const rowStr = row.map(escapeCell).join(' | ');
+      lines.push(`| ${rowStr} |`);
+    });
+  }
+
+  return lines.join('\n');
+}
+
+/**
  * Convert table data to HTML table with optional embedded images
  */
 function tableToHTML(tableData, images = []) {
@@ -1524,6 +1568,112 @@ async function formatContentItem(content, format, index) {
 
   let htmlParts = [];
   let textParts = [];
+
+  // AI Chatbot format with XML-style delimiters
+  if (format === 'ai-delimited') {
+    const itemParts = [];
+
+    // Opening tag with metadata
+    itemParts.push(`<item id="${index + 1}" type="${contentType}" date="${date}">`);
+
+    // Content by type
+    switch (contentType) {
+      case 'table':
+        const table = content.media.find(m => m.type === 'table');
+        if (table && table.data) {
+          itemParts.push(tableToMarkdown(table.data));
+
+          // Note if table contains embedded images
+          const tableImages = content.media.filter(m => m.type === 'image' && m.tableImageIndex !== undefined);
+          if (tableImages.length > 0) {
+            itemParts.push('');
+            itemParts.push(`[Table contains ${tableImages.length} embedded image${tableImages.length > 1 ? 's' : ''}]`);
+          }
+        } else {
+          itemParts.push('[Empty table]');
+        }
+        break;
+
+      case 'image':
+        const images = content.media.filter(m => m.type === 'image');
+        if (images.length > 0) {
+          images.forEach(img => {
+            const sizeKB = img.blob ? Math.round(img.blob.size / 1024) : 0;
+            itemParts.push(`[Image: ${img.name || 'image'} - ${sizeKB}KB]`);
+          });
+        }
+        // Include text description if present
+        if (mainText) {
+          itemParts.push('');
+          itemParts.push(mainText);
+        }
+        break;
+
+      case 'video':
+        const videos = content.media.filter(m => m.type === 'video');
+        if (videos.length > 0) {
+          videos.forEach(v => {
+            itemParts.push(`[Video: ${v.name || 'video'}]`);
+          });
+        }
+        if (mainText) {
+          itemParts.push('');
+          itemParts.push(mainText);
+        }
+        break;
+
+      case 'audio':
+        const audios = content.media.filter(m => m.type === 'audio');
+        if (audios.length > 0) {
+          audios.forEach(a => {
+            itemParts.push(`[Audio: ${a.name || 'audio'}]`);
+          });
+        }
+        if (mainText) {
+          itemParts.push('');
+          itemParts.push(mainText);
+        }
+        break;
+
+      case 'link':
+        if (sourceUrl) {
+          itemParts.push(sourceUrl);
+        }
+        if (mainText) {
+          if (sourceUrl) itemParts.push('');
+          itemParts.push(mainText);
+        }
+        break;
+
+      default: // text
+        if (mainText) {
+          itemParts.push(mainText);
+        } else {
+          itemParts.push('[Empty item]');
+        }
+        break;
+    }
+
+    // Add metadata (note, source, URL)
+    if (note) {
+      itemParts.push('');
+      itemParts.push(`Note: ${note}`);
+    }
+    if (sourceTitle) {
+      itemParts.push(`Source: ${sourceTitle}`);
+    }
+    if (sourceUrl && contentType !== 'link') {
+      itemParts.push(`URL: ${sourceUrl}`);
+    }
+
+    // Closing tag
+    itemParts.push('</item>');
+
+    return {
+      html: '', // No HTML for AI format
+      text: itemParts.join('\n')
+    };
+  }
 
   // Format based on content type
   if (format === 'full') {
@@ -1659,6 +1809,24 @@ async function copyAllContent(format) {
       }
       return (b.modified || b.created) - (a.modified || a.created);
     });
+
+    // AI delimited format - plain text only
+    if (format === 'ai-delimited') {
+      const textParts = [];
+
+      for (let i = 0; i < allContent.length; i++) {
+        const formatted = await formatContentItem(allContent[i], format, i);
+        textParts.push(formatted.text);
+      }
+
+      const finalText = textParts.join('\n\n');
+
+      // Copy plain text to clipboard
+      await navigator.clipboard.writeText(finalText);
+
+      showCopyFeedback(`Copied ${allContent.length} item${allContent.length > 1 ? 's' : ''} in AI format`);
+      return;
+    }
 
     let htmlContent = '<html><body>';
     let plainText = '';
