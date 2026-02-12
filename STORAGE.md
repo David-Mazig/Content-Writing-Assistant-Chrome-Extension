@@ -73,16 +73,13 @@ const allContent = await DBUtils.getAllContent(); // Sorted by order/modified
 
 **Update:**
 ```javascript
-await DBUtils.updateContentText(contentId, newText);
-await DBUtils.addLink(contentId, url);
-await DBUtils.addMediaToContent(contentId, blob, metadata);
 await DBUtils.updateContentOrder([{key: id1, order: 0}, {key: id2, order: 1}]);
+// Note: To update content, use saveContent() with the same ID
 ```
 
 **Delete:**
 ```javascript
 await DBUtils.deleteContent(contentId); // Auto-deletes embedded media
-await DBUtils.clearAllContent(); // Nuclear option
 ```
 
 **Monitoring:**

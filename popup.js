@@ -22,7 +22,6 @@ let redoStack = [];
 document.addEventListener('DOMContentLoaded', async () => {
   await initializeStorage();
   await initUndoRedo();
-  await displayStorageStats();
   await renderContentList();
   initializeEventListeners();
 });
@@ -848,18 +847,6 @@ async function initializeStorage() {
 }
 
 /**
- * Display storage statistics in console
- */
-async function displayStorageStats() {
-  try {
-    const allContent = await DBUtils.getAllContent();
-    const quotaInfo = await DBUtils.getStorageEstimate();
-  } catch (error) {
-    console.error('Error displaying storage stats:', error);
-  }
-}
-
-/**
  * Create new content with media
  */
 async function createContent(text, links = [], mediaFiles = []) {
@@ -901,36 +888,6 @@ async function createContent(text, links = [], mediaFiles = []) {
     return contentId;
   } catch (error) {
     console.error('Error creating content:', error);
-    throw error;
-  }
-}
-
-/**
- * Load content by ID
- */
-async function loadContent(contentId) {
-  try {
-    const content = await DBUtils.getContent(contentId);
-    if (!content) {
-      return null;
-    }
-
-    return content;
-  } catch (error) {
-    console.error('Error loading content:', error);
-    throw error;
-  }
-}
-
-/**
- * List all content
- */
-async function listAllContent() {
-  try {
-    const allContent = await DBUtils.getAllContent();
-    return allContent;
-  } catch (error) {
-    console.error('Error listing content:', error);
     throw error;
   }
 }
@@ -1929,8 +1886,6 @@ function showCopyFeedback(message, isError = false) {
 // Make functions available in global scope for testing
 window.ContentAssistant = {
   createContent,
-  loadContent,
-  listAllContent,
   deleteContent,
   renderContentList,
   undo,

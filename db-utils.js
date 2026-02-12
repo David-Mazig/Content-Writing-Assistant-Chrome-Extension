@@ -477,94 +477,6 @@ const DBUtils = {
   },
 
   /**
-   * Update content text
-   * @param {string} id - Content ID
-   * @param {string} text - New text content
-   * @returns {Promise<void>}
-   */
-  async updateContentText(id, text) {
-    try {
-      const content = await this.getContent(id);
-      if (!content) {
-        throw new Error(`Content with ID ${id} not found`);
-      }
-
-      content.text = text;
-      content.modified = Date.now();
-
-      await this.saveContent(id, content);
-    } catch (error) {
-      console.error('Error updating content text:', error);
-      throw error;
-    }
-  },
-
-  /**
-   * Add link to content
-   * @param {string} id - Content ID
-   * @param {string} url - URL to add
-   * @returns {Promise<void>}
-   */
-  async addLink(id, url) {
-    try {
-      const content = await this.getContent(id);
-      if (!content) {
-        throw new Error(`Content with ID ${id} not found`);
-      }
-
-      const validUrl = this.validateUrl(url);
-      if (!validUrl) {
-        throw new Error('Invalid URL');
-      }
-
-      if (!content.links.includes(validUrl)) {
-        content.links.push(validUrl);
-        content.modified = Date.now();
-        await this.saveContent(id, content);
-      }
-    } catch (error) {
-      console.error('Error adding link:', error);
-      throw error;
-    }
-  },
-
-  /**
-   * Add media to content
-   * @param {string} contentId - Content ID
-   * @param {Blob} blob - Media blob
-   * @param {Object} metadata - Media metadata
-   * @returns {Promise<string>} Media ID
-   */
-  async addMediaToContent(contentId, blob, metadata = {}) {
-    try {
-      const content = await this.getContent(contentId);
-      if (!content) {
-        throw new Error(`Content with ID ${contentId} not found`);
-      }
-
-      const mediaId = this.generateMediaId(metadata.type || 'media');
-      const mediaItem = {
-        id: mediaId,
-        type: metadata.type || 'image',
-        mimeType: metadata.mimeType || blob.type,
-        blob: blob,
-        size: blob.size,
-        name: metadata.name || 'untitled'
-      };
-
-      content.media.push(mediaItem);
-      content.modified = Date.now();
-      await this.saveContent(contentId, content);
-
-      return mediaId;
-    } catch (error) {
-      console.error('Error adding media to content:', error);
-      throw error;
-    }
-  },
-
-
-  /**
    * Get storage quota estimate
    * @returns {Promise<Object>} Storage quota information
    */
@@ -586,33 +498,6 @@ const DBUtils = {
       };
     } catch (error) {
       console.error('Error getting storage estimate:', error);
-      throw error;
-    }
-  },
-
-  /**
-   * Clear all content (use with caution)
-   * @returns {Promise<void>}
-   */
-  async clearAllContent() {
-    try {
-      const db = await this.getConnection();
-
-      return new Promise((resolve, reject) => {
-        const transaction = db.transaction([this.STORE_NAME], 'readwrite');
-        const objectStore = transaction.objectStore(this.STORE_NAME);
-        const request = objectStore.clear();
-
-        request.onsuccess = () => {
-          resolve();
-        };
-
-        request.onerror = () => {
-          reject(new Error('Failed to clear all content'));
-        };
-      });
-    } catch (error) {
-      console.error('Error clearing all content:', error);
       throw error;
     }
   },

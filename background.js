@@ -154,7 +154,6 @@ async function handleSaveSelection(data, sender) {
       for (let i = 0; i < binaryString.length; i++) {
         bytes[i] = binaryString.charCodeAt(i);
       }
-      const arrayBuffer = bytes.buffer;
 
       // Convert ArrayBuffer back to Blob
       const blob = new Blob([bytes], { type: imageData.mimeType });
@@ -259,9 +258,6 @@ async function handleSaveSelection(data, sender) {
       console.warn('Failed to record undo action:', undoError);
     }
 
-    // Show notification
-    showSaveNotification();
-
     return contentId;
   } catch (error) {
     console.error('Error saving selection:', error);
@@ -324,14 +320,6 @@ async function handleFetchImageFromUrl(data) {
     console.error('[BG] Error fetching image:', error);
     throw new Error(`Unable to fetch image: ${error.message}`);
   }
-}
-
-/**
- * Show a notification that content was saved
- */
-function showSaveNotification() {
-  // Could use chrome.notifications API here if we add the permission
-  // Silent - no notification for now
 }
 
 // Initialize database on installation (pre-warm connection)
