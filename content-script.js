@@ -93,6 +93,50 @@ function handleTextSelection(event) {
       return;
     }
 
+    // Don't show popover if selection is inside editable fields
+    // For input/textarea elements, check the activeElement (selection API doesn't expose their internal nodes)
+    const activeElement = document.activeElement;
+    if (activeElement) {
+      const tagName = activeElement.tagName;
+      if (tagName === 'INPUT' || tagName === 'TEXTAREA') {
+        hidePopover();
+        return;
+      }
+      if (activeElement.isContentEditable) {
+        hidePopover();
+        return;
+      }
+      if (activeElement.closest('[contenteditable="true"]')) {
+        hidePopover();
+        return;
+      }
+      if (activeElement.getAttribute('role') === 'textbox') {
+        hidePopover();
+        return;
+      }
+    }
+
+    // Also check selection nodes for contenteditable elements
+    const isInEditableField = (node) => {
+      if (!node) return false;
+
+      const element = node.nodeType === Node.ELEMENT_NODE
+        ? node
+        : node.parentElement;
+
+      if (!element) return false;
+
+      if (element.isContentEditable) return true;
+      if (element.closest('[contenteditable="true"]')) return true;
+
+      return false;
+    };
+
+    if (isInEditableField(selection.anchorNode) || isInEditableField(selection.focusNode)) {
+      hidePopover();
+      return;
+    }
+
     // Pre-warm database connection when text is selected
     if (!prewarmSent && text.length > 10) {
       if (isExtensionContextValid()) {
