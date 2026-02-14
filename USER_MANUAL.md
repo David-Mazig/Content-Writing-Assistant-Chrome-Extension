@@ -35,12 +35,13 @@ Chrome extension for collecting and organizing web content. Capture text, images
 **Search**: Ctrl+K → Type query (searches text/notes/sources/URLs)
 **Edit**: Click pencil icon → Modify → Save
 **Delete**: Click trash icon (Ctrl+Z to undo)
-**Reorder**: Click & hold (0.5 second) → Drag to new position
+**Reorder**: Click & hold → Drag to new position
 **Undo/Redo**: Ctrl+Z / Ctrl+Y (session-scoped, max 100 actions)
 
 ## Projects
 
 **Create**: Click folder icon → + button → Name project (2-50 chars)
+**Switch**: Alt+P → Select project
 **Rename**: Project menu (⋮) → Rename
 **Delete**: Project menu (⋮) → Delete (except default project)
 **Move items**: Right-click item → Move to Project → Select destination
@@ -51,9 +52,9 @@ Click **Copy All** → Select format:
 
 | Format | Best For | Output Type |
 |--------|----------|-------------|
-| **Full (Structured)** | Documentation, archiving |
-| **Content + Notes** | Clean documents |
-| **Content + Notes + Source** | Research with references |
+| **Full (Structured)** | Documentation, archiving | Image (Word/Docs compatible) |
+| **Content + Notes** | Clean documents | Image |
+| **Content + Notes + Source** | Research with references | Image |
 | **AI Chatbot** | ChatGPT, Claude, plain text | Editable text (XML-style) |
 
 **AI Chatbot format** uses `<item id="N">` tags, Markdown tables, and `[Image: filename]` placeholders. AI can reference items by ID ("summarize item 1").
@@ -62,6 +63,7 @@ Click **Copy All** → Select format:
 - All data stored locally in Chrome IndexedDB (no cloud sync)
 - No external network requests, tracking, or analytics
 - Data stored in plaintext (not encrypted)
+- View data: Right-click popup → Inspect → Application tab → IndexedDB
 
 ## Key Limitations
 - Images <50x50px and tables <2 rows ignored
@@ -80,6 +82,10 @@ Click **Copy All** → Select format:
 
 | Shortcut | Action |
 |----------|--------|
+| **Ctrl+K** / **Cmd+K** | Focus search box |
+| **Ctrl+Z** / **Cmd+Z** | Undo |
+| **Ctrl+Y** / **Cmd+Shift+Z** | Redo |
+| **Alt+P** | Toggle projects |
 | **Enter** | Save content (in capture popup) |
 | **Escape** | Cancel / Close modal |
 
