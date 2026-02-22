@@ -25,8 +25,6 @@ Version 1.1.0 | Current
 4. Click **Load unpacked** and select the extension folder
 5. Click the puzzle icon in Chrome's toolbar and pin **Content Writing Assistant**
 
-📸 SCREENSHOT: Chrome toolbar with the Content Writing Assistant icon pinned and visible
-
 > 💡 Tip: Pinning the icon to the toolbar gives you one-click access at all times.
 
 ---
@@ -45,8 +43,6 @@ The extension lets you capture content from any webpage in four ways.
 3. Optionally type a note in the popup
 4. Press **Enter** or click **Save**
 
-📸 SCREENSHOT: A text selection on a webpage with the capture popup showing a note field and Save button
-
 > 💡 Tip: Press **Escape** to dismiss the popup without saving.
 
 ---
@@ -60,8 +56,6 @@ The extension lets you capture content from any webpage in four ways.
 2. Hold still for 1 full second
 3. A capture popup appears
 4. Click **Save**
-
-📸 SCREENSHOT: An image on a webpage with a hover capture popup visible
 
 **What to expect:**
 - Images smaller than 50×50 pixels are ignored
@@ -79,8 +73,6 @@ The extension lets you capture content from any webpage in four ways.
 3. A capture popup appears
 4. Click **Save**
 
-📸 SCREENSHOT: A table on a webpage highlighted with a capture popup
-
 **What to expect:**
 - Tables with fewer than 2 rows are ignored
 
@@ -96,8 +88,6 @@ The extension lets you capture content from any webpage in four ways.
 3. A capture popup appears
 4. Click **Save**
 
-📸 SCREENSHOT: A hyperlink on a webpage with a capture popup showing link text and URL
-
 ---
 
 ### Capturing Overlapping Elements
@@ -108,8 +98,6 @@ The extension lets you capture content from any webpage in four ways.
 1. Hover over the element for 1 second
 2. A menu appears with options: **Image**, **Link**, **Table**, or **All**
 3. Click the type of content you want to save
-
-📸 SCREENSHOT: Capture popup showing multiple element type options (Image, Link, All)
 
 ---
 
@@ -125,8 +113,6 @@ The extension lets you capture content from any webpage in four ways.
 5. Optionally attach images, audio, or video by clicking **Add Media**
 6. Click **Save**
 
-📸 SCREENSHOT: The New Content modal with text area, link fields, and media attachment option
-
 ---
 
 ## Managing Your Content
@@ -141,8 +127,6 @@ The extension lets you capture content from any webpage in four ways.
 3. Click any item to expand it and see full details
 4. Click again to collapse it
 
-📸 SCREENSHOT: The extension popup with a list of collapsed and expanded content items
-
 ---
 
 ### Searching
@@ -153,8 +137,6 @@ The extension lets you capture content from any webpage in four ways.
 1. Click inside the search bar at the top of the popup (or press **Ctrl+K**)
 2. Type a keyword
 3. The list updates instantly to show matching items
-
-📸 SCREENSHOT: Search bar with a query typed and filtered results showing below
 
 ---
 
@@ -168,8 +150,6 @@ The extension lets you capture content from any webpage in four ways.
 3. Make your changes in the edit form
 4. Click **Save**
 
-📸 SCREENSHOT: An item in edit mode with the text field open and a Save button
-
 ---
 
 ### Deleting an Item
@@ -180,8 +160,6 @@ The extension lets you capture content from any webpage in four ways.
 1. Find the item in the list
 2. Click the **trash icon** on the item
 3. The item is removed immediately
-
-📸 SCREENSHOT: An item with the trash icon highlighted
 
 > 💡 Tip: Press **Ctrl+Z** immediately after to undo the deletion.
 
@@ -197,8 +175,6 @@ The extension lets you capture content from any webpage in four ways.
 3. Drag it to the new position
 4. Release to drop it
 
-📸 SCREENSHOT: An item being dragged to a new position in the list
-
 ---
 
 ### Undo and Redo
@@ -209,8 +185,6 @@ The extension lets you capture content from any webpage in four ways.
 1. Press **Ctrl+Z** to undo
 2. Press **Ctrl+Y** to redo
 3. Or click the undo/redo arrow buttons in the top-left of the popup
-
-📸 SCREENSHOT: The popup header showing the undo and redo arrow buttons
 
 **What to expect:**
 - Undo/redo history is cleared when you close the popup
@@ -225,8 +199,6 @@ The extension lets you capture content from any webpage in four ways.
 **How to use it:**
 1. Click the **trash icon** in the popup header (Delete All button)
 2. Confirm the action when prompted
-
-📸 SCREENSHOT: The popup header with the Delete All button highlighted
 
 > 💡 Tip: This only deletes items in the currently active project.
 
@@ -246,8 +218,6 @@ The extension lets you capture content from any webpage in four ways.
 3. Type a name (2–50 characters)
 4. Press **Enter** or click confirm
 
-📸 SCREENSHOT: The project dropdown open with the + button and a name input field
-
 **What to expect:**
 - If you already have items, a **migration dialog** appears asking whether to move, copy, or keep items separate
 
@@ -260,8 +230,6 @@ The extension lets you capture content from any webpage in four ways.
 **How to use it:**
 1. Click the **folder icon** to open the project dropdown
 2. Click the project name you want to switch to
-
-📸 SCREENSHOT: The project dropdown listing multiple projects
 
 ---
 
@@ -296,8 +264,6 @@ The extension lets you capture content from any webpage in four ways.
 2. Select **Move to Project**
 3. Choose the destination project
 
-📸 SCREENSHOT: Right-click context menu on an item showing "Move to Project" option
-
 ---
 
 ## Exporting Content
@@ -311,8 +277,6 @@ The extension lets you capture content from any webpage in four ways.
 2. A menu appears with four format options
 3. Click a format to copy to clipboard
 4. Paste into your document or chat
-
-📸 SCREENSHOT: The Copy All dropdown menu showing all four format options
 
 | Format | Best for |
 |---|---|
