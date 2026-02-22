@@ -1,88 +1,364 @@
-# Content Writing Assistant — Quick Reference
+# Content Writing Assistant — User Manual
+Version 1.1.0 | Current
+
+---
 
 ## Overview
-Chrome extension for collecting and organizing web content. Capture text, images, tables, and links from any webpage. All data stored locally (no cloud sync).
 
-## Installation
-1. Download from GitHub or extract ZIP
-2. Go to `chrome://extensions/` → Enable **Developer mode**
-3. Click **Load unpacked** → Select extension folder
-4. Pin extension to toolbar (recommended)
+**Content Writing Assistant** is a Chrome browser extension for collecting and organizing content from the web. Capture text, images, tables, and links from any page. All data stays on your device — no accounts, no cloud sync, no internet required.
 
-## Quick Start
-1. **Capture**: Select text or hover over images/tables/links (1 second)
-2. **Save**: Click "Save" in popup (or press Enter)
-3. **Manage**: Open extension popup to view/organize
-4. **Export**: Click "Copy All" to export in various formats
+---
+
+## Getting Started
+
+### Requirements
+
+- Google Chrome browser (required)
+- No account or login needed
+
+### Installation
+
+**How to use it:**
+1. Download the extension folder from GitHub (or extract the ZIP file)
+2. Open Chrome and go to `chrome://extensions/`
+3. Turn on **Developer mode** (toggle in the top-right corner)
+4. Click **Load unpacked** and select the extension folder
+5. Click the puzzle icon in Chrome's toolbar and pin **Content Writing Assistant**
+
+📸 SCREENSHOT: Chrome toolbar with the Content Writing Assistant icon pinned and visible
+
+> 💡 Tip: Pinning the icon to the toolbar gives you one-click access at all times.
+
+---
 
 ## Capturing Content
 
-| Type | Method | Notes |
-|------|--------|-------|
-| **Text** | Select text on any page | Popup appears → add note → Save |
-| **Images** | Hover 1 sec (≥50x50px) | Auto-saved with source info |
-| **Tables** | Hover 1 sec (≥2 rows) | Captures structure + embedded images |
-| **Links** | Hover 1 sec | Saves link text + URL |
-| **Manual** | Click "+ New" in popup | Upload files or paste content |
+The extension lets you capture content from any webpage in four ways.
 
-**Multi-element capture**: When hovering over nested elements (e.g., image in link), choose Image/Link/Table/All.
+### Capturing Text
 
-**Shortcuts**: Enter = Save, Escape = Cancel
+**What it does:** Saves any text you select on a webpage, along with an optional note.
 
-## Managing Content
+**How to use it:**
+1. Select any text on a webpage by clicking and dragging
+2. A small popup appears near your selection
+3. Optionally type a note in the popup
+4. Press **Enter** or click **Save**
 
-**View**: Click extension icon → Browse items (click to expand/collapse)
-**Search**: Ctrl+K → Type query (searches text/notes/sources/URLs)
-**Edit**: Click pencil icon → Modify → Save
-**Delete**: Click trash icon (Ctrl+Z to undo)
-**Reorder**: Click & hold (0.5 second) → Drag to new position
-**Undo/Redo**: Ctrl+Z / Ctrl+Y (session-scoped, max 100 actions)
+📸 SCREENSHOT: A text selection on a webpage with the capture popup showing a note field and Save button
+
+> 💡 Tip: Press **Escape** to dismiss the popup without saving.
+
+---
+
+### Capturing Images
+
+**What it does:** Saves an image from any webpage, including its source URL.
+
+**How to use it:**
+1. Hover your mouse over an image on any webpage
+2. Hold still for 1 full second
+3. A capture popup appears
+4. Click **Save**
+
+📸 SCREENSHOT: An image on a webpage with a hover capture popup visible
+
+**What to expect:**
+- Images smaller than 50×50 pixels are ignored
+- Some images on protected websites cannot be saved. You'll see an "Image protected" message. Save the image manually instead.
+
+---
+
+### Capturing Tables
+
+**What it does:** Saves a table from a webpage, preserving its structure and any embedded images.
+
+**How to use it:**
+1. Hover your mouse over a table on any webpage
+2. Hold still for 1 full second
+3. A capture popup appears
+4. Click **Save**
+
+📸 SCREENSHOT: A table on a webpage highlighted with a capture popup
+
+**What to expect:**
+- Tables with fewer than 2 rows are ignored
+
+---
+
+### Capturing Links
+
+**What it does:** Saves a hyperlink along with its display text and destination URL.
+
+**How to use it:**
+1. Hover your mouse over a link on any webpage
+2. Hold still for 1 full second
+3. A capture popup appears
+4. Click **Save**
+
+📸 SCREENSHOT: A hyperlink on a webpage with a capture popup showing link text and URL
+
+---
+
+### Capturing Overlapping Elements
+
+**What it does:** When hovering over nested elements (e.g., an image inside a link), lets you choose what to capture.
+
+**How to use it:**
+1. Hover over the element for 1 second
+2. A menu appears with options: **Image**, **Link**, **Table**, or **All**
+3. Click the type of content you want to save
+
+📸 SCREENSHOT: Capture popup showing multiple element type options (Image, Link, All)
+
+---
+
+### Creating Content Manually
+
+**What it does:** Lets you add content directly — without capturing from a webpage.
+
+**How to use it:**
+1. Click the extension icon to open the popup
+2. Click **+ New** in the top-right
+3. Type or paste your text into the text area
+4. Optionally add links by clicking **+ Add another link**
+5. Optionally attach images, audio, or video by clicking **Add Media**
+6. Click **Save**
+
+📸 SCREENSHOT: The New Content modal with text area, link fields, and media attachment option
+
+---
+
+## Managing Your Content
+
+### Viewing Items
+
+**What it does:** Shows all saved items in your current project as a scrollable list.
+
+**How to use it:**
+1. Click the extension icon to open the popup
+2. Scroll through the list of saved items
+3. Click any item to expand it and see full details
+4. Click again to collapse it
+
+📸 SCREENSHOT: The extension popup with a list of collapsed and expanded content items
+
+---
+
+### Searching
+
+**What it does:** Filters your saved items by keyword. Searches across text, notes, source URLs, and link text.
+
+**How to use it:**
+1. Click inside the search bar at the top of the popup (or press **Ctrl+K**)
+2. Type a keyword
+3. The list updates instantly to show matching items
+
+📸 SCREENSHOT: Search bar with a query typed and filtered results showing below
+
+---
+
+### Editing an Item
+
+**What it does:** Lets you modify the text or notes of a saved item.
+
+**How to use it:**
+1. Find the item in the list
+2. Click the **pencil icon** on the item
+3. Make your changes in the edit form
+4. Click **Save**
+
+📸 SCREENSHOT: An item in edit mode with the text field open and a Save button
+
+---
+
+### Deleting an Item
+
+**What it does:** Removes a single item from your list.
+
+**How to use it:**
+1. Find the item in the list
+2. Click the **trash icon** on the item
+3. The item is removed immediately
+
+📸 SCREENSHOT: An item with the trash icon highlighted
+
+> 💡 Tip: Press **Ctrl+Z** immediately after to undo the deletion.
+
+---
+
+### Reordering Items
+
+**What it does:** Changes the order of items in your list by dragging.
+
+**How to use it:**
+1. Click and hold an item for about half a second
+2. The item becomes draggable
+3. Drag it to the new position
+4. Release to drop it
+
+📸 SCREENSHOT: An item being dragged to a new position in the list
+
+---
+
+### Undo and Redo
+
+**What it does:** Reverses or re-applies your last action (delete, reorder, edit).
+
+**How to use it:**
+1. Press **Ctrl+Z** to undo
+2. Press **Ctrl+Y** to redo
+3. Or click the undo/redo arrow buttons in the top-left of the popup
+
+📸 SCREENSHOT: The popup header showing the undo and redo arrow buttons
+
+**What to expect:**
+- Undo/redo history is cleared when you close the popup
+- Maximum of 100 actions stored per session
+
+---
+
+### Deleting All Items
+
+**What it does:** Removes every item in the current project at once.
+
+**How to use it:**
+1. Click the **trash icon** in the popup header (Delete All button)
+2. Confirm the action when prompted
+
+📸 SCREENSHOT: The popup header with the Delete All button highlighted
+
+> 💡 Tip: This only deletes items in the currently active project.
+
+---
 
 ## Projects
 
-**Create**: Click folder icon → + button → Name project (2-50 chars)
-**Rename**: Project menu (⋮) → Rename
-**Delete**: Project menu (⋮) → Delete (except default project)
-**Move items**: Right-click item → Move to Project → Select destination
+**Projects** are separate workspaces for organizing your content. Each project has its own list of items.
 
-## Copy & Export
+### Creating a Project
 
-Click **Copy All** → Select format:
+**What it does:** Adds a new, empty workspace.
 
-| Format | Best For | Output Type |
-|--------|----------|-------------|
-| **Full (Structured)** | Documentation, archiving |
-| **Content + Notes** | Clean documents |
-| **Content + Notes + Source** | Research with references |
-| **AI Chatbot** | ChatGPT, Claude, plain text | Editable text (XML-style) |
+**How to use it:**
+1. Click the **folder icon** (project selector) near the top of the popup
+2. Click the **+** button in the project dropdown
+3. Type a name (2–50 characters)
+4. Press **Enter** or click confirm
 
-**AI Chatbot format** uses `<item id="N">` tags, Markdown tables, and `[Image: filename]` placeholders. AI can reference items by ID ("summarize item 1").
+📸 SCREENSHOT: The project dropdown open with the + button and a name input field
+
+**What to expect:**
+- If you already have items, a **migration dialog** appears asking whether to move, copy, or keep items separate
+
+---
+
+### Switching Projects
+
+**What it does:** Changes which project's items are shown in the list.
+
+**How to use it:**
+1. Click the **folder icon** to open the project dropdown
+2. Click the project name you want to switch to
+
+📸 SCREENSHOT: The project dropdown listing multiple projects
+
+---
+
+### Renaming a Project
+
+**How to use it:**
+1. Open the project dropdown
+2. Click the **⋮ menu** next to the project name
+3. Select **Rename**
+4. Enter the new name and confirm
+
+---
+
+### Deleting a Project
+
+**How to use it:**
+1. Open the project dropdown
+2. Click the **⋮ menu** next to the project name
+3. Select **Delete**
+
+**What to expect:**
+- The default project cannot be deleted
+
+---
+
+### Moving an Item to Another Project
+
+**What it does:** Transfers a saved item from the current project to a different one.
+
+**How to use it:**
+1. Right-click on an item in the list
+2. Select **Move to Project**
+3. Choose the destination project
+
+📸 SCREENSHOT: Right-click context menu on an item showing "Move to Project" option
+
+---
+
+## Exporting Content
+
+### Copy All
+
+**What it does:** Copies all items in the current project to your clipboard in your chosen format.
+
+**How to use it:**
+1. Click the **Copy** icon in the popup header
+2. A menu appears with four format options
+3. Click a format to copy to clipboard
+4. Paste into your document or chat
+
+📸 SCREENSHOT: The Copy All dropdown menu showing all four format options
+
+| Format | Best for |
+|---|---|
+| **Full (Structured)** | Word documents, full archives |
+| **Content + Notes** | Clean documents without source info |
+| **Content + Notes + Source** | Research with reference URLs |
+| **AI Chatbot** | Pasting into ChatGPT, Claude, or other AI tools |
+
+> 💡 Tip: The **AI Chatbot** format uses `<item id="N">` tags so the AI can reference specific items by number (e.g., "summarize item 3").
+
+---
 
 ## Storage & Privacy
-- All data stored locally in Chrome IndexedDB (no cloud sync)
-- No external network requests, tracking, or analytics
-- Data stored in plaintext (not encrypted)
 
-## Key Limitations
-- Images <50x50px and tables <2 rows ignored
-- CORS-protected images may fail
-- Undo/redo session-scoped (cleared when popup closes)
-- Chrome only (Manifest V3)
-- Default project cannot be deleted
+- All content is stored **locally** in your browser using IndexedDB
+- Nothing is sent to any server, no tracking, no analytics
+- Data is stored in plaintext (not encrypted)
+- Uninstalling the extension deletes all stored data
 
-## Troubleshooting
-- **"Refresh page" error**: Reload webpage after extension update
-- **"Image protected"**: CORS restriction — manually save image instead
-- **No hover popup**: Hover 1 full second; check element size
-- **Lost content**: Check if you switched projects
+---
 
 ## Keyboard Shortcuts
 
 | Shortcut | Action |
-|----------|--------|
+|---|---|
 | **Enter** | Save content (in capture popup) |
-| **Escape** | Cancel / Close modal |
+| **Escape** | Cancel / Close any popup or modal |
+| **Ctrl+K** | Focus the search bar |
+| **Ctrl+Z** | Undo last action |
+| **Ctrl+Y** | Redo last undone action |
 
 ---
 
-**Version:** 1.1.0 | **License:** MIT | [GitHub](https://github.com/David-Mazig/Content-Writing-Assistant-Chrome-Extension) | [Report Issues](https://github.com/David-Mazig/Content-Writing-Assistant-Chrome-Extension/issues)
+## Troubleshooting
+
+**"Refresh page" error appears**
+After updating the extension, reload the webpage you're trying to capture from.
+
+**"Image protected" message**
+The website blocks direct image access. Save the image to your computer and use **+ New → Add Media** to attach it manually.
+
+**Hover popup doesn't appear**
+Hold your mouse completely still for the full second. Check that the element is at least 50×50px (for images) or has at least 2 rows (for tables).
+
+**Content seems missing**
+Check the project selector — you may be viewing a different project than where the item was saved.
+
+**Undo is not available after reopening the popup**
+Undo history is session-scoped and clears when the popup is closed. This is by design.
